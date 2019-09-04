@@ -1,0 +1,3 @@
+D:/CLionProjects/StandardFunctions/cmake-build-debug/CMakeFiles/a_to_i.dir
+D:/CLionProjects/StandardFunctions/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/CLionProjects/StandardFunctions/cmake-build-debug/CMakeFiles/rebuild_cache.dir

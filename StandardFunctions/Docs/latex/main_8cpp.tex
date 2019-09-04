@@ -1,0 +1,122 @@
+\hypertarget{main_8cpp}{}\doxysection{D\+:/\+C\+Lion\+Projects/\+Standard\+Functions/main.cpp File Reference}
+\label{main_8cpp}\index{D:/CLionProjects/StandardFunctions/main.cpp@{D:/CLionProjects/StandardFunctions/main.cpp}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8cpp_a5a713f3b9f939cfb89dc2793d7b04fb6}{a\+\_\+to\+\_\+i}} (const char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Function that translates string (char array) into number Function skips whitespaces in the beginning of the string, then decodes number until it meets either end of string or non-\/digit character. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_adc4abc914da3b323ba96eb2d3d812a73}{i\+\_\+to\+\_\+a}} (int num, char $\ast$buffer, int radix=10)
+\begin{DoxyCompactList}\small\item\em Function that encodes number into string Function encodes number into string representation using given radix. Default base is 10. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_aafc4f730dc93ca34d7260d3e492ff376}{str\+\_\+cmp}} (char $\ast$string1, char $\ast$string2)
+\begin{DoxyCompactList}\small\item\em function that compares two strings \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ae951aaa7ea0fc9325f076288749d2d6d}{put\+\_\+s}} (char $\ast$string)
+\item 
+char $\ast$ \mbox{\hyperlink{main_8cpp_a011fc92af7f35b06330969b95ee2b001}{f\+\_\+get\+\_\+s}} (char $\ast$str, int count, F\+I\+LE $\ast$stream)
+\begin{DoxyCompactList}\small\item\em Function for reading from file. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a5a713f3b9f939cfb89dc2793d7b04fb6}\label{main_8cpp_a5a713f3b9f939cfb89dc2793d7b04fb6}} 
+\index{main.cpp@{main.cpp}!a\_to\_i@{a\_to\_i}}
+\index{a\_to\_i@{a\_to\_i}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{a\_to\_i()}{a\_to\_i()}}
+{\footnotesize\ttfamily int a\+\_\+to\+\_\+i (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+Function that translates string (char array) into number Function skips whitespaces in the beginning of the string, then decodes number until it meets either end of string or non-\/digit character. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Pointer to char array that contains number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Decoded number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a011fc92af7f35b06330969b95ee2b001}\label{main_8cpp_a011fc92af7f35b06330969b95ee2b001}} 
+\index{main.cpp@{main.cpp}!f\_get\_s@{f\_get\_s}}
+\index{f\_get\_s@{f\_get\_s}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{f\_get\_s()}{f\_get\_s()}}
+{\footnotesize\ttfamily char $\ast$ f\+\_\+get\+\_\+s (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{int}]{count,  }\item[{F\+I\+LE $\ast$}]{stream }\end{DoxyParamCaption})}
+
+
+
+Function for reading from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Pointer to string for saving the number \\
+\hline
+{\em count} & Number of symbols to read \\
+\hline
+{\em stream} & Pointer to the file for reading \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\+U\+LL if the end is reached. Otherwise, pointer to string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_adc4abc914da3b323ba96eb2d3d812a73}\label{main_8cpp_adc4abc914da3b323ba96eb2d3d812a73}} 
+\index{main.cpp@{main.cpp}!i\_to\_a@{i\_to\_a}}
+\index{i\_to\_a@{i\_to\_a}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{i\_to\_a()}{i\_to\_a()}}
+{\footnotesize\ttfamily void i\+\_\+to\+\_\+a (\begin{DoxyParamCaption}\item[{int}]{num,  }\item[{char $\ast$}]{buffer,  }\item[{int}]{radix = {\ttfamily 10} }\end{DoxyParamCaption})}
+
+
+
+Function that encodes number into string Function encodes number into string representation using given radix. Default base is 10. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & Number to encode \\
+\hline
+{\em buffer} & Pointer to char array for writing number \\
+\hline
+{\em radix} & Radix (base) of positional numeral system used for encoding the number. Shoud be number between 2 and 36 (including borders) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8cpp_ae951aaa7ea0fc9325f076288749d2d6d}\label{main_8cpp_ae951aaa7ea0fc9325f076288749d2d6d}} 
+\index{main.cpp@{main.cpp}!put\_s@{put\_s}}
+\index{put\_s@{put\_s}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{put\_s()}{put\_s()}}
+{\footnotesize\ttfamily int put\+\_\+s (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Function that prints given string and newline character. 
+\begin{DoxyParams}{Parameters}
+{\em string} & String for printing \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Non-\/negative number integer in case of success. If error occured, E\+OF 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_aafc4f730dc93ca34d7260d3e492ff376}\label{main_8cpp_aafc4f730dc93ca34d7260d3e492ff376}} 
+\index{main.cpp@{main.cpp}!str\_cmp@{str\_cmp}}
+\index{str\_cmp@{str\_cmp}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{str\_cmp()}{str\_cmp()}}
+{\footnotesize\ttfamily int str\+\_\+cmp (\begin{DoxyParamCaption}\item[{char $\ast$}]{string1,  }\item[{char $\ast$}]{string2 }\end{DoxyParamCaption})}
+
+
+
+function that compares two strings 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string1} & Pointer to the first string \\
+\hline
+{\em string2} & Pointer to the second string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of comparison, 0 if the strings are equal, positive number if first string greater than second, negative number if second greater than first. 
+\end{DoxyReturn}

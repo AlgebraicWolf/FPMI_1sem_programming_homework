@@ -1,0 +1,117 @@
+\hypertarget{main_8cpp}{}\doxysection{D\+:/\+C\+Lion\+Projects/\+Square\+Equation/main.cpp File Reference}
+\label{main_8cpp}\index{D:/CLionProjects/SquareEquation/main.cpp@{D:/CLionProjects/SquareEquation/main.cpp}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcomplex}{complex}}
+\begin{DoxyCompactList}\small\item\em An implementation of complex number. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{main_8cpp_a2876dcc4846e2235854a720d47131b88}{discriminant}} (double a, double b, double c)
+\item 
+void \mbox{\hyperlink{main_8cpp_a34e8a7d6e2ff8f34a5d2e86b3865cba2}{input}} (double $\ast$a, double $\ast$b, double $\ast$c)
+\begin{DoxyCompactList}\small\item\em Implementation of reading function Function designed for handling user\textquotesingle{}s input. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ab16a65fea08c54242bbb008d44f46845}{solve}} (\mbox{\hyperlink{structcomplex}{complex}} $\ast$solution1, \mbox{\hyperlink{structcomplex}{complex}} $\ast$solution2, double a, double b, double c)
+\item 
+void \mbox{\hyperlink{main_8cpp_a800e387713f41fd424be3f1b1c5b1fbd}{print\+Complex\+Number}} (\mbox{\hyperlink{structcomplex}{complex}} z)
+\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a2876dcc4846e2235854a720d47131b88}\label{main_8cpp_a2876dcc4846e2235854a720d47131b88}} 
+\index{main.cpp@{main.cpp}!discriminant@{discriminant}}
+\index{discriminant@{discriminant}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{discriminant()}{discriminant()}}
+{\footnotesize\ttfamily double discriminant (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c }\end{DoxyParamCaption})}
+
+Function that calculates discriminant of quadratic equation 
+\begin{DoxyParams}{Parameters}
+{\em a} & First coefficient of quadratic equation \\
+\hline
+{\em b} & Second coefficient of quadratic equation \\
+\hline
+{\em c} & Third coefficient of quadratic equation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Discriminant of quadratic equation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a34e8a7d6e2ff8f34a5d2e86b3865cba2}\label{main_8cpp_a34e8a7d6e2ff8f34a5d2e86b3865cba2}} 
+\index{main.cpp@{main.cpp}!input@{input}}
+\index{input@{input}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{input()}{input()}}
+{\footnotesize\ttfamily void input (\begin{DoxyParamCaption}\item[{double $\ast$}]{a,  }\item[{double $\ast$}]{b,  }\item[{double $\ast$}]{c }\end{DoxyParamCaption})}
+
+
+
+Implementation of reading function Function designed for handling user\textquotesingle{}s input. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to variable representing first coefficient of quadratic equation \\
+\hline
+{\em b} & Pointer to variable representing second coefficient of quadratic equation \\
+\hline
+{\em c} & Pointer to variable representing third coefficient of quadratic equation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8cpp_a800e387713f41fd424be3f1b1c5b1fbd}\label{main_8cpp_a800e387713f41fd424be3f1b1c5b1fbd}} 
+\index{main.cpp@{main.cpp}!printComplexNumber@{printComplexNumber}}
+\index{printComplexNumber@{printComplexNumber}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{printComplexNumber()}{printComplexNumber()}}
+{\footnotesize\ttfamily void print\+Complex\+Number (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcomplex}{complex}}}]{z }\end{DoxyParamCaption})}
+
+Function that correctly prints complex number 
+\begin{DoxyParams}{Parameters}
+{\em z} & Complex number \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ab16a65fea08c54242bbb008d44f46845}\label{main_8cpp_ab16a65fea08c54242bbb008d44f46845}} 
+\index{main.cpp@{main.cpp}!solve@{solve}}
+\index{solve@{solve}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily int solve (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcomplex}{complex}} $\ast$}]{solution1,  }\item[{\mbox{\hyperlink{structcomplex}{complex}} $\ast$}]{solution2,  }\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c }\end{DoxyParamCaption})}
+
+Function designed for solving equation basing on its type. Supports linear and quadratic equation with real and complex roots. 
+\begin{DoxyParams}{Parameters}
+{\em solution1} & Pointer to the variable for the first solution \\
+\hline
+{\em solution2} & Pointer to the variable for the first solution \\
+\hline
+{\em a} & First coefficient of quadratic equation \\
+\hline
+{\em b} & Second coefficient of quadratic equation \\
+\hline
+{\em c} & Third coefficient of quadratic equation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Code describing type of equation and information about any errors \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Code  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Code  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }\\\cline{1-2}
+\endhead
+-\/1  &Linear equation with no solution i. e. with zero second coeffitient   \\\cline{1-2}
+1  &Linear equation with a solution   \\\cline{1-2}
+2  &Quadratic equation with a single root   \\\cline{1-2}
+3  &Quadratic equation with two real roots   \\\cline{1-2}
+4  &Quadratic equation with two complex roots   \\\cline{1-2}
+\end{longtabu}
+
+\end{DoxyReturn}

@@ -1,0 +1,89 @@
+\hypertarget{main_8cpp}{}\doxysection{D\+:/\+C\+Lion\+Projects/\+Onegin\+Sort/main.cpp File Reference}
+\label{main_8cpp}\index{D:/CLionProjects/OneginSort/main.cpp@{D:/CLionProjects/OneginSort/main.cpp}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$windows.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \mbox{\hyperlink{main_8cpp_a9913faaa9451914274c2e4e681f4c335}{loadtxt}} (char $\ast$fname)
+\item 
+int \mbox{\hyperlink{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}{savetxt}} (char $\ast$$\ast$line\+Pointers, char $\ast$savepath, int lines)
+\item 
+unsigned long \mbox{\hyperlink{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}{filesize}} (F\+I\+LE $\ast$f)
+\item 
+int \mbox{\hyperlink{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}{cmp\+\_\+str}} (const void $\ast$a, const void $\ast$b)
+\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}\label{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}} 
+\index{main.cpp@{main.cpp}!cmp\_str@{cmp\_str}}
+\index{cmp\_str@{cmp\_str}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{cmp\_str()}{cmp\_str()}}
+{\footnotesize\ttfamily int cmp\+\_\+str (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
+
+qsort comparator for strings 
+\begin{DoxyParams}{Parameters}
+{\em a} & pointer to the pointer to the first string \\
+\hline
+{\em b} & pointer to the pointer to the second string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero if strings are equal, negative if a $<$ b, positive if a $>$ b 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}\label{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}} 
+\index{main.cpp@{main.cpp}!filesize@{filesize}}
+\index{filesize@{filesize}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{filesize()}{filesize()}}
+{\footnotesize\ttfamily unsigned long filesize (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{f }\end{DoxyParamCaption})}
+
+Function that calculates the size of the file 
+\begin{DoxyParams}{Parameters}
+{\em f} & File \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Size of the file 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a9913faaa9451914274c2e4e681f4c335}\label{main_8cpp_a9913faaa9451914274c2e4e681f4c335}} 
+\index{main.cpp@{main.cpp}!loadtxt@{loadtxt}}
+\index{loadtxt@{loadtxt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loadtxt()}{loadtxt()}}
+{\footnotesize\ttfamily F\+I\+LE $\ast$ loadtxt (\begin{DoxyParamCaption}\item[{char $\ast$}]{fname }\end{DoxyParamCaption})}
+
+Function for loading the file 
+\begin{DoxyParams}{Parameters}
+{\em fname} & Path to the file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the array or nullptr if error occured 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}\label{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}} 
+\index{main.cpp@{main.cpp}!savetxt@{savetxt}}
+\index{savetxt@{savetxt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{savetxt()}{savetxt()}}
+{\footnotesize\ttfamily int savetxt (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{line\+Pointers,  }\item[{char $\ast$}]{savepath,  }\item[{int}]{lines }\end{DoxyParamCaption})}
+
+Function that saves lines into file 
+\begin{DoxyParams}{Parameters}
+{\em line\+Pointers} & Pointer to the array of pointers to strings \\
+\hline
+{\em savepath} & Path for saving \\
+\hline
+{\em lines} & Amount of lines \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Positive if file saved successfully, E\+OF if error occured 
+\end{DoxyReturn}
