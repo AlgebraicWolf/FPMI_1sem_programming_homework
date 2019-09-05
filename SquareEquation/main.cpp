@@ -45,7 +45,7 @@ int main() {
         printf("Something went horribly wrong, this shouldn't have happend");
     } else if (code == linearNoSolutions) {
         printf("Equation is linear, there is no roots");
-    } else if(code == linearInfiniteSolutions) {
+    } else if (code == linearInfiniteSolutions) {
         printf("Equation has an infinite set of solutions (all real numbers from -inf to +inf)");
     } else if (code == linear) {
         printf("Equation is linear, the root is x = %lg", solution1.real);

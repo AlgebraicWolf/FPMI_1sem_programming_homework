@@ -26,12 +26,12 @@ int main() {
 
     unsigned long size = filesize(original);
 
-    char * txt = (char *)malloc(size);
-    char * txtbegin = txt;
+    char *txt = (char *) malloc(size);
+    char *txtbegin = txt;
     fread(txt, sizeof(char), size, original);
     int lines = 0;
-    while(*txt != '\0') {
-        if(*txt == '\n')  {
+    while (*txt != '\0') {
+        if (*txt == '\n') {
             *txt = '\0';
             ++lines;
         }
@@ -40,10 +40,10 @@ int main() {
     ++lines;
 
 
-    char ** linePointers = (char **)calloc(lines, sizeof(char *));
-    char ** lp;
+    char **linePointers = (char **) calloc(lines, sizeof(char *));
+    char **lp;
     lp = linePointers;
-    for(int i = 0; i < lines; i++) {
+    for (int i = 0; i < lines; i++) {
         *lp = txtbegin;
         ++lp;
         while (*txtbegin != '\0') ++txtbegin;
@@ -51,7 +51,7 @@ int main() {
     }
     fclose(original);
     qsort(linePointers, lines, sizeof(char *), cmp_str);
-    if(savetxt(linePointers, savepath, lines) == EOF) {
+    if (savetxt(linePointers, savepath, lines) == EOF) {
         printf("An error occured while saving the file");
         return -1;
     }
@@ -79,10 +79,9 @@ unsigned long filesize(FILE *f) {
 FILE *loadtxt(char *fname) {
     assert(fname);
     FILE *txt = fopen(fname, "r");
-    if(txt != nullptr) {
+    if (txt != nullptr) {
         return txt;
-    }
-    else return nullptr;
+    } else return nullptr;
 }
 
 /**
@@ -99,13 +98,14 @@ int savetxt(char **linePointers, char *savepath, int lines) {
     assert(lines);
     FILE *f = fopen(savepath, "w");
     for (int i = 0; i < lines; i++) {
-        if(fputs(*linePointers, f) == EOF) return EOF;
-        if(fputc('\n', f) == EOF) return EOF;
+        if (fputs(*linePointers, f) == EOF) return EOF;
+        if (fputc('\n', f) == EOF) return EOF;
         ++linePointers;
     }
     fclose(f);
     return 1;
 }
+
 /**
  * qsort comparator for strings
  * @param a pointer to the pointer to the first string
@@ -117,7 +117,7 @@ int cmp_str(const void *a, const void *b) {
     assert(a);
     assert(b);
 
-    char **string1 = (char **)a;
-    char **string2 = (char **)b;
+    char **string1 = (char **) a;
+    char **string2 = (char **) b;
     return strcmp(*string1, *string2);
 }
