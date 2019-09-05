@@ -1,4 +1,4 @@
-# Install script for directory: D:/CLionProjects/OneginSort
+# Install script for directory: D:/1sem_programming_homework/MIPT_1sem_programming_homework/OneginSort
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/CLionProjects/OneginSort/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/1sem_programming_homework/MIPT_1sem_programming_homework/OneginSort/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

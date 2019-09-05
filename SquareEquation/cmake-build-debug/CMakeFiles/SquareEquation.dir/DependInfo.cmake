@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/CLionProjects/SquareEquation/main.cpp" "D:/CLionProjects/SquareEquation/cmake-build-debug/CMakeFiles/SquareEquation.dir/main.cpp.obj"
+  "D:/1sem_programming_homework/MIPT_1sem_programming_homework/SquareEquation/main.cpp" "D:/1sem_programming_homework/MIPT_1sem_programming_homework/SquareEquation/cmake-build-debug/CMakeFiles/SquareEquation.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

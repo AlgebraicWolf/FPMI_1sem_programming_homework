@@ -14,9 +14,11 @@ int main() {
     char loadpath[255], savepath[255];
     printf("Enter original path:");
     scanf("%s", loadpath);
+    assert(loadpath);
     printf("Enter destination path:");
     scanf("%s", savepath);
-    FILE *original = loadtxt(loadpath);
+    assert(savepath);
+    FILE *original = fopen(loadpath, "r");
     if (original == nullptr) {
         printf("An error occured while opening the file\n");
         return -1;
@@ -26,13 +28,17 @@ int main() {
 
     char * txt = (char *)malloc(size);
     char * txtbegin = txt;
-
+    fread(txt, sizeof(char), size, original);
     int lines = 0;
-    while(fgets(txt, 255, original) != NULL) {
-        while(*txt != '\0') ++txt;
+    while(*txt != '\0') {
+        if(*txt == '\n')  {
+            *txt = '\0';
+            ++lines;
+        }
         ++txt;
-        ++lines;
     }
+    ++lines;
+
 
     char ** linePointers = (char **)calloc(lines, sizeof(char *));
     char ** lp;
@@ -94,6 +100,7 @@ int savetxt(char **linePointers, char *savepath, int lines) {
     FILE *f = fopen(savepath, "w");
     for (int i = 0; i < lines; i++) {
         if(fputs(*linePointers, f) == EOF) return EOF;
+        if(fputc('\n', f) == EOF) return EOF;
         ++linePointers;
     }
     fclose(f);

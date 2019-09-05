@@ -1,4 +1,4 @@
-# Install script for directory: D:/CLionProjects/SquareEquation
+# Install script for directory: D:/1sem_programming_homework/MIPT_1sem_programming_homework/SquareEquation
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/CLionProjects/SquareEquation/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/1sem_programming_homework/MIPT_1sem_programming_homework/SquareEquation/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
