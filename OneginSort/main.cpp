@@ -2,8 +2,6 @@
 #include <assert.h>
 #include <windows.h>
 
-FILE *loadtxt(char *fname);
-
 int savetxt(char **linePointers, char *savepath, int lines);
 
 unsigned long filesize(FILE *f);
@@ -43,6 +41,7 @@ int main() {
     char **linePointers = (char **) calloc(lines, sizeof(char *));
     char **lp;
     lp = linePointers;
+    txt = txtbegin;
     for (int i = 0; i < lines; i++) {
         *lp = txtbegin;
         ++lp;
@@ -55,6 +54,9 @@ int main() {
         printf("An error occured while saving the file");
         return -1;
     }
+    free(txt);
+    free(linePointers);
+    return 0;
 }
 
 
@@ -68,20 +70,6 @@ unsigned long filesize(FILE *f) {
     unsigned long size = ftell(f);
     fseek(f, 0, SEEK_SET);
     return size;
-}
-
-/**
- * Function for loading the file
- * @param fname Path to the file
- * @return Pointer to the array or nullptr if error occured
- */
-
-FILE *loadtxt(char *fname) {
-    assert(fname);
-    FILE *txt = fopen(fname, "r");
-    if (txt != nullptr) {
-        return txt;
-    } else return nullptr;
 }
 
 /**
