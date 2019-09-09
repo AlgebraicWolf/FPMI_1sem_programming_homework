@@ -12,22 +12,25 @@ struct complex {
     double imag;
 };
 
-const int linearNoSolutions = -1;
-const int err = 0;
-const int linear = 1;
-const int linearInfiniteSolutions = 2;
-const int quadraticSingleSolution = 3;
-const int quadraticRealSolutions = 4;
-const int quadraticComplexSolutions = 5;
+enum codes {
+    linearNoSolutions = -1,
+    err = 0,
+    linear = 1,
+    linearInfiniteSolutions = 2,
+    quadraticSingleSolution = 3,
+    quadraticRealSolutions = 4,
+    quadraticComplexSolutions = 5
+};
+
 
 
 double discriminant(double a, double b, double c);
 
 void input(double *a, double *b, double *c);
 
-int solve(complex *solution1, complex *solution2, double a, double b, double c);
+codes solve(complex *solution1, complex *solution2, double a, double b, double c);
 
-int solveLinear(complex *solution1, complex *solution2, double b, double c);
+codes solveLinear(complex *solution1, complex *solution2, double b, double c);
 
 void printComplexNumber(complex z);
 
@@ -37,7 +40,7 @@ int main() {
     printf("Enter coefficients a, b and c of quadratic equation ax^2+bx+c=0:\n");
     input(&a, &b, &c);
 
-    complex solution1, solution2;
+    complex solution1 = {0.0, 0.0}, solution2 = {0.0, 0.0};
     int code = 0;
     code = solve(&solution1, &solution2, a, b, c);
     if (code > 1) printf("Discriminant: %lg\n", discriminant(a, b, c));
@@ -98,16 +101,17 @@ double discriminant(double a, double b, double c) {
  * @param a First coefficient of quadratic equation
  * @param b Second coefficient of quadratic equation
  * @param c Third coefficient of quadratic equation
- * @return Code describing type of equation and information about any errors
+ * @return Code (enum) describing type of equation and information about any errors
  * |Code|Description|
  * |-------|--------|
- * |-1|Linear equation with no solution i. e. with zero second coeffitient|
- * |1|Linear equation with a solution|
- * |2|Quadratic equation with a single root|
- * |3|Quadratic equation with two real roots|
- * |4|Quadratic equation with two complex roots|
+ * |linearNoSolutions|Linear equation with no solution i. e. with zero second coeffitient|
+ * |linear|Linear equation with a solution|
+ * |linearInfiniteSolutions|Linear equation with infinite set of solutions|
+ * |quadraticSingleRoot|Quadratic equation with a single root|
+ * |quadraticRealRoots|Quadratic equation with two real roots|
+ * |quadraticComplexRoots|Quadratic equation with two complex roots|
  */
-int solve(complex *solution1, complex *solution2, double a, double b, double c) {
+codes solve(complex *solution1, complex *solution2, double a, double b, double c) {
     assert(solution1);
     assert(solution2);
     if (a == 0) {
@@ -140,7 +144,7 @@ int solve(complex *solution1, complex *solution2, double a, double b, double c) 
  * @return Code describing type of equation and information about any errors
  */
 
-int solveLinear(complex *solution1, complex *solution2, double b, double c) {
+codes solveLinear(complex *solution1, complex *solution2, double b, double c) {
     if (b == 0) {
         if (c == 0) return linearInfiniteSolutions;
         else return linearNoSolutions;

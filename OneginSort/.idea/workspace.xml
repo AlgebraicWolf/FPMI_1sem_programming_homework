@@ -13,10 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c91b882f-8915-45da-8eac-e4c06d1e720a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/main.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/OneginSort.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/OneginSort.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SquareEquation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SquareEquation/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1567614183964</updated>
       <workItem from="1567614185981" duration="14525000" />
-      <workItem from="1567715497081" duration="4494000" />
+      <workItem from="1567715497081" duration="5804000" />
     </task>
     <servers />
   </component>
@@ -94,15 +90,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>51</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="**linePointers" language="ObjectiveC" />
