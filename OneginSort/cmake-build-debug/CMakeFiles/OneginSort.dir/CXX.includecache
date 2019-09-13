@@ -9,8 +9,6 @@
 D:/1sem_programming_homework/MIPT_1sem_programming_homework/OneginSort/main.cpp
 stdio.h
 -
-ASSERT.h
--
-locale.h
+assert.h
 -
 

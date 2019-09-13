@@ -1,0 +1,3 @@
+"D:\Program Files\JetBrains\CLion 2019.2.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\DedinskiyLecture.dir/objects.a
+"D:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\ar.exe" cr CMakeFiles\DedinskiyLecture.dir/objects.a @CMakeFiles\DedinskiyLecture.dir\objects1.rsp
+"D:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\g++.exe" -g   -Wl,--whole-archive CMakeFiles\DedinskiyLecture.dir/objects.a -Wl,--no-whole-archive  -o DedinskiyLecture.exe -Wl,--out-implib,libDedinskiyLecture.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\DedinskiyLecture.dir\linklibs.rsp
