@@ -1,45 +1,155 @@
-\hypertarget{main_8cpp}{}\doxysection{D\+:/\+C\+Lion\+Projects/\+Onegin\+Sort/main.cpp File Reference}
-\label{main_8cpp}\index{D:/CLionProjects/OneginSort/main.cpp@{D:/CLionProjects/OneginSort/main.cpp}}
+\hypertarget{main_8cpp}{}\doxysection{D\+:/1sem\+\_\+programming\+\_\+homework/\+M\+I\+P\+T\+\_\+1sem\+\_\+programming\+\_\+homework/\+Onegin\+Sort/main.cpp File Reference}
+\label{main_8cpp}\index{D:/1sem\_programming\_homework/MIPT\_1sem\_programming\_homework/OneginSort/main.cpp@{D:/1sem\_programming\_homework/MIPT\_1sem\_programming\_homework/OneginSort/main.cpp}}
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include $<$assert.\+h$>$}\newline
-{\ttfamily \#include $<$windows.\+h$>$}\newline
+{\ttfamily \#include $<$A\+S\+S\+E\+R\+T.\+h$>$}\newline
+{\ttfamily \#include $<$locale.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmy_string}{my\+String}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_ad72dbcf6d0153db1b8d8a58001feed83}{D\+E\+B\+UG}}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a2dc4dcfe0b19b92373e08833d40f039a}{U\+T\+E\+ST}}(cond)
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a0966b817b229d48e5ffc7feab19a0be6}{A\+S\+S\+E\+RT}}(cond)
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-F\+I\+LE $\ast$ \mbox{\hyperlink{main_8cpp_a9913faaa9451914274c2e4e681f4c335}{loadtxt}} (char $\ast$fname)
+void \mbox{\hyperlink{main_8cpp_adfacf85797320ba182253d2b8067232e}{unit\+Testing}} ()
 \item 
-int \mbox{\hyperlink{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}{savetxt}} (char $\ast$$\ast$line\+Pointers, char $\ast$savepath, int lines)
+int \mbox{\hyperlink{main_8cpp_a6abcccc43cf6946bcb4cc85cd0004220}{save\+Txt}} (\mbox{\hyperlink{structmy_string}{my\+String}} $\ast$line\+Pointers, F\+I\+LE $\ast$f, int lines)
 \item 
-unsigned long \mbox{\hyperlink{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}{filesize}} (F\+I\+LE $\ast$f)
+unsigned long \mbox{\hyperlink{main_8cpp_a39f35566ffb431e58b134a7c50269322}{file\+Size}} (F\+I\+LE $\ast$f)
 \item 
-int \mbox{\hyperlink{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}{cmp\+\_\+str}} (const void $\ast$a, const void $\ast$b)
+int \mbox{\hyperlink{main_8cpp_ae5e065ae02381312fdb8bc449457a537}{cmp\+Str}} (const void $\ast$a, const void $\ast$b)
+\item 
+void \mbox{\hyperlink{main_8cpp_ae59103c1cee089cb264048a01f82cced}{read\+Path}} (char $\ast$loadpath, char $\ast$savepath)
+\item 
+int \mbox{\hyperlink{main_8cpp_a05f20f0fe9382ca71a3f3a01fc566502}{load\+File}} (F\+I\+LE $\ast$$\ast$f, char $\ast$loadpath, char $\ast$mode)
+\item 
+int \mbox{\hyperlink{main_8cpp_ae606bf093cfa4a0f320f473f6181dc13}{count\+Lines\+And\+Preprocess\+Text}} (char $\ast$txt)
+\item 
+void \mbox{\hyperlink{main_8cpp_a40ac1308f8052ce5c433fecee6e5c7ee}{find\+Lines}} (char $\ast$txt, \mbox{\hyperlink{structmy_string}{my\+String}} $\ast$line\+Pointers, int lines)
+\item 
+bool \mbox{\hyperlink{main_8cpp_af828ccd092e269075de4cde6217d14f9}{is\+Letter}} (char ch)
+\item 
+int \mbox{\hyperlink{main_8cpp_ae37261475fefaf00e01ce665503e7d61}{reverse\+Cmp\+Str}} (const void $\ast$a, const void $\ast$b)
+\item 
+char \mbox{\hyperlink{main_8cpp_ab7a52ac728f1a22c17e0be4513a625f5}{convert\+Char}} (char ch)
+\item 
+int \mbox{\hyperlink{main_8cpp_a5d16d30a72273747b5a36c75ea704ec4}{save\+Original\+Txt}} (char $\ast$txt, F\+I\+LE $\ast$f, int lines)
 \item 
 int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
 \end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{main_8cpp_a67da57e72e1ae1c2a73ef2b5f86d38c9}{M\+A\+X\+P\+A\+T\+H\+L\+E\+N\+G\+TH}} = 255
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8cpp_a0966b817b229d48e5ffc7feab19a0be6}\label{main_8cpp_a0966b817b229d48e5ffc7feab19a0be6}} 
+\index{main.cpp@{main.cpp}!ASSERT@{ASSERT}}
+\index{ASSERT@{ASSERT}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{ASSERT}{ASSERT}}
+{\footnotesize\ttfamily \#define A\+S\+S\+E\+RT(\begin{DoxyParamCaption}\item[{}]{cond }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{ \(\backslash\)}
+\DoxyCodeLine{    if (!cond) \{\(\backslash\)}
+\DoxyCodeLine{        printf(\textcolor{stringliteral}{"Assertion failed: \%s, file: \%s, function: \%s, line: \%d\(\backslash\)n"}, \#cond, \_\_FILE\_\_, \_\_PRETTY\_FUNCTION\_\_, \_\_LINE\_\_);\(\backslash\)}
+\DoxyCodeLine{        abort(); \(\backslash\)}
+\DoxyCodeLine{    \}\(\backslash\)}
+\DoxyCodeLine{\}\(\backslash\)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8cpp_ad72dbcf6d0153db1b8d8a58001feed83}\label{main_8cpp_ad72dbcf6d0153db1b8d8a58001feed83}} 
+\index{main.cpp@{main.cpp}!DEBUG@{DEBUG}}
+\index{DEBUG@{DEBUG}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{DEBUG}{DEBUG}}
+{\footnotesize\ttfamily \#define D\+E\+B\+UG}
+
+\mbox{\Hypertarget{main_8cpp_a2dc4dcfe0b19b92373e08833d40f039a}\label{main_8cpp_a2dc4dcfe0b19b92373e08833d40f039a}} 
+\index{main.cpp@{main.cpp}!UTEST@{UTEST}}
+\index{UTEST@{UTEST}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{UTEST}{UTEST}}
+{\footnotesize\ttfamily \#define U\+T\+E\+ST(\begin{DoxyParamCaption}\item[{}]{cond }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{ \(\backslash\)}
+\DoxyCodeLine{    if(!cond) \{ \(\backslash\)}
+\DoxyCodeLine{        printf(\textcolor{stringliteral}{"Unit testing failed: \%s\(\backslash\)n"}, \#cond); \(\backslash\)}
+\DoxyCodeLine{    \} \(\backslash\)}
+\DoxyCodeLine{    else \{ \(\backslash\)}
+\DoxyCodeLine{        printf(\textcolor{stringliteral}{"Unit testing OK: \%s\(\backslash\)n"}, \#cond); \(\backslash\)}
+\DoxyCodeLine{    \} \(\backslash\)}
+\DoxyCodeLine{\} \(\backslash\)}
+
+\end{DoxyCode}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}\label{main_8cpp_a90e371b4d743aae6bc963e4dc6519c7e}} 
-\index{main.cpp@{main.cpp}!cmp\_str@{cmp\_str}}
-\index{cmp\_str@{cmp\_str}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{cmp\_str()}{cmp\_str()}}
-{\footnotesize\ttfamily int cmp\+\_\+str (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{main_8cpp_ae5e065ae02381312fdb8bc449457a537}\label{main_8cpp_ae5e065ae02381312fdb8bc449457a537}} 
+\index{main.cpp@{main.cpp}!cmpStr@{cmpStr}}
+\index{cmpStr@{cmpStr}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{cmpStr()}{cmpStr()}}
+{\footnotesize\ttfamily int cmp\+Str (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
 
-qsort comparator for strings 
+qsort comparator for strings (from beginning to end) 
 \begin{DoxyParams}{Parameters}
-{\em a} & pointer to the pointer to the first string \\
+{\em a} & pointer to the first \mbox{\hyperlink{structmy_string}{my\+String}} \\
 \hline
-{\em b} & pointer to the pointer to the second string \\
+{\em b} & pointer to the second \mbox{\hyperlink{structmy_string}{my\+String}} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-zero if strings are equal, negative if a $<$ b, positive if a $>$ b 
+Zero if strings are equal, negative if a $<$ b, positive if a $>$ b 
 \end{DoxyReturn}
-\mbox{\Hypertarget{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}\label{main_8cpp_a882c7bd017fe5bb386d1a59c1a8fc7b8}} 
-\index{main.cpp@{main.cpp}!filesize@{filesize}}
-\index{filesize@{filesize}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{filesize()}{filesize()}}
-{\footnotesize\ttfamily unsigned long filesize (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{f }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{main_8cpp_ab7a52ac728f1a22c17e0be4513a625f5}\label{main_8cpp_ab7a52ac728f1a22c17e0be4513a625f5}} 
+\index{main.cpp@{main.cpp}!convertChar@{convertChar}}
+\index{convertChar@{convertChar}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{convertChar()}{convertChar()}}
+{\footnotesize\ttfamily char convert\+Char (\begin{DoxyParamCaption}\item[{char}]{ch }\end{DoxyParamCaption})}
+
+Function that converst character to its number in alphabet \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]Add russian characters support\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Either number of letter in alphabet or, if given character is not a letter, code of the character 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_ae606bf093cfa4a0f320f473f6181dc13}\label{main_8cpp_ae606bf093cfa4a0f320f473f6181dc13}} 
+\index{main.cpp@{main.cpp}!countLinesAndPreprocessText@{countLinesAndPreprocessText}}
+\index{countLinesAndPreprocessText@{countLinesAndPreprocessText}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{countLinesAndPreprocessText()}{countLinesAndPreprocessText()}}
+{\footnotesize\ttfamily int count\+Lines\+And\+Preprocess\+Text (\begin{DoxyParamCaption}\item[{char $\ast$}]{txt }\end{DoxyParamCaption})}
+
+Function that preprocess text (i. e. replaces \textquotesingle{}\textbackslash{}n\textquotesingle{} symbols with \textquotesingle{}\textbackslash{}0\textquotesingle{}) and counts the number of lines 
+\begin{DoxyParams}{Parameters}
+{\em txt} & String for preprocessing \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of lines 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a39f35566ffb431e58b134a7c50269322}\label{main_8cpp_a39f35566ffb431e58b134a7c50269322}} 
+\index{main.cpp@{main.cpp}!fileSize@{fileSize}}
+\index{fileSize@{fileSize}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{fileSize()}{fileSize()}}
+{\footnotesize\ttfamily unsigned long file\+Size (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{f }\end{DoxyParamCaption})}
 
 Function that calculates the size of the file 
 \begin{DoxyParams}{Parameters}
@@ -49,19 +159,56 @@ Function that calculates the size of the file
 \begin{DoxyReturn}{Returns}
 Size of the file 
 \end{DoxyReturn}
-\mbox{\Hypertarget{main_8cpp_a9913faaa9451914274c2e4e681f4c335}\label{main_8cpp_a9913faaa9451914274c2e4e681f4c335}} 
-\index{main.cpp@{main.cpp}!loadtxt@{loadtxt}}
-\index{loadtxt@{loadtxt}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{loadtxt()}{loadtxt()}}
-{\footnotesize\ttfamily F\+I\+LE $\ast$ loadtxt (\begin{DoxyParamCaption}\item[{char $\ast$}]{fname }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{main_8cpp_a40ac1308f8052ce5c433fecee6e5c7ee}\label{main_8cpp_a40ac1308f8052ce5c433fecee6e5c7ee}} 
+\index{main.cpp@{main.cpp}!findLines@{findLines}}
+\index{findLines@{findLines}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{findLines()}{findLines()}}
+{\footnotesize\ttfamily void find\+Lines (\begin{DoxyParamCaption}\item[{char $\ast$}]{txt,  }\item[{\mbox{\hyperlink{structmy_string}{my\+String}} $\ast$}]{line\+Pointers,  }\item[{int}]{lines }\end{DoxyParamCaption})}
 
-Function for loading the file 
+Function that parses raw text into array of \mbox{\hyperlink{structmy_string}{my\+String}} objects 
 \begin{DoxyParams}{Parameters}
-{\em fname} & Path to the file \\
+{\em txt} & Text \\
+\hline
+{\em line\+Pointers} & Pointer to \mbox{\hyperlink{structmy_string}{my\+String}} array \\
+\hline
+{\em lines} & Number of lines \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_af828ccd092e269075de4cde6217d14f9}\label{main_8cpp_af828ccd092e269075de4cde6217d14f9}} 
+\index{main.cpp@{main.cpp}!isLetter@{isLetter}}
+\index{isLetter@{isLetter}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{isLetter()}{isLetter()}}
+{\footnotesize\ttfamily bool is\+Letter (\begin{DoxyParamCaption}\item[{char}]{ch }\end{DoxyParamCaption})}
+
+Checks whether given character is a \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]Add russian characters support\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character for checking \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Pointer to the array or nullptr if error occured 
+is letter a character 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a05f20f0fe9382ca71a3f3a01fc566502}\label{main_8cpp_a05f20f0fe9382ca71a3f3a01fc566502}} 
+\index{main.cpp@{main.cpp}!loadFile@{loadFile}}
+\index{loadFile@{loadFile}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loadFile()}{loadFile()}}
+{\footnotesize\ttfamily int load\+File (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$$\ast$}]{f,  }\item[{char $\ast$}]{loadpath,  }\item[{char $\ast$}]{mode }\end{DoxyParamCaption})}
+
+Function that loads a file 
+\begin{DoxyParams}{Parameters}
+{\em f} & Pointer to a file \\
+\hline
+{\em loadpath} & Path for loading a file \\
+\hline
+{\em mode} & File mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if error occurred, 1 otherwise 
 \end{DoxyReturn}
 \mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
 \index{main.cpp@{main.cpp}!main@{main}}
@@ -69,21 +216,83 @@ Pointer to the array or nullptr if error occured
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}\label{main_8cpp_a8610e063a9c3613134f4facd9cdaaf3f}} 
-\index{main.cpp@{main.cpp}!savetxt@{savetxt}}
-\index{savetxt@{savetxt}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{savetxt()}{savetxt()}}
-{\footnotesize\ttfamily int savetxt (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{line\+Pointers,  }\item[{char $\ast$}]{savepath,  }\item[{int}]{lines }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{main_8cpp_ae59103c1cee089cb264048a01f82cced}\label{main_8cpp_ae59103c1cee089cb264048a01f82cced}} 
+\index{main.cpp@{main.cpp}!readPath@{readPath}}
+\index{readPath@{readPath}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{readPath()}{readPath()}}
+{\footnotesize\ttfamily void read\+Path (\begin{DoxyParamCaption}\item[{char $\ast$}]{loadpath,  }\item[{char $\ast$}]{savepath }\end{DoxyParamCaption})}
+
+Asks user for pathes for loading and saving 
+\begin{DoxyParams}{Parameters}
+{\em loadpath} & Pointer to string for path to original text \\
+\hline
+{\em savepath} & Pointer to string for path for saving \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ae37261475fefaf00e01ce665503e7d61}\label{main_8cpp_ae37261475fefaf00e01ce665503e7d61}} 
+\index{main.cpp@{main.cpp}!reverseCmpStr@{reverseCmpStr}}
+\index{reverseCmpStr@{reverseCmpStr}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{reverseCmpStr()}{reverseCmpStr()}}
+{\footnotesize\ttfamily int reverse\+Cmp\+Str (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
+
+qsort comparator for strings (from end to beginning) 
+\begin{DoxyParams}{Parameters}
+{\em a} & pointer to the first \mbox{\hyperlink{structmy_string}{my\+String}} \\
+\hline
+{\em b} & pointer to the second \mbox{\hyperlink{structmy_string}{my\+String}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Zero if strings are equal, negative if a $<$ b, positive if a $>$ b 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a5d16d30a72273747b5a36c75ea704ec4}\label{main_8cpp_a5d16d30a72273747b5a36c75ea704ec4}} 
+\index{main.cpp@{main.cpp}!saveOriginalTxt@{saveOriginalTxt}}
+\index{saveOriginalTxt@{saveOriginalTxt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{saveOriginalTxt()}{saveOriginalTxt()}}
+{\footnotesize\ttfamily int save\+Original\+Txt (\begin{DoxyParamCaption}\item[{char $\ast$}]{txt,  }\item[{F\+I\+LE $\ast$}]{f,  }\item[{int}]{lines }\end{DoxyParamCaption})}
+
+Function that saves original preprocessed string 
+\begin{DoxyParams}{Parameters}
+{\em txt} & Preprocessed text \\
+\hline
+{\em f} & File for saving \\
+\hline
+{\em lines} & Number of lines \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+E\+OF when error occurres, 1 otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a6abcccc43cf6946bcb4cc85cd0004220}\label{main_8cpp_a6abcccc43cf6946bcb4cc85cd0004220}} 
+\index{main.cpp@{main.cpp}!saveTxt@{saveTxt}}
+\index{saveTxt@{saveTxt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{saveTxt()}{saveTxt()}}
+{\footnotesize\ttfamily int save\+Txt (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmy_string}{my\+String}} $\ast$}]{line\+Pointers,  }\item[{F\+I\+LE $\ast$}]{f,  }\item[{int}]{lines }\end{DoxyParamCaption})}
 
 Function that saves lines into file 
 \begin{DoxyParams}{Parameters}
 {\em line\+Pointers} & Pointer to the array of pointers to strings \\
 \hline
-{\em savepath} & Path for saving \\
+{\em f} & File for saving \\
 \hline
 {\em lines} & Amount of lines \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Positive if file saved successfully, E\+OF if error occured 
+Positive if file saved successfully, E\+OF if error occurred 
 \end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_adfacf85797320ba182253d2b8067232e}\label{main_8cpp_adfacf85797320ba182253d2b8067232e}} 
+\index{main.cpp@{main.cpp}!unitTesting@{unitTesting}}
+\index{unitTesting@{unitTesting}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{unitTesting()}{unitTesting()}}
+{\footnotesize\ttfamily void unit\+Testing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that performs unit testing 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_a67da57e72e1ae1c2a73ef2b5f86d38c9}\label{main_8cpp_a67da57e72e1ae1c2a73ef2b5f86d38c9}} 
+\index{main.cpp@{main.cpp}!MAXPATHLENGTH@{MAXPATHLENGTH}}
+\index{MAXPATHLENGTH@{MAXPATHLENGTH}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{MAXPATHLENGTH}{MAXPATHLENGTH}}
+{\footnotesize\ttfamily const int M\+A\+X\+P\+A\+T\+H\+L\+E\+N\+G\+TH = 255}
+

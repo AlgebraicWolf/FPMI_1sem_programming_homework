@@ -30,7 +30,7 @@ void semiPointerReverser(int* integer) {
     *integer = *recast * 256 * 256 * 256 + *(recast + 1) * 256 * 256 + *(recast + 2) * 256 + *(recast + 3);
 }
 
-    abort();
+
 void fullPointerReverser(int* integer) {
     unsigned char* recast = (unsigned char*) integer;
     swapChar(recast, recast + 3);

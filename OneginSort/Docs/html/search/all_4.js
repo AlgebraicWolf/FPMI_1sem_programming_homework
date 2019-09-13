@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['savetxt_5',['savetxt',['../main_8cpp.html#a8610e063a9c3613134f4facd9cdaaf3f',1,'main.cpp']]]
+  ['ending_6',['ending',['../structmy_string.html#a1011a8d82658e1a241e392de675660b4',1,'myString']]]
 ];

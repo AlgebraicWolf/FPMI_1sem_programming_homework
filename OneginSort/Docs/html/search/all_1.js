@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filesize_1',['filesize',['../main_8cpp.html#a882c7bd017fe5bb386d1a59c1a8fc7b8',1,'main.cpp']]]
+  ['beginning_1',['beginning',['../structmy_string.html#a806ce10f5cf924995ae6900b92c8f8a2',1,'myString']]]
 ];

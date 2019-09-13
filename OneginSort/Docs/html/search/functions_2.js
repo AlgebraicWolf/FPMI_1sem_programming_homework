@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loadtxt_9',['loadtxt',['../main_8cpp.html#a9913faaa9451914274c2e4e681f4c335',1,'main.cpp']]]
+  ['isletter_29',['isLetter',['../main_8cpp.html#af828ccd092e269075de4cde6217d14f9',1,'main.cpp']]]
 ];
