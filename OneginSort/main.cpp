@@ -71,7 +71,8 @@ void skipNonLettersForward(char **string);
 
 void skipNonLettersBackward(char **string, char *end);
 
-int loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const char *savepath, bool yieldErrors = true);
+int
+loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const char *savepath, bool yieldErrors = true);
 
 int main() {
 #ifdef DEBUG
@@ -79,6 +80,7 @@ int main() {
     if (unitTestResult) printf("====================\nUnit tests finished successfully\n====================\n");
     else printf("====================\nAn error occurred during unit testing, check the detailed log above\n====================\n");
 #endif
+
     char loadpath[FILENAME_MAX] = {}, savepath[FILENAME_MAX] = {};
     FILE *original = nullptr, *sorted = nullptr;
 
@@ -107,7 +109,7 @@ int main() {
     if (saveTxt(linePointers, sorted) == EOF) return -1;
 
     fprintf(sorted, "\n==Original text==\n\n");
-    saveOriginalTxt(txt, sorted, lines);
+    saveOriginalTxt(txt, lines, sorted);
 
     fclose(sorted);
 
@@ -139,6 +141,7 @@ int loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const 
         if (yieldErrors) printf("An error occurred while opening the file: %s\n", savepath);
         return -1;
         }
+
     return 1;
 }
 
