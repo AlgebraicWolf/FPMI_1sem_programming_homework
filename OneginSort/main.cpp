@@ -125,6 +125,8 @@ int main() {
 
 int doLoadingRoutine(const char *loadpath, char **txt, myString_t **linePointers) {
     ASSERT(loadpath);
+    ASSERT(txt);
+    ASSERT(linePointers);
     FILE *original = nullptr;
 
     if (!loadFile(&original, loadpath, "r"))
