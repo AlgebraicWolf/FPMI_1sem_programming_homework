@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <ctype.h>
+#include <string.h>
 
-#define DEBUG
+#define RELEASE
 
 #ifdef DEBUG
 #define UTEST(cond, successFlag) { \
@@ -41,38 +42,37 @@ struct myString_t {
     char *ending;
 };
 
+const bool yieldErrors = true;
+
 bool unitTesting();
 
-int saveTxt(myString_t *linePointers, FILE *f, bool yieldErrors = true);
+int saveTxt(const myString_t *linePointers, FILE *f);
 
 unsigned long fileSize(FILE *f);
 
 int cmpStr(const void *a, const void *b);
 
-void readPath(char *loadpath, char *savepath);
+void readPath(char *path, const char *prompt);
 
 int loadFile(FILE **f, const char *loadpath, const char *mode);
 
-int countLines(const char *txt);
+int countLines(const char *, const char delimiter);
 
-void preprocessText(char *txt);
+void preprocessText(char *txt, const char delimiter);
 
 void findLines(const char *txt, myString_t *linePointers, int lines);
 
-bool isLetter(char ch);
-
 int reverseCmpStr(const void *a, const void *b);
 
-char convertChar(char ch);
+char convertChar(const char ch);
 
 int saveOriginalTxt(const char *txt, int lines, FILE *f);
 
-void skipNonLettersForward(char **string);
+void skipNonLettersForward(const char **string);
 
-void skipNonLettersBackward(char **string, char *end);
+void skipNonLettersBackward(const char **string, const char *end);
 
-int
-loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const char *savepath, bool yieldErrors = true);
+int doLoadingRoutine(const char *loadpath, char **txt, myString_t **linePointers);
 
 int main() {
 #ifdef DEBUG
@@ -82,21 +82,17 @@ int main() {
 #endif
 
     char loadpath[FILENAME_MAX] = {}, savepath[FILENAME_MAX] = {};
-    FILE *original = nullptr, *sorted = nullptr;
+    FILE *sorted = nullptr;
+    char *txt = nullptr;
+    myString_t *linePointers = nullptr;
 
-    readPath(loadpath, savepath);
+    readPath(loadpath, "Enter source path:");
+    readPath(savepath, "Enter destination path:");
 
-    if (loadRWFiles(&original, &sorted, loadpath, savepath) == -1) return -1;
+    loadFile(&sorted, savepath, "w");
+    int lines = doLoadingRoutine(loadpath, &txt, &linePointers);
 
-    unsigned long size = fileSize(original);
-    char *txt = (char *) calloc(1, size);
-    fread(txt, sizeof(char), size, original);
-    int lines = countLines(txt);
-    preprocessText(txt);
-
-    myString_t *linePointers = (myString_t *) calloc(lines + 1, sizeof(myString_t));
-    findLines(txt, linePointers, lines);
-    fclose(original);
+    if(lines == -1) return -1;
 
     qsort(linePointers, lines, sizeof(myString_t), cmpStr);
 
@@ -109,7 +105,7 @@ int main() {
     if (saveTxt(linePointers, sorted) == EOF) return -1;
 
     fprintf(sorted, "\n==Original text==\n\n");
-    saveOriginalTxt(txt, lines, sorted);
+    if (saveOriginalTxt(txt, lines, sorted) == EOF) return -1;
 
     fclose(sorted);
 
@@ -120,29 +116,36 @@ int main() {
 }
 
 /**
- * Function that opens two files - one in read and one in write mode
- * @param readFile Pointer to FILE* to variable for file in read mode
- * @param writeFiles Pointer to FILE* to variable for file in write mode
- * @param loadpath Path to file in read mode
- * @param savepath Path to file in write mode
- * @param yieldErrors Whether function should yield errors in console
- * @return 1 if OK, -1 otherwise
+ * Function that reads file and prepares it for the later operations
+ * @param loadpath Path to the file
+ * @param txt Pointer to the string array
+ * @param linePointers Pointer to the myString_t array
+ * @return Number of lines in file
  */
 
-int loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const char *savepath, bool yieldErrors) {
-    if (!loadFile(readFile, loadpath, "r"))
+int doLoadingRoutine(const char *loadpath, char **txt, myString_t **linePointers) {
+    ASSERT(loadpath);
+    FILE *original = nullptr;
+
+    if (!loadFile(&original, loadpath, "r"))
         {
         if (yieldErrors) printf("An error occurred while opening the file: %s\n", loadpath);
         return -1;
         }
 
-    if (!loadFile(writeFiles, savepath, "w"))
-        {
-        if (yieldErrors) printf("An error occurred while opening the file: %s\n", savepath);
-        return -1;
-        }
+    unsigned long size = fileSize(original);
+    *txt = (char *) calloc(1, size);
+    fread(*txt, sizeof(char), size, original);
 
-    return 1;
+    int lines = countLines(*txt, '\n');
+    preprocessText(*txt, '\n');
+
+    *linePointers = (myString_t *) calloc(lines + 1, sizeof(myString_t));
+
+    findLines(*txt, *linePointers, lines);
+    fclose(original);
+
+    return lines;
 }
 
 /**
@@ -151,17 +154,17 @@ int loadRWFiles(FILE **readFile, FILE **writeFiles, const char *loadpath, const 
  */
 
 bool unitTesting() {
-    // Tests for isLetter function
+    // Tests for isalpha function
     bool successFlag = true;
     for (char ch = 'a'; ch <= 'z'; ch++)
-    UTEST(isLetter(ch), successFlag);
+    UTEST(isalpha(ch), successFlag);
     for (char ch = 'A'; ch <= 'Z'; ch++)
-    UTEST(isLetter(ch), successFlag);
-    UTEST(!isLetter('.'), successFlag);
-    UTEST(!isLetter(','), successFlag);
-    UTEST(!isLetter('\''), successFlag);
-    UTEST(!isLetter('\"'), successFlag);
-    UTEST(!isLetter('-'), successFlag);
+    UTEST(isalpha(ch), successFlag);
+    UTEST(!isalpha('.'), successFlag);
+    UTEST(!isalpha(','), successFlag);
+    UTEST(!isalpha('\''), successFlag);
+    UTEST(!isalpha('\"'), successFlag);
+    UTEST(!isalpha('-'), successFlag);
 
     // Tests for convertChar function
     for (char ch = 'a'; ch <= 'z'; ch++)
@@ -173,14 +176,19 @@ bool unitTesting() {
     UTEST(convertChar('-') == '-', successFlag);
 
     //Tests for strCmp and reverseStrCmp function
-    char sraw1[9] = "aff  ffs";
-    char sraw2[12] = "gffffe.-hhh";
-    myString_t s1 = {sraw1, sraw1 + 7};
-    myString_t s2 = {sraw2, sraw2 + 10};
+    char sraw1[10] = "aff  ffs,";
+    char sraw2[7] = ".-hhh.";
+    char sraw3[4] = "hhh";
+    myString_t s1 = {sraw1, sraw1 + 8};
+    myString_t s2 = {sraw2, sraw2 + 5};
+    myString_t s3 = {sraw3, sraw3 + 2};
     void *s1VoidPointer = (void *) &s1;
     void *s2VoidPointer = (void *) &s2;
+    void *s3VoidPointer = (void *) &s3;
     UTEST(cmpStr(s1VoidPointer, s2VoidPointer) > 0, successFlag);
     UTEST(reverseCmpStr(s1VoidPointer, s2VoidPointer) < 0, successFlag);
+    UTEST(reverseCmpStr(s1VoidPointer, s3VoidPointer) < 0, successFlag);
+    UTEST(reverseCmpStr(s2VoidPointer, s3VoidPointer) == 0, successFlag);
 
     //Tests for countLines function
     char unprocessedString1[27] = "Hello\nHow\n\nAre you\n\n\ndoing";
@@ -199,8 +207,8 @@ bool unitTesting() {
     char *nonLettersF = (char *) ".- -!-abc";
     char *nonLettersB = (char *) "-!-abc!?!? ---- ,//.,";
     char *nonLettersBLast = nonLettersB + 20;
-    skipNonLettersForward(&nonLettersF);
-    skipNonLettersBackward(&nonLettersBLast, nonLettersB);
+    skipNonLettersForward((const char **)&nonLettersF);
+    skipNonLettersBackward((const char **)&nonLettersBLast, nonLettersB);
     UTEST(*nonLettersF == 'a', successFlag);
     UTEST(*nonLettersBLast == 'c', successFlag);
     return successFlag;
@@ -212,15 +220,14 @@ bool unitTesting() {
  * @return Number of lines
  */
 
-int countLines(const char *txt) {
+int countLines(const char *txt, const char delimiter) {
     ASSERT(txt);
-
+    char* pointer = NULL;
     int lines = 0;
-    while (*txt != '\0')
+    while ((pointer = strchr(txt, delimiter)) != nullptr)
         {
-        if (*txt == '\n')
-            ++lines;
-        ++txt;
+        ++lines;
+        txt = pointer + 1;
         }
     ++lines;
 
@@ -232,16 +239,13 @@ int countLines(const char *txt) {
  * @param txt String for preprocessing
  */
 
-void preprocessText(char *txt) {
+void preprocessText(char *txt, const char delimiter) {
     ASSERT(txt);
-
-    while (*txt != '\0')
+    char* pointer = NULL;
+    while ((pointer = strchr(txt, delimiter)) != nullptr)
         {
-        if (*txt == '\n')
-            {
-            *txt = '\0';
-            }
-        ++txt;
+            *pointer = '\0';
+            txt = pointer + 1;
         }
 }
 
@@ -259,7 +263,7 @@ void findLines(const char *txt, myString_t *linePointers, int lines) {
     for (int i = 0; i < lines; i++)
         {
         linePointers->beginning = (char *) txt;
-        while (*txt != '\0') ++txt;
+        txt = strchr(txt, '\0');
         linePointers->ending = (char *) (txt - 1);
         ++linePointers;
         ++txt;
@@ -289,18 +293,14 @@ int loadFile(FILE **f, const char *loadpath, const char *mode) {
 
 /**
  * Asks user for pathes for loading and saving
- * @param loadpath Pointer to string for path to original text
- * @param savepath Pointer to string for path for saving
+ * @param loadpath Pointer to string for path
+ * @param savepath Prompt that asks user to give the path
  */
 
-void readPath(char *loadpath, char *savepath) {
-    printf("Enter original path:");
+void readPath(char *loadpath, const char *prompt) {
+    printf(prompt);
     scanf("%s", loadpath);
     ASSERT(*loadpath);
-
-    printf("Enter destination path:");
-    scanf("%s", savepath);
-    ASSERT(*savepath);
 }
 
 /**
@@ -326,13 +326,15 @@ unsigned long fileSize(FILE *f) {
  * @param yieldErrors Whether function should yield error info into console
  * @return Positive if file saved successfully, EOF if error occurred
  */
-int saveTxt(myString_t *linePointers, FILE *f, bool yieldErrors) {
+int saveTxt(const myString_t *linePointers, FILE *f) {
     ASSERT(linePointers);
     ASSERT(f);
 
+    extern const bool yieldErrors;
+
     while (linePointers->beginning != nullptr)
         {
-        if (*(linePointers->beginning) != '\0')
+        if (*(linePointers->beginning) != '\0' && *linePointers->beginning != '\n')
             {
             if (fputs(linePointers->beginning, f) == EOF)
                 {
@@ -362,12 +364,21 @@ int saveTxt(myString_t *linePointers, FILE *f, bool yieldErrors) {
 int saveOriginalTxt(const char *txt, int lines, FILE *f) {
     ASSERT(txt);
     ASSERT(f);
+
+    extern const bool yieldErrors;
+
     for (int i = 0; i < lines; i++)
         {
         if (fputs(txt, f) == EOF)
+            {
+            if (yieldErrors) printf("An error occured while saving the file");
             return EOF;
+            }
         if (fputc('\n', f) == EOF)
+            {
+            if (yieldErrors) printf("An error occured while saving the file");
             return EOF;
+            }
         while (*txt != '\0') txt++;
         txt++;
         }
@@ -391,18 +402,19 @@ int cmpStr(const void *a, const void *b) {
     char *string2 = string2Pointer->beginning;
     while ((*string1 != '\0') && (*string2 != '\0'))
         {
-        if (!isLetter(*string1) || !isLetter(*string2))
+        if (!isalpha(*string1) || !isalpha(*string2))
             {
-            skipNonLettersForward(&string1);
-            skipNonLettersForward(&string2);
+            skipNonLettersForward((const char **)&string1);
+            skipNonLettersForward((const char **)&string2);
             }
         else
             {
             if ((*string1 - *string2) != 0)
                 break;
+
+            ++string1;
+            ++string2;
             }
-        ++string1;
-        ++string2;
         }
 
     return *string1 - *string2;
@@ -424,22 +436,23 @@ int reverseCmpStr(const void *a, const void *b) {
 
     char *string1 = string1Pointer->ending;
     char *string2 = string2Pointer->ending;
-    while ((string1 >= string1Pointer->beginning) && (string2 >= string2Pointer->beginning))
+    while ((string1 > string1Pointer->beginning) && (string2 > string2Pointer->beginning))
         {
-        if (!isLetter(*string1) || !isLetter(*string2))
+        if (!isalpha(*string1) || !isalpha(*string2))
             {
-            skipNonLettersBackward(&string1, string1Pointer->beginning);
-            skipNonLettersBackward(&string2, string2Pointer->beginning);
+            skipNonLettersBackward((const char **)&string1, string1Pointer->beginning);
+            skipNonLettersBackward((const char **)&string2, string2Pointer->beginning);
             }
         else
             {
             if ((convertChar(*string1) - convertChar(*string2)) != 0)
                 break;
+            --string1;
+            --string2;
             }
-        --string1;
-        --string2;
         }
-
+    skipNonLettersBackward((const char **)&string1, string1Pointer->beginning);
+    skipNonLettersBackward((const char **)&string2, string2Pointer->beginning);
     return convertChar(*string1) - convertChar(*string2);
 }
 
@@ -458,24 +471,8 @@ char convertChar(char ch) {
     //if ((ch >= 'А') && (ch <= 'Я')) return ch - 'А';
 
     return ch;*/
-    if (isLetter(ch)) return tolower(ch) - 'a';
+    if (isalpha(ch)) return tolower(ch) - 'a';
     else return ch;
-}
-
-/**
- * Checks whether given character is a
- * \todo Add russian characters support
- *
- * @param ch Character for checking
- * @return is letter a character
- */
-
-bool isLetter(char ch) {
-    if ((ch >= 'a') && (ch <= 'z')) return true;
-    else if ((ch >= 'A') && (ch <= 'Z')) return true;
-        //else if((ch >= 'А') && (ch <= 'Я')) return true;
-        //else if((ch >= 'А') && (ch <= 'Я')) return true;
-    else return false;
 }
 
 /**
@@ -483,8 +480,10 @@ bool isLetter(char ch) {
  * @param string Pointer to the string (pointer to the char array) for skipping
  */
 
-void skipNonLettersForward(char **string) {
-    while (!isLetter(**string) && (**string != '\0'))
+void skipNonLettersForward(const char **string) {
+    ASSERT(string);
+
+    while (!isalpha(**string) && (**string != '\0'))
         (*string)++;
 }
 
@@ -494,7 +493,9 @@ void skipNonLettersForward(char **string) {
  * @param end Pointer to the character to stop
  */
 
-void skipNonLettersBackward(char **string, char *end) {
-    while (!isLetter(**string) && (*string != end))
+void skipNonLettersBackward(const char **string, const char *end) {
+    ASSERT(string);
+    ASSERT(end);
+    while (!isalpha(**string) && (*string != end))
         (*string)--;
 }
