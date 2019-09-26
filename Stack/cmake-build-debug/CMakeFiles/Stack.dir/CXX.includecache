@@ -6,9 +6,13 @@
 
 #IncludeRegexTransform: 
 
-D:/1sem_programming_homework/MIPT_1sem_programming_homework/Stack/main.cpp
+/home/alexey/Programming/MIPT_1sem_programming_homework/Stack/main.cpp
 stdio.h
 -
 assert.h
+-
+stdlib.h
+-
+string.h
 -
 
