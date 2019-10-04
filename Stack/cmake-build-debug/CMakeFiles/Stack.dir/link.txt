@@ -1,1 +1,1 @@
-/usr/bin/g++  -g   CMakeFiles/Stack.dir/main.cpp.o  -o Stack 
+/usr/bin/g++  -g   CMakeFiles/Stack.dir/main.cpp.o CMakeFiles/Stack.dir/MurMurHash3.cpp.o  -o Stack libStackLibrary.a libMurMurHash3.a 

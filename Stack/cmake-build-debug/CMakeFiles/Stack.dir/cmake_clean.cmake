@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Stack.dir/MurMurHash3.cpp.o"
   "CMakeFiles/Stack.dir/main.cpp.o"
   "Stack"
   "Stack.pdb"

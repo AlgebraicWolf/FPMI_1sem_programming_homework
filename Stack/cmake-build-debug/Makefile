@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named MurMurHash3
+
+# Build rule for target.
+MurMurHash3: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MurMurHash3
+.PHONY : MurMurHash3
+
+# fast build rule for target.
+MurMurHash3/fast:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/build
+.PHONY : MurMurHash3/fast
+
+#=============================================================================
 # Target rules for targets named Stack
 
 # Build rule for target.
@@ -122,6 +135,49 @@ Stack: cmake_check_build_system
 Stack/fast:
 	$(MAKE) -f CMakeFiles/Stack.dir/build.make CMakeFiles/Stack.dir/build
 .PHONY : Stack/fast
+
+#=============================================================================
+# Target rules for targets named StackLibrary
+
+# Build rule for target.
+StackLibrary: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 StackLibrary
+.PHONY : StackLibrary
+
+# fast build rule for target.
+StackLibrary/fast:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/build
+.PHONY : StackLibrary/fast
+
+MurMurHash3.o: MurMurHash3.cpp.o
+
+.PHONY : MurMurHash3.o
+
+# target to build an object file
+MurMurHash3.cpp.o:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/MurMurHash3.cpp.o
+	$(MAKE) -f CMakeFiles/Stack.dir/build.make CMakeFiles/Stack.dir/MurMurHash3.cpp.o
+.PHONY : MurMurHash3.cpp.o
+
+MurMurHash3.i: MurMurHash3.cpp.i
+
+.PHONY : MurMurHash3.i
+
+# target to preprocess a source file
+MurMurHash3.cpp.i:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/MurMurHash3.cpp.i
+	$(MAKE) -f CMakeFiles/Stack.dir/build.make CMakeFiles/Stack.dir/MurMurHash3.cpp.i
+.PHONY : MurMurHash3.cpp.i
+
+MurMurHash3.s: MurMurHash3.cpp.s
+
+.PHONY : MurMurHash3.s
+
+# target to generate assembly for a file
+MurMurHash3.cpp.s:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/MurMurHash3.cpp.s
+	$(MAKE) -f CMakeFiles/Stack.dir/build.make CMakeFiles/Stack.dir/MurMurHash3.cpp.s
+.PHONY : MurMurHash3.cpp.s
 
 main.o: main.cpp.o
 
@@ -150,6 +206,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/Stack.dir/build.make CMakeFiles/Stack.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+stack.o: stack.cpp.o
+
+.PHONY : stack.o
+
+# target to build an object file
+stack.cpp.o:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/stack.cpp.o
+.PHONY : stack.cpp.o
+
+stack.i: stack.cpp.i
+
+.PHONY : stack.i
+
+# target to preprocess a source file
+stack.cpp.i:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/stack.cpp.i
+.PHONY : stack.cpp.i
+
+stack.s: stack.cpp.s
+
+.PHONY : stack.s
+
+# target to generate assembly for a file
+stack.cpp.s:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/stack.cpp.s
+.PHONY : stack.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -157,11 +240,19 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... Stack"
 	@echo "... edit_cache"
+	@echo "... MurMurHash3"
+	@echo "... Stack"
+	@echo "... StackLibrary"
+	@echo "... MurMurHash3.o"
+	@echo "... MurMurHash3.i"
+	@echo "... MurMurHash3.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... stack.o"
+	@echo "... stack.i"
+	@echo "... stack.s"
 .PHONY : help
 
 
