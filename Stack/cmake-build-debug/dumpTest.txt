@@ -1,10 +1,10 @@
 Testing stackDump
-stack_t stk [0x7ffd21a661c0] {
+stack_t stk [0x7ffc9271fec0] {
     size = 48;
     poison = 4417;
-    structHash = 1194429542;
+    structHash = 172041237;
     stackHash = 2535695705;
-    data[64] = [0x559a7579a3b0]; {
+    data[64] = [0x55c6871c43f0]; {
 [32m      * [0] = 0
 [0m[32m      * [1] = 1
 [0m[32m      * [2] = 2

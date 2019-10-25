@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/1sem_programming_homework/MIPT_1sem_programming_homework/OneginSort/main.cpp" "D:/1sem_programming_homework/MIPT_1sem_programming_homework/OneginSort/cmake-build-debug/CMakeFiles/OneginSort.dir/main.cpp.obj"
+  "/home/alexey/Programming/MIPT_1sem_programming_homework/OneginSort/main.cpp" "/home/alexey/Programming/MIPT_1sem_programming_homework/OneginSort/cmake-build-debug/CMakeFiles/OneginSort.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

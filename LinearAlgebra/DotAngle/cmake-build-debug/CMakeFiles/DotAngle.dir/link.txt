@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/DotAngle.dir/main.cpp.o  -o DotAngle 

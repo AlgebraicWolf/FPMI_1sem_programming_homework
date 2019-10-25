@@ -1,3 +1,1 @@
-"D:\Program Files\JetBrains\CLion 2019.2.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\OneginSort.dir/objects.a
-"D:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\ar.exe" cr CMakeFiles\OneginSort.dir/objects.a @CMakeFiles\OneginSort.dir\objects1.rsp
-"D:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\g++.exe" -g   -Wl,--whole-archive CMakeFiles\OneginSort.dir/objects.a -Wl,--no-whole-archive  -o OneginSort.exe -Wl,--out-implib,libOneginSort.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\OneginSort.dir\linklibs.rsp
+/usr/bin/g++  -g   CMakeFiles/OneginSort.dir/main.cpp.o  -o OneginSort 

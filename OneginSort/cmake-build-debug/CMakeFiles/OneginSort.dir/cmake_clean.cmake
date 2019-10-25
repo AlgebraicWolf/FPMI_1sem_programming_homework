@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/OneginSort.dir/main.cpp.obj"
+  "CMakeFiles/OneginSort.dir/main.cpp.o"
+  "OneginSort"
   "OneginSort.pdb"
-  "OneginSort.exe"
-  "OneginSort.exe.manifest"
-  "libOneginSort.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

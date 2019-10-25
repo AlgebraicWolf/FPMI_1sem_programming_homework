@@ -11,7 +11,65 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c91b882f-8915-45da-8eac-e4c06d1e720a" name="Default Changelist" comment="" />
+    <list default="true" id="c91b882f-8915-45da-8eac-e4c06d1e720a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Assembler/MyAsm.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../BruteHash/.idea/BruteHash.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Stack/PolyHash.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Stack/PolyHash.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeRCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CompilerIdC/a.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.14.5/CompilerIdCXX/a.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/CXX.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/DependInfo.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/cmake_clean.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/flags.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/link.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/linklibs.rsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/main.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/objects.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/OneginSort.dir/objects1.rsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.cxx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/OneginSort.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/OneginSort.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/MurMurHash3.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/MurMurHash3.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/MurMurHash3.dir/MurMurHash3.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/MurMurHash3.dir/MurMurHash3.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/MurMurHash3.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/MurMurHash3.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/Stack.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/StackLibrary.dir/stack.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/CMakeFiles/StackLibrary.dir/stack.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/Stack" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/Stack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/dumpTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/dumpTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/libMurMurHash3.a" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/libMurMurHash3.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/libStackLibrary.a" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/cmake-build-debug/libStackLibrary.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/cmake-build-debug/stackDumps.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/stack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/stack.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stack/stack.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Stack/stack.h" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +140,11 @@
       <workItem from="1568971417609" duration="2925000" />
       <workItem from="1569066754267" duration="836000" />
       <workItem from="1569311470958" duration="39000" />
+      <workItem from="1570458158799" duration="2319000" />
+      <workItem from="1570469865561" duration="70000" />
+      <workItem from="1570781409896" duration="73000" />
+      <workItem from="1570789971058" duration="1877000" />
+      <workItem from="1571056238862" duration="215000" />
     </task>
     <servers />
   </component>

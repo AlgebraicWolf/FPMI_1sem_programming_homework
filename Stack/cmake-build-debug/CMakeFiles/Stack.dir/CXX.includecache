@@ -6,23 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/alexey/Programming/MIPT_1sem_programming_homework/Stack/MurMurHash3.h
-
 /home/alexey/Programming/MIPT_1sem_programming_homework/Stack/main.cpp
 stdio.h
--
-assert.h
 -
 stdlib.h
 -
 string.h
 -
-unistd.h
--
 stack.h
 /home/alexey/Programming/MIPT_1sem_programming_homework/Stack/stack.h
-MurMurHash3.h
-/home/alexey/Programming/MIPT_1sem_programming_homework/Stack/MurMurHash3.h
 
 /home/alexey/Programming/MIPT_1sem_programming_homework/Stack/stack.h
 stdlib.h

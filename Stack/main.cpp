@@ -1,10 +1,8 @@
 #include <stdio.h>
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "stack.h"
-#include "MurMurHash3.h"
+
 
 
 #define ANSI_COLOR_RED "\x1b[31m"
@@ -32,7 +30,7 @@
 bool doUnitTesting();
 
 int main() {
-    int a;
+
     if (!doUnitTesting()) {
         printf(ANSI_COLOR_RED "\n====================\nUNIT TESTING FAILED\n====================\n\n" ANSI_COLOR_RESET);
     } else {
@@ -43,13 +41,55 @@ int main() {
     for (int i = 0; i <= 47; i++) {
         stackPush(&stk, i);
     }
+
+    unsigned long a = getStructHash(&stk);
+
     FILE *dump = fopen("dumpTest.txt", "w");
     stackDump(dump, &stk, (const char *) "Testing stackDump");
     stackPush(&stk, 47);
 }
 
 /**
- * Fucntion that performs unit-testing
+ * Proof-Of-Concept stack crasher that substitudes pointer to the data array
+ * @param stk S    stk->data = (elem_t *)42;
+tack to crush
+ */
+int dataPointerChangeTest(stack_t *stk) {
+    stk->data = (elem_t *) 42;
+    if (!checkStackValidity(stk))
+        return 1;
+    return 0;
+}
+
+int compromiseHash() {
+    stack_t comprHashStack = {};
+    CONSTRUCT_STACK(comprHashStack);
+    stackPush(&comprHashStack, 1);
+    stackPush(&comprHashStack, 2);
+    stackPush(&comprHashStack, 3);
+    FILE *f = fopen("hashCompromise.txt", "w");
+    stackDump(f, &comprHashStack, "Hash before attack");
+
+    int offset = 0;
+#ifdef USE_CANARIES
+    offset = CANARY_STACK_SIZE;
+#endif
+    comprHashStack.data[0+offset] = 42;
+    comprHashStack.data[1+offset] = 42;
+    comprHashStack.data[2+offset] = 42;
+    updateHashes(&comprHashStack);
+    stackDump(f, &comprHashStack, "Hash after attack");
+    return checkStackValidity(&comprHashStack);
+}
+
+void stackZeroDump() {
+    stack_t stack = {};
+    FILE *f = fopen("emptyDump.txt", "w");
+    stackDump(f, &stack, "TEST");
+}
+
+/**
+ * Function that performs unit-testing
  * @return true if all tests are successful, false otherwise
  */
 
@@ -74,7 +114,7 @@ bool doUnitTesting() {
     // Check whether elements are saved and loaded properly
     const int numSavedAndLoadedElems = 8;
     for (int i = 0; i < numSavedAndLoadedElems; i++) {
-        if(!stackPush(&testStk, (elem_t) i)) break;
+        if (!stackPush(&testStk, (elem_t) i)) break;
     }
 
     for (int i = numSavedAndLoadedElems - 1; i <= 0; i--) {
@@ -87,12 +127,23 @@ bool doUnitTesting() {
     oldSize = testStk.maxsize;
     stackExtend(&testStk);
     UTEST(SIZE_MULTIPLIER * oldSize == testStk.maxsize, testResult);
+//int dataPointerChangeTest(stack_t *stk) {
+//    stk->data = (elem_t *) 42;
+//    if (!checkStackValidity(stk))
+//        return 1;
+//    return 0;
+//}
+//    UTEST(dataPointerChangeTest(&testStk), testResult);
+
+//#ifdef USE_HASH
+//    UTEST(compromiseHash(), testResult);
+//#endif
 
     stackDestruct(&testStk);
     UTEST(testStk.size == 0, testResult);
     UTEST(testStk.maxsize == 0, testResult);
     UTEST(testStk.data == nullptr, testResult);
 
+
     return testResult;
 }
-
