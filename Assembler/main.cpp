@@ -108,6 +108,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
     enum argumentTypes { \
         NONE, \
         NUMBER, \
+        REGISTER, \
         RAM_IMMED, \
         RAM_REG, \
         RAM_REG_IMMED, \
@@ -125,6 +126,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
     char *machine_code_start = machine_code;
     char cmd[MAX_CMD_SIZE] = "";
     char sarg[MAX_SARG_SIZE] = "";
+    char ram_sarg[MAX_SARG_SIZE] = "";
     int arg = 0;
     int len = 0;
 
@@ -158,7 +160,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 machine_code = (char *)((int *)machine_code + 1); \
                 len += sizeof(int); \
             } \
-            else if (argtype == REGISTER) == 0) { \
+            else if (argtype == REGISTER) { \
                 if(strcmp(sarg, "ax") == 0) { \
                     arg = 0; \
                 } \
@@ -180,17 +182,17 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 len += sizeof(int); \
             } \
             else if (argtype == RAM_REG) { \
-                if (fscanf("\[%s\]", sarg) != EOF) { \
-                    if (strcmp(sarg, "ax") == 0) {\
+                if (sscanf(sarg, "\[%s\]", ram_sarg) != EOF) { \
+                    if (strcmp(ram_sarg, "ax") == 0) {\
                         arg = 0; \
                     } \
-                    else if (strcmp(sarg, "bx") == 0) { \
+                    else if (strcmp(ram_sarg, "bx") == 0) { \
                         arg = 1; \
                     } \
-                    else if (strcmp(sarg, "cx") == 0) { \
+                    else if (strcmp(ram_sarg, "cx") == 0) { \
                         arg = 2; \
                     } \
-                    else if (strcmp(sarg, "dx") == 0) { \
+                    else if (strcmp(ram_sarg, "dx") == 0) { \
                         arg = 3; \
                     } \
                     else { \
@@ -203,10 +205,22 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 } \
                 else { \
                     printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
+                    return nullptr; \
+                } \
+            } \
+            else if (argtype == RAM_IMMED) { \
+                if(sscanf(sarg, "\[%d\]", arg) != EOF) { \
+                    *((int *)(machine_code)) = arg; \
+                    machine_code = (char *)((int *)machine_code + 1); \
+                    len += sizeof(int); \
+                } \
+                else { \
+                    printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
+                    return nullptr; \
                 } \
             } \
             else if (argtype == NONE) {} \
-            else if (argtype == LABEL) == 0) { \
+            else if (argtype == LABEL) { \
                 if(!parseLabels) { \
                     label_t *curLabel = labels; \
                     bool found = false; \
