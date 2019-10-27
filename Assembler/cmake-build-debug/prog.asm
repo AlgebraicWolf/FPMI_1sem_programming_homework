@@ -1,25 +1,45 @@
 push 0
 pop ax
-push 1
-pop [ax+5]
+outer_cycle:
+push 0
+pop bx
 
-inc ax
-push 2
-pop [ax+5]
-
-inc ax
-push 3
-pop [ax+5]
+inner_cycle:
 
 push 0
-pop ax
+pop cx
 
-push [ax+5]
+vert_cycle:
+push bx
+push 1000
+mul
+push cx
+push 8
+mul
+push ax
+add
+add
+push 10
+mul
+push cx
+add
+pop dx
+pix dx
+
+inc cx
+push 8
+push cx
+jne vert_cycle
+
+inc bx
+push 64
+push bx
+jne inner_cycle
+
 inc ax
-out
-push [ax+5]
-inc ax
-out
-push [ax+5]
-inc ax
-out
+push ax
+push 8
+jne outer_cycle
+
+draw
+end

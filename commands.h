@@ -93,7 +93,7 @@ DEF_CMD(sub, 0,
 
 DEF_CMD(mul, 0,
         CMD_OVRLD(5, true, NONE, {
-            push(&stk, pop(&stk) * pop(&stk) / 100);
+            push(&stk, pop(&stk) * pop(&stk) / precision);
         }))
 
 DEF_CMD(div, 0,
@@ -169,8 +169,29 @@ DEF_CMD(inc, 1,
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
                 exit(-1);
             }
-            registers[arg] += 100;
+            registers[arg] += precision;
             bin += sizeof(int);
+        }))
+
+DEF_CMD(pix, 1,
+        CMD_OVRLD(16, isdigit(*sarg), NUMBER, {
+            arg = *((int *)(bin + 1));
+            setPixel(VRAM, arg);
+            bin += sizeof(int);
+        })
+        CMD_OVRLD(17, isalpha(*sarg), REGISTER, {
+            arg = *((int *)(bin + 1));
+            if(arg >= 4) {
+                printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
+                exit(-1);
+            }
+            setPixel(VRAM, registers[arg] / precision);
+            bin += sizeof(int);
+        }))
+
+DEF_CMD(draw, 0,
+        CMD_OVRLD(18, true, NONE, {
+            drawScreen(VRAM);
         }))
 
 DEF_CMD(jmp, 1,

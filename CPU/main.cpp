@@ -1,4 +1,3 @@
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +14,21 @@
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
+#define ANSI_BGCOLOR_BLACK "\x1b[40m"
+#define ANSI_BGCOLOR_RED "\x1b[41m"
+#define ANSI_BGCOLOR_GREEN "\x1b[42m"
+#define ANSI_BGCOLOR_YELLOW "\x1b[43m"
+#define ANSI_BGCOLOR_BLUE "\x1b[44m"
+#define ANSI_BGCOLOR_MAGENTA "\x1b[45m"
+#define ANSI_BGCOLOR_CYAN "\x1b[46m"
+#define ANSI_BGCOLOR_WHITE "\x1b[47m"
+#define ANSI_BGCOLOR_RESET "\x1b[49m"
+
 const size_t RAM_SIZE = 1024;
+
+const size_t WIDTH = 64;
+
+const size_t HEIGHT = 64;
 
 const char *defaultFilename = "prog.bin";
 
@@ -26,6 +39,10 @@ void setIntToRAM(int *RAM, size_t n, int val);
 int pop(stack_t *stk);
 
 void push(stack_t *stk, int value);
+
+void drawScreen(char *VRAM);
+
+int setPixel(char *VRAM, unsigned int desc);
 
 int parseParams(int argc, char *argv[], char **filename);
 
@@ -110,6 +127,62 @@ int getIntFromRAM(int *RAM, size_t n) {
     return RAM[n];
 }
 
+void drawScreen(char *VRAM) {
+    usleep(25000);
+    printf("\033[2J\033[1;1H");
+    for(int y = 0; y < HEIGHT; y++) {
+        for(int x = 0; x < WIDTH; x++) {
+            switch(VRAM[y * WIDTH + x]) {
+                case 0:
+                    printf(ANSI_BGCOLOR_BLACK "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 1:
+                    printf(ANSI_BGCOLOR_RED "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 2:
+                    printf(ANSI_BGCOLOR_GREEN "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 3:
+                    printf(ANSI_BGCOLOR_YELLOW "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 4:
+                    printf(ANSI_BGCOLOR_BLUE "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 5:
+                    printf(ANSI_BGCOLOR_MAGENTA "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 6:
+                    printf(ANSI_BGCOLOR_CYAN "  " ANSI_BGCOLOR_RESET);
+                    break;
+                case 7:
+                    printf(ANSI_BGCOLOR_WHITE "  " ANSI_BGCOLOR_RESET);
+                    break;
+            }
+        }
+        printf("\n");
+    }
+}
+
+int setPixel(char *VRAM, unsigned int desc) {
+    /*
+     * Pixel format:
+     * 0b11111111 11110000 00000000 00000000 - x coord
+     * 0b00000000 00001111 11111111 00000000 - y coord
+     * 0b00000000 00000000 00000000 11111111 - color
+     */
+    /*unsigned int x = desc >> (unsigned int)20;
+    unsigned int y = (desc & (unsigned int)1048320) >> (unsigned int)8;
+    unsigned char color = desc & (unsigned int)255;*/
+    unsigned int x = desc / 10000;
+    unsigned int y = desc / 10 % 1000;
+    if((x >= WIDTH) || (y >= HEIGHT)) {
+        printf(ANSI_COLOR_RED "Invalid coordinates x:%d y:%d. Terminating...\n" ANSI_COLOR_RESET, x, y);
+        exit(-1);
+    }
+    unsigned int color = desc % 10;
+    VRAM[y * WIDTH + x] = (char) color;
+}
+
 void setIntToRAM(int *RAM, size_t n, int val) {
     if (n >= RAM_SIZE) {
         printf(ANSI_COLOR_RED "Accessing non-existing RAM adress! Terminating...\n" ANSI_COLOR_RESET);
@@ -121,10 +194,11 @@ void setIntToRAM(int *RAM, size_t n, int val) {
 
 
 int execute(char *bin, int len) {
-    int precision = 100;
+    int precision = 10;
     stack_t stk = {};
     stackConstruct(&stk, "CPUStack", 1024, 4417);
-    auto RAM = (int *) calloc(RAM_SIZE, sizeof(char));
+    auto RAM = (int *) calloc(RAM_SIZE, sizeof(int));
+    auto VRAM = (char *) calloc(WIDTH * HEIGHT, sizeof(char));
     int registers[4] = {};
     char *binStart = bin;
     char cmd = 0;
@@ -154,6 +228,7 @@ int execute(char *bin, int len) {
     }
     stackDestruct(&stk);
     free(RAM);
+    free(VRAM);
     return 1;
 }
 

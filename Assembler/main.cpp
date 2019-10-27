@@ -241,7 +241,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 } \
                 *((int *)(machine_code)) = arg2; \
                 machine_code = (char *)((int *)machine_code + 1); \
-                *((int *)(machine_code)) = arg; /*TODO write register (preferably as a fucking function)*/ \
+                *((int *)(machine_code)) = arg; \
                 machine_code = (char *)((int *)machine_code + 1); \
                 len += sizeof(int); \
                 len += sizeof(int); \
