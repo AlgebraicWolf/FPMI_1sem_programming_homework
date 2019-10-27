@@ -125,6 +125,17 @@ DEF_CMD(sqrt, 0,
             push(&stk, (int)round(sqrt((double) pop(&stk) / precision) * precision));
         }))
 
+DEF_CMD(inc, 1,
+        CMD_OVRLD(15, true, REGISTER, {
+            arg = *((int *)(bin + 1));
+            if(arg >= 4) {
+                printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
+                exit(-1);
+            }
+            registers[arg]++;
+            bin += sizeof(int);
+        }))
+
 
 DEF_CMD(jmp, 1,
         CMD_OVRLD(20, isalpha(*sarg), LABEL, {
