@@ -11,9 +11,15 @@ inc ax
 push 3
 pop [ax+5]
 
-push [5]
+push 5
+pop ax
+
+push [ax]
+inc ax
 out
-push [6]
+push [ax]
+inc ax
 out
-push [7]
+push [ax]
+inc ax
 out

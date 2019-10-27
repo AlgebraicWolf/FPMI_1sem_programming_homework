@@ -26,8 +26,18 @@ DEF_CMD(push, 1,
             arg = *((int *)(bin + 1));
             push(&stk, getIntFromRAM(RAM, arg));
             bin += sizeof(int);
-        }))
+        })
+        CMD_OVRLD(43, (*sarg == '[') && isalpha(*(sarg + 1)) && ((strchr(sarg, '-') != nullptr) || (strchr(sarg, '+') != nullptr)), RAM_REG_IMMED, {
 
+        })
+        CMD_OVRLD(42, (*sarg == '[') && isalpha(*(sarg + 1)), RAM_REG, {
+            arg = *((int *)(bin + 1));
+            if(arg >= 4) {
+                printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
+                exit(-1);
+            }
+            push(&stk, getIntFromRAM(RAM, registers[arg] / precision));
+        }))
 
 DEF_CMD(pop, 1,
         CMD_OVRLD(2, isalpha(*sarg), REGISTER, {
