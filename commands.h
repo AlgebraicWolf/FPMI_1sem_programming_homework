@@ -50,7 +50,7 @@ DEF_CMD(pop, 1,
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
                 exit(-1);
             }
-            setIntToRAM(RAM, registers[arg], pop(&stk));
+            setIntToRAM(RAM, registers[arg] / precision, pop(&stk));
             bin += sizeof(int);
         })
         CMD_OVRLD(54, (*sarg == '[') && isalpha(*(sarg + 1)) && ((strchr(sarg, '-') != nullptr) || (strchr(sarg, '+') != nullptr)), RAM_REG_IMMED, {
@@ -145,7 +145,7 @@ DEF_CMD(inc, 1,
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
                 exit(-1);
             }
-            registers[arg]++;
+            registers[arg]+=100;
             bin += sizeof(int);
         }))
 

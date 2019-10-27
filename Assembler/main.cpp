@@ -190,7 +190,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 len += sizeof(int); \
             } \
             else if (argtype == RAM_REG) { \
-                if (sscanf(sarg, "\[%s\]", ram_sarg) != EOF) { \
+                if (sscanf(sarg, "[%[a-z]]", ram_sarg) != EOF) { \
                     arg = parseRegister(ram_sarg); \
                     if(arg == -1) { \
                         printf(ANSI_COLOR_RED "Invalid register identifier. Terminating...\n" ANSI_COLOR_RESET); \
@@ -219,13 +219,13 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
             else if (argtype == NONE) {} \
             else if (argtype == RAM_REG_IMMED) { \
                 if(strchr(sarg, '+')) { \
-                    if(sscanf(sarg, "[%s+%d]", ram_sarg, &arg) == EOF) { \
+                    if(sscanf(sarg, "[%[a-z]+%d]", ram_sarg, &arg) == EOF) { \
                         printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
                         return nullptr; \
                     } \
                 } \
                 else if(strchr(sarg, '-')) { \
-                    if(sscanf(sarg, "[%s-%d]", ram_sarg, &arg) == EOF) { \
+                    if(sscanf(sarg, "[%[a-z]-%d]", ram_sarg, &arg) == EOF) { \
                         printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
                         return nullptr; \
                     } \
