@@ -96,13 +96,13 @@ char *makeName(char *original, char *ext) {
 
 int parseRegister(const char *reg) {
     assert(reg);
-    if (strcmp(reg, "ax")) {
+    if (strcmp(reg, "ax") == 0) {
         return 0;
-    } else if (strcmp(reg, "bx")) {
+    } else if (strcmp(reg, "bx") == 0) {
         return 1;
-    } else if (strcmp(reg, "cx")) {
+    } else if (strcmp(reg, "cx") == 0) {
         return 2;
-    } else if (strcmp(reg, "dx")) {
+    } else if (strcmp(reg, "dx") == 0) {
         return 3;
     } else {
         return -1;

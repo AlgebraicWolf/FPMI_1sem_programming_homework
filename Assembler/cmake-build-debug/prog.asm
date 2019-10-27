@@ -1,22 +1,21 @@
+push 0
+pop ax
 push 1
-push 2
-push 3
-push 4
-push 5
+pop [ax]
 
-pop [0]
-pop [1]
-pop [2]
-pop [3]
-pop [4]
+push 1
+pop ax
+push 2
+pop [ax]
+
+push 2
+pop ax
+push 3
+pop [ax]
 
 push [0]
 out
 push [1]
 out
 push [2]
-out
-push [3]
-out
-push [4]
 out
