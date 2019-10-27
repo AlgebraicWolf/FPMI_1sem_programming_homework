@@ -33,6 +33,15 @@ DEF_CMD(pop, 1,
             }
             registers[arg] = pop(&stk);
             bin += sizeof(int);
+        })
+        CMD_OVRLD(52, (*sarg == '[') && isdigit(*(sarg + 1)), RAM_IMMED, {
+
+        })
+        CMD_OVRLD(53, (*sarg == '[') && isalpha(*(sarg + 1)), RAM_REG, {
+
+        })
+        CMD_OVRLD(54, (*sarg == '[') && isalpha(*(sarg + 1)) && ((strchr(sarg, '-') != nullptr) || (strchr(sarg, '+') != nullptr)), RAM_REG_IMMED, {
+
         }))
 
 DEF_CMD(add, 0,
@@ -115,6 +124,7 @@ DEF_CMD(sqrt, 0,
         CMD_OVRLD(14, true, NONE, {
             push(&stk, (int)round(sqrt((double) pop(&stk) / precision) * precision));
         }))
+
 
 DEF_CMD(jmp, 1,
         CMD_OVRLD(20, isalpha(*sarg), LABEL, {

@@ -35,8 +35,11 @@ char *concatenate(const char *str1, const char *str2);
 
 char *makeName(char *original, char *ext);
 
+int parseRegister(const char *reg);
+
 char *
-generateMachineCode(FILE *source, int lines, int *fileSize, label_t *labels = NULL, int *err = NULL, int *errline = NULL);
+generateMachineCode(FILE *source, int lines, int *fileSize, label_t *labels = NULL, int *err = NULL,
+                    int *errline = NULL);
 
 const char *defaultFilename = "prog.asm";
 
@@ -91,6 +94,21 @@ char *makeName(char *original, char *ext) {
     return newName;
 }
 
+int parseRegister(const char *reg) {
+    assert(reg);
+    if (strcmp(reg, "ax")) {
+        return 0;
+    } else if (strcmp(reg, "bx")) {
+        return 1;
+    } else if (strcmp(reg, "cx")) {
+        return 2;
+    } else if (strcmp(reg, "dx")) {
+        return 3;
+    } else {
+        return -1;
+    }
+}
+
 char *concatenate(const char *str1, const char *str2) {
     assert(str1);
     assert(str2);
@@ -105,22 +123,22 @@ char *concatenate(const char *str1, const char *str2) {
 }
 
 char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *labels, int *err, int *errline) {
-    enum argumentTypes { \
-        NONE, \
-        NUMBER, \
-        REGISTER, \
-        RAM_IMMED, \
-        RAM_REG, \
-        RAM_REG_IMMED, \
-        LABEL \
-    }; \
+    enum argumentTypes {
+        NONE,
+        NUMBER,
+        REGISTER,
+        RAM_IMMED,
+        RAM_REG,
+        RAM_REG_IMMED,
+        LABEL
+    };
     auto machine_code = (char *) calloc(sizeof(char) + sizeof(int),
                                         lines); // TODO aprroximate worst-case scenario depending on the current maximal cmd size
 
     bool parseLabels = false;
-    if(labels == nullptr) {
+    if (labels == nullptr) {
         parseLabels = true;
-        labels = (label_t *) calloc (lines + 1, sizeof(label_t));
+        labels = (label_t *) calloc(lines + 1, sizeof(label_t));
     }
 
     char *machine_code_start = machine_code;
@@ -128,6 +146,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
     char sarg[MAX_SARG_SIZE] = "";
     char ram_sarg[MAX_SARG_SIZE] = "";
     int arg = 0;
+    int arg2 = 0;
     int len = 0;
 
     for (int i = 0; i < lines; i++) {
@@ -161,20 +180,9 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 len += sizeof(int); \
             } \
             else if (argtype == REGISTER) { \
-                if(strcmp(sarg, "ax") == 0) { \
-                    arg = 0; \
-                } \
-                else if(strcmp(sarg, "bx") == 0) { \
-                    arg = 1; \
-                } \
-                else if(strcmp(sarg, "cx") == 0) { \
-                    arg = 2; \
-                } \
-                else if(strcmp(sarg, "dx") == 0) { \
-                    arg = 3; \
-                } \
-                else { \
-                    printf(ANSI_COLOR_RED "Invalid argument provided. Terminating...\n" ANSI_COLOR_RESET); \
+                arg = parseRegister(sarg); \
+                if (arg == -1) { \
+                    printf(ANSI_COLOR_RED "Invalid register name provided. Terminating...\n" ANSI_COLOR_RESET); \
                     return nullptr; \
                 } \
                 *((int *)(machine_code)) = arg; \
@@ -183,19 +191,8 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
             } \
             else if (argtype == RAM_REG) { \
                 if (sscanf(sarg, "\[%s\]", ram_sarg) != EOF) { \
-                    if (strcmp(ram_sarg, "ax") == 0) {\
-                        arg = 0; \
-                    } \
-                    else if (strcmp(ram_sarg, "bx") == 0) { \
-                        arg = 1; \
-                    } \
-                    else if (strcmp(ram_sarg, "cx") == 0) { \
-                        arg = 2; \
-                    } \
-                    else if (strcmp(ram_sarg, "dx") == 0) { \
-                        arg = 3; \
-                    } \
-                    else { \
+                    arg = parseRegister(ram_sarg); \
+                    if(arg == -1) { \
                         printf(ANSI_COLOR_RED "Invalid register identifier. Terminating...\n" ANSI_COLOR_RESET); \
                         return nullptr; \
                     } \
@@ -209,7 +206,7 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 } \
             } \
             else if (argtype == RAM_IMMED) { \
-                if(sscanf(sarg, "\[%d\]", arg) != EOF) { \
+                if(sscanf(sarg, "[%d]", &arg) != EOF) { \
                     *((int *)(machine_code)) = arg; \
                     machine_code = (char *)((int *)machine_code + 1); \
                     len += sizeof(int); \
@@ -220,6 +217,35 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
                 } \
             } \
             else if (argtype == NONE) {} \
+            else if (argtype == RAM_REG_IMMED) { \
+                if(strchr(sarg, '+')) { \
+                    if(sscanf(sarg, "[%s+%d]", ram_sarg, &arg) == EOF) { \
+                        printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
+                        return nullptr; \
+                    } \
+                } \
+                else if(strchr(sarg, '-')) { \
+                    if(sscanf(sarg, "[%s-%d]", ram_sarg, &arg) == EOF) { \
+                        printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
+                        return nullptr; \
+                    } \
+                    arg *= -1; \
+                } \
+                else { \
+                   printf("Invalid register + immediate RAM value");\
+                } \
+                arg2 = parseRegister(ram_sarg); \
+                if(arg2 == -1) { \
+                    printf(ANSI_COLOR_RED "Invalid register name provided. Terminating...\n" ANSI_COLOR_RESET); \
+                    return nullptr; \
+                } \
+                *((int *)(machine_code)) = arg2; \
+                machine_code = (char *)((int *)machine_code + 1); \
+                *((int *)(machine_code)) = arg; /*TODO write register (preferably as a fucking function)*/ \
+                machine_code = (char *)((int *)machine_code + 1); \
+                len += sizeof(int); \
+                len += sizeof(int); \
+            } \
             else if (argtype == LABEL) { \
                 if(!parseLabels) { \
                     label_t *curLabel = labels; \
@@ -261,35 +287,38 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
         } \
     }\
 
-if(false);
+        if (false);
+
 #include "../commands.h"
-    else {
-        char *end = strchr(cmd, ':');
-        if ((end != nullptr) && parseLabels) {
-            for(char *i = end+1; (*i != '\n') && (*i != '\0'); i++)
-                if(!isblank(*i)) {
-                    printf(ANSI_COLOR_RED "Invalid label declaration! Unexpected symbol %d. Terminating...\n" ANSI_COLOR_RESET, *i);
-                    return nullptr;
+
+        else {
+            char *end = strchr(cmd, ':');
+            if ((end != nullptr) && parseLabels) {
+                for (char *i = end + 1; (*i != '\n') && (*i != '\0'); i++)
+                    if (!isblank(*i)) {
+                        printf(ANSI_COLOR_RED "Invalid label declaration! Unexpected symbol %d. Terminating...\n" ANSI_COLOR_RESET,
+                               *i);
+                        return nullptr;
+                    }
+
+                label_t *curLabel = labels;
+                *end = '\0';
+                auto name = (char *) calloc(end - cmd, sizeof(char));
+                strcpy(name, cmd);
+                *end = ':';
+                label_t lbl = {};
+                while (curLabel->label != nullptr) {
+                    if (strcmp(curLabel->label, name) == 0) {
+                        printf(ANSI_COLOR_RED "Label already defined. Terminating...\n" ANSI_COLOR_RESET);
+                        return nullptr;
+                    }
+                    curLabel++;
                 }
 
-            label_t *curLabel = labels;
-            *end = '\0';
-            auto name = (char *) calloc(end - cmd, sizeof(char));
-            strcpy(name, cmd);
-            *end = ':';
-            label_t lbl = {};
-            while(curLabel->label != nullptr) {
-                if(strcmp(curLabel->label, name) == 0) {
-                    printf(ANSI_COLOR_RED "Label already defined. Terminating...\n" ANSI_COLOR_RESET);
-                    return nullptr;
-                }
-                curLabel++;
+                curLabel->pos = len;
+                curLabel->label = name;
             }
-
-            curLabel->pos = len;
-            curLabel->label = name;
         }
-    }
 #undef DEF_CMD
 #undef CMD_OVRLD
 
@@ -300,11 +329,10 @@ if(false);
     *fileSize = sizeof(char) * len;
     machine_code = (char *) realloc(machine_code_start, *fileSize);
     rewind(sourceFile);
-    if(!parseLabels) {
+    if (!parseLabels) {
         return machine_code;
         free(labels);
-    }
-    else
+    } else
         return generateMachineCode(sourceFile, lines, fileSize, labels);
 }
 
