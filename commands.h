@@ -21,6 +21,11 @@ DEF_CMD(push, 1,
             }
             push(&stk, registers[arg]);
             bin += sizeof(int);
+        })
+        CMD_OVRLD(41, (*sarg == '[') && isdigit(*(sarg + 1)), RAM_IMMED, {
+            arg = *((int *)(bin + 1));
+            push(&stk, getIntFromRAM(RAM, arg));
+            bin += sizeof(int);
         }))
 
 
@@ -35,7 +40,9 @@ DEF_CMD(pop, 1,
             bin += sizeof(int);
         })
         CMD_OVRLD(52, (*sarg == '[') && isdigit(*(sarg + 1)), RAM_IMMED, {
-
+            arg = *((int *)(bin + 1));
+            setIntToRAM(RAM, arg, pop(&stk));
+            bin += sizeof(int);
         })
         CMD_OVRLD(53, (*sarg == '[') && isalpha(*(sarg + 1)), RAM_REG, {
 
@@ -135,7 +142,6 @@ DEF_CMD(inc, 1,
             registers[arg]++;
             bin += sizeof(int);
         }))
-
 
 DEF_CMD(jmp, 1,
         CMD_OVRLD(20, isalpha(*sarg), LABEL, {

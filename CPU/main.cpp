@@ -21,7 +21,7 @@ const char *defaultFilename = "prog.bin";
 
 int get_int(stack_t *stk);
 
-void setIntToRAM(char *RAM, size_t n, int val);
+void setIntToRAM(int *RAM, size_t n, int val);
 
 int pop(stack_t *stk);
 
@@ -31,7 +31,7 @@ int parseParams(int argc, char *argv[], char **filename);
 
 int peak_n(stack_t *stk, int n);
 
-int getIntFromRAM(char *RAM, size_t n);
+int getIntFromRAM(int *RAM, size_t n);
 
 int loadFile(FILE **f, const char *loadpath, const char *mode);
 
@@ -101,22 +101,22 @@ void push(stack_t *stk, int value) {
     }
 }
 
-int getIntFromRAM(char *RAM, size_t n) {
-    if (n > RAM_SIZE - 4) {
+int getIntFromRAM(int *RAM, size_t n) {
+    if (n >= RAM_SIZE) {
         printf(ANSI_COLOR_RED "Accessing non-existing RAM adress! Terminating...\n" ANSI_COLOR_RESET);
         exit(-1);
     }
     sleep(1);
-    return *(int *) (RAM + n);
+    return RAM[n];
 }
 
-void setIntToRAM(char *RAM, size_t n, int val) {
-    if (n > RAM_SIZE - 4) {
+void setIntToRAM(int *RAM, size_t n, int val) {
+    if (n >= RAM_SIZE) {
         printf(ANSI_COLOR_RED "Accessing non-existing RAM adress! Terminating...\n" ANSI_COLOR_RESET);
         exit(-1);
     }
     sleep(1);
-    *(int *) (RAM) = val;
+    RAM[n] = val;
 }
 
 
@@ -124,7 +124,7 @@ int execute(char *bin, int len) {
     int precision = 100;
     stack_t stk = {};
     stackConstruct(&stk, "CPUStack", 1024, 4417);
-    auto RAM = (char *) calloc(RAM_SIZE, sizeof(char));
+    auto RAM = (int *) calloc(RAM_SIZE, sizeof(char));
     int registers[4] = {};
     char *binStart = bin;
     char cmd = 0;
