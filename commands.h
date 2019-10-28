@@ -194,6 +194,13 @@ DEF_CMD(draw, 0,
             drawScreen(VRAM);
         }))
 
+DEF_CMD(delay, 1,
+        CMD_OVRLD(19, true, NUMBER, {
+            arg = *((int *)(bin + 1));
+            usleep(arg * 1000);
+            bin += sizeof(int);
+        }))
+
 DEF_CMD(jmp, 1,
         CMD_OVRLD(20, isalpha(*sarg), LABEL, {
             arg = *((int *)(bin + 1));
