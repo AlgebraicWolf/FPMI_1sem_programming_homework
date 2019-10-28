@@ -84,12 +84,14 @@ int main(int argc, char *argv[]) {
 }
 
 int get_int(stack_t *stk) {
+    assert(stk);
     int value = 0;
     while(scanf("%d", &value) == EOF);
     return value;
 }
 
 int pop(stack_t *stk) {
+    assert(stk);
     int value = 0;
     if (!stackPop(stk, &value)) {
         printf(ANSI_COLOR_RED "Stack underflow error! Terminating...\n" ANSI_COLOR_RESET);
@@ -99,6 +101,7 @@ int pop(stack_t *stk) {
 }
 
 int peak_n(stack_t *stk, int n) {
+    assert(stk);
     auto values = (int *) calloc(n, sizeof(int));
     for (int i = 0; i < n; i++) {
         values[i] = pop(stk);
@@ -112,6 +115,7 @@ int peak_n(stack_t *stk, int n) {
 }
 
 void push(stack_t *stk, int value) {
+    assert(stk);
     if (!stackPush(stk, value)) {
         printf(ANSI_COLOR_RED "Stack overflow error! Terminating...\n" ANSI_COLOR_RESET);
         exit(-1);
@@ -119,6 +123,7 @@ void push(stack_t *stk, int value) {
 }
 
 int getIntFromRAM(int *RAM, size_t n) {
+    assert(RAM);
     if (n >= RAM_SIZE) {
         printf(ANSI_COLOR_RED "Accessing non-existing RAM adress! Terminating...\n" ANSI_COLOR_RESET);
         exit(-1);
@@ -128,6 +133,7 @@ int getIntFromRAM(int *RAM, size_t n) {
 }
 
 void drawScreen(char *VRAM) {
+    assert(VRAM);
     usleep(25000);
     printf("\033[2J\033[1;1H");
     for(int y = 0; y < HEIGHT; y++) {
@@ -152,7 +158,7 @@ void drawScreen(char *VRAM) {
                     printf(ANSI_BGCOLOR_MAGENTA "  " ANSI_BGCOLOR_RESET);
                     break;
                 case 6:
-                    printf(ANSI_BGCOLOR_CYAN "  " ANSI_BGCOLOR_RESET);
+                    printf(ANSI_BGCOprintfLOR_CYAN "  " ANSI_BGCOLOR_RESET);
                     break;
                 case 7:
                     printf(ANSI_BGCOLOR_WHITE "  " ANSI_BGCOLOR_RESET);
@@ -164,6 +170,7 @@ void drawScreen(char *VRAM) {
 }
 
 int setPixel(char *VRAM, unsigned int desc) {
+    assert(VRAM);
     /*
      * Pixel format:
      * 0b11111111 11110000 00000000 00000000 - x coord

@@ -5,7 +5,6 @@ push 0
 pop bx
 
 inner_cycle:
-inc bx
 
 call dist
 
@@ -16,13 +15,14 @@ jbe black
 ja white
 
 cont:
-push 63
+inc bx
+push 32
 push bx
 jne inner_cycle
 
 inc ax
 push ax
-push 63
+push 32
 jne outer_cycle
 
 draw
@@ -48,15 +48,6 @@ pop cx
 ret
 
 black:
-push bx
-push 1000
-mul
-push ax
-add
-push 10
-mul
-pop dx
-pix dx
 jmp cont
 
 white:
@@ -71,4 +62,49 @@ push 2
 add
 pop dx
 pix dx
+
+push bx
+push 63
+sub
+push 1000
+mul
+push ax
+add
+push 10
+mul
+push 2
+add
+pop dx
+pix dx
+
+push bx
+push 1000
+mul
+push ax
+push 63
+sub
+add
+push 10
+mul
+push 2
+add
+pop dx
+pix dx
+
+push bx
+push 63
+sub
+push 1000
+mul
+push ax
+push 63
+sub
+add
+push 10
+mul
+push 2
+add
+pop dx
+pix dx
+
 jmp cont

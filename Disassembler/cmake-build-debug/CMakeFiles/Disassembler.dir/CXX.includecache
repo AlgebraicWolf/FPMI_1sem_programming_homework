@@ -15,6 +15,10 @@ assert.h
 -
 stdlib.h
 -
+ctype.h
+-
+../commands.h
+/home/alexey/Programming/MIPT_1sem_programming_homework/commands.h
 ../commands.h
 /home/alexey/Programming/MIPT_1sem_programming_homework/commands.h
 
