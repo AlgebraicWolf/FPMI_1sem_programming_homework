@@ -63,6 +63,8 @@ int main() {
 
     fclose(input);
     fclose(output);
+
+    return 0;
 }
 
 matrix solveTriangleSystem(matrix A, matrix b, int start, int propagation) {

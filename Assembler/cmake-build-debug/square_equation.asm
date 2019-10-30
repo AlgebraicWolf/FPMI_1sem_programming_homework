@@ -19,11 +19,17 @@ jb two_roots
 ja zero
 
 print:
+push 1
+out
+pop dx
 push ax
 out
 end
 
 print_2:
+push 2
+out
+pop dx
 push bx
 out
 push ax
@@ -67,13 +73,13 @@ jne zero
 
 inf:
 push -1
-pop ax
-jmp print
+out
+end
 
 zero:
-push 44
-pop ax
-jmp print
+push 0
+out
+end
 
 single_root:
 push 2
@@ -110,7 +116,9 @@ push -1
 push bx
 mul
 push dx
-sub
+push -1
+mul
+add
 div
 
 pop ax

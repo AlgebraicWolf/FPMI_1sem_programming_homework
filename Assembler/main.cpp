@@ -42,6 +42,16 @@ generateMachineCode(FILE *source, int lines, int *fileSize, label_t *labels = NU
 
 const char *defaultFilename = "prog.asm";
 
+enum argumentTypes {
+    NONE,
+    NUMBER,
+    REGISTER,
+    RAM_IMMED,
+    RAM_REG,
+    RAM_REG_IMMED,
+    LABEL
+};
+
 int main(int argc, char *argv[]) {
     char *filename = nullptr;
 
@@ -170,8 +180,9 @@ int processMixedRAM(char **machineCode, const char *sarg) {
     }
     processRegisterArgument(machineCode, ram_sarg);
     *((int *) (*machineCode)) = arg;
-    *machineCode = (char *)((int *)machineCode + 1);
+    *machineCode = (char *) ((int *) machineCode + 1);
 }
+
 
 int processLabel(char **machineCode, const label_t *labels, const char *sarg) {
     assert(machineCode);
@@ -190,19 +201,60 @@ int processLabel(char **machineCode, const label_t *labels, const char *sarg) {
     return -1;
 }
 
+char *
+defineCommandOverload(char **machine_code, int *len, int opcode, argumentTypes argtype, bool parseLabels, char *sarg,
+                      label_t *labels) {
+    char ram_sarg[MAX_SARG_SIZE] = "";
+    int arg = 0;
+    int arg2 = 0;
+    **machine_code = opcode;
+    (*machine_code)++;
+    *len += sizeof(char);
+    if (argtype == NUMBER) {
+        processNumberArgument(machine_code, sarg);
+        *len += sizeof(int);
+    } else if (argtype == REGISTER) {
+        if (processRegisterArgument(machine_code, sarg) == -1)
+            return nullptr;
+        *len += sizeof(int);
+    } else if (argtype == RAM_REG) {
+        if (sscanf(sarg, "[%[a-z]]", ram_sarg) != EOF) {
+            if (processRegisterArgument(machine_code, sarg) == -1)
+                return nullptr;
+            *len += sizeof(int);
+        } else {
+            printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET);
+            return nullptr;
+        }
+    } else if (argtype == RAM_IMMED) {
+        if (sscanf(sarg, "[%d]", &arg) != EOF) {
+            processNumberArgument(machine_code, sarg);
+        } else {
+            printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET);
+            return nullptr;
+        }
+    } else if (argtype == NONE) {}
+    else if (argtype == RAM_REG_IMMED) {
+        if (processMixedRAM(machine_code, sarg) == -1) return nullptr;
+        *len += 2 * sizeof(int);
+    } else if (argtype == LABEL) {
+        if (!parseLabels) {
+            if (processLabel(machine_code, labels, sarg) == -1)
+                return nullptr;
+        } else {
+            *((int *) (*machine_code)) = 0;
+        }
+        (*machine_code) = (char *) ((int *) (*machine_code) + 1);
+        *len += sizeof(int);
+    }
+    return (char *)1;
+}
+
 char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *labels) {
     assert(sourceFile);
     assert(fileSize);
-    enum argumentTypes {
-        NONE,
-        NUMBER,
-        REGISTER,
-        RAM_IMMED,
-        RAM_REG,
-        RAM_REG_IMMED,
-        LABEL
-    };
-    auto machine_code = (char *) calloc(sizeof(char) + sizeof(int),
+
+    auto machine_code = (char *) calloc(sizeof(char) + 2 * sizeof(int),
                                         lines); // TODO aprroximate worst-case scenario depending on the current maximal cmd size
 
     bool parseLabels = false;
@@ -214,64 +266,13 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
     char *machine_code_start = machine_code;
     char cmd[MAX_CMD_SIZE] = "";
     char sarg[MAX_SARG_SIZE] = "";
-    char ram_sarg[MAX_SARG_SIZE] = "";
-    int arg = 0;
-    int arg2 = 0;
     int len = 0;
 
     for (int i = 0; i < lines; i++) {
         if (fscanf(sourceFile, "%s", cmd) == 0) break;
 
 #define CMD_OVRLD(opcode, cond, argtype, execcode) \
-        else if (cond) { \
-            *(machine_code++) = opcode; \
-            len += sizeof(char); \
-            if (argtype == NUMBER) { \
-                processNumberArgument(&machine_code, sarg); \
-                len += sizeof(int); \
-            } \
-            else if (argtype == REGISTER) { \
-                if(processRegisterArgument(&machine_code, sarg) == -1) \
-                    return nullptr; \
-                len += sizeof(int); \
-            } \
-            else if (argtype == RAM_REG) { \
-                if (sscanf(sarg, "[%[a-z]]", ram_sarg) != EOF) { \
-                    if(processRegisterArgument(&machine_code, sarg) == -1) \
-                        return nullptr; \
-                    len += sizeof(int); \
-                } \
-                else { \
-                    printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
-                    return nullptr; \
-                } \
-            } \
-            else if (argtype == RAM_IMMED) { \
-                if(sscanf(sarg, "[%d]", &arg) != EOF) { \
-                    processNumberArgument(&machine_code, sarg); \
-                } \
-                else { \
-                    printf(ANSI_COLOR_RED "Invalid RAM address declaration. Terminating..." ANSI_COLOR_RESET); \
-                    return nullptr; \
-                } \
-            } \
-            else if (argtype == NONE) {} \
-            else if (argtype == RAM_REG_IMMED) { \
-                if(processMixedRAM(&machine_code, sarg) == -1) return nullptr; \
-                len += 2 * sizeof(int); \
-            } \
-            else if (argtype == LABEL) { \
-                if(!parseLabels) { \
-                    if(processLabel(&machine_code, labels, sarg) == -1) \
-                        return nullptr; \
-                } \
-                else { \
-                    *((int *)(machine_code)) = 0; \
-                } \
-                machine_code = (char *)((int *)machine_code + 1); \
-                len += sizeof(int); \
-            } \
-        }
+        else if (cond) defineCommandOverload(&machine_code, &len, opcode, argtype, parseLabels, sarg, labels);
 
 
 #define DEF_CMD(name, args, overloaders) \

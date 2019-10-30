@@ -1,27 +1,34 @@
 in
-pop bx
-
-push 1
 pop ax
 
-push 1
-
-push ax
+call fib
 push bx
-
-cycle:
-pop ax
-pop ax
-
-inc ax
-push ax
-mul
-
-push ax
-push bx
-jne cycle
-
-pop ax
-pop ax
-
 out
+end
+
+fib:
+push ax
+push 0
+je ret_1
+pop dx
+push 1
+je ret_1
+pop dx
+push ax
+push -1
+add
+pop ax
+call fib
+push bx
+mul
+pop bx
+ret
+
+ret_1:
+push 2
+pop ax
+push 1
+pop bx
+pop dx
+pop dx
+ret

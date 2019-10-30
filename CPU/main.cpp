@@ -158,7 +158,7 @@ void drawScreen(char *VRAM) {
                     printf(ANSI_BGCOLOR_MAGENTA "  " ANSI_BGCOLOR_RESET);
                     break;
                 case 6:
-                    printf(ANSI_BGCOprintfLOR_CYAN "  " ANSI_BGCOLOR_RESET);
+                    printf(ANSI_BGCOLOR_CYAN "  " ANSI_BGCOLOR_RESET);
                     break;
                 case 7:
                     printf(ANSI_BGCOLOR_WHITE "  " ANSI_BGCOLOR_RESET);
