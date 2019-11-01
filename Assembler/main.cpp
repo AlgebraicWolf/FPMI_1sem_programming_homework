@@ -27,6 +27,8 @@ int parseParams(int argc, char *argv[], char **filename);
 
 int loadFile(FILE **f, const char *loadpath, const char *mode);
 
+label_t *findLabel(label_t *labels, char *name);
+
 unsigned long fileSize(FILE *f);
 
 int countLines(const char *txt, const char delimiter);
@@ -200,6 +202,21 @@ int processMixedRAM(char **machineCode, const char *sarg) {
     *machineCode = (char *) ((int *) machineCode + 1);
 }
 
+int addLabel(label_t *labels, char *cmd, char *end, int len) {
+    *end = '\0';
+    auto name = (char *) calloc(end - cmd, sizeof(char));
+    strcpy(name, cmd);
+    *end = ':';
+    label_t *curLabel = findLabel(labels, name);
+
+    if(curLabel->label) {
+        printf(ANSI_COLOR_RED "Label already defined. Terminating...\n" ANSI_COLOR_RESET);
+        return 0;
+    }
+    curLabel->pos = len;
+    curLabel->label = name;
+    return 1;
+}
 
 int processLabel(char **machineCode, const label_t *labels, const char *sarg) {
     assert(machineCode);
@@ -328,9 +345,9 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
             if(!fscanf(sourceFile, "%s", sarg)) {\
             printf(ANSI_COLOR_RED "Invalid number of arguments!\n" ANSI_COLOR_RESET);\
             return nullptr;\
-         }\
+         } \
         overloaders \
-        else {\
+        {\
             printf(ANSI_COLOR_RED "Invalid argument parameter %s for command %s in line %d. Terminating...\n" ANSI_COLOR_RESET, sarg, cmd, i + 1); \
             return nullptr; \
         } \
@@ -338,25 +355,11 @@ char *generateMachineCode(FILE *sourceFile, int lines, int *fileSize, label_t *l
     else
 
 #include "../commands.h"
-
         {
             char *end = strchr(cmd, ':');
-            if (end && parseLabels) {
-                *end = '\0';
-                auto name = (char *) calloc(end - cmd, sizeof(char));
-
-                strcpy(name, cmd);
-                *end = ':';
-                label_t lbl = {};
-                label_t *curLabel = findLabel(labels, name);
-
-                if (curLabel->label) {
-                    printf(ANSI_COLOR_RED "Label already defined. Terminating...\n" ANSI_COLOR_RESET);
+            if (end && parseLabels)
+                if (!addLabel(labels, cmd, end, len))
                     return nullptr;
-                }
-                curLabel->pos = len;
-                curLabel->label = name;
-            }
         }
 
 #undef DEF_CMD

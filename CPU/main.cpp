@@ -15,7 +15,6 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 
 #define ANSI_BGCOLOR_BLACK "\x1b[40m"
-
 #define ANSI_BGCOLOR_RED "\x1b[41m"
 #define ANSI_BGCOLOR_GREEN "\x1b[42m"
 #define ANSI_BGCOLOR_YELLOW "\x1b[43m"
