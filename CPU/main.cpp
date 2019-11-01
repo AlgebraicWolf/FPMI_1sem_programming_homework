@@ -15,6 +15,7 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 
 #define ANSI_BGCOLOR_BLACK "\x1b[40m"
+
 #define ANSI_BGCOLOR_RED "\x1b[41m"
 #define ANSI_BGCOLOR_GREEN "\x1b[42m"
 #define ANSI_BGCOLOR_YELLOW "\x1b[43m"
@@ -23,6 +24,7 @@
 #define ANSI_BGCOLOR_CYAN "\x1b[46m"
 #define ANSI_BGCOLOR_WHITE "\x1b[47m"
 #define ANSI_BGCOLOR_RESET "\x1b[49m"
+#define ANSI_BGCOLOR_DUMMY "\x1b[4%dm  "
 
 const size_t RAM_SIZE = 1024;
 
@@ -32,7 +34,7 @@ const size_t HEIGHT = 64;
 
 const char *defaultFilename = "prog.bin";
 
-int get_int(stack_t *stk);
+int get_int();
 
 void setIntToRAM(int *RAM, size_t n, int val);
 
@@ -52,9 +54,7 @@ int getIntFromRAM(int *RAM, size_t n);
 
 int loadFile(FILE **f, const char *loadpath, const char *mode);
 
-unsigned long fileSize(FILE *f);
-
-int countLines(const char *txt, const char delimiter);
+size_t fileSize(FILE *f);
 
 int execute(char *bin, int len);
 
@@ -75,16 +75,15 @@ int main(int argc, char *argv[]) {
     int size = fileSize(source);
     char *sourceCode = (char *) calloc(size + 1, sizeof(char));
     fread(sourceCode, sizeof(char), size, source);
-    fseek(source, 0, SEEK_SET);
     fclose(source);
-    execute(sourceCode, size);
+    if(!execute(sourceCode, size))
+        return 0;
 
     free(sourceCode);
     free(filename);
 }
 
-int get_int(stack_t *stk) {
-    assert(stk);
+int get_int() {
     int value = 0;
     while(scanf("%d", &value) == EOF);
     return value;
@@ -134,36 +133,11 @@ int getIntFromRAM(int *RAM, size_t n) {
 
 void drawScreen(char *VRAM) {
     assert(VRAM);
-    usleep(25000);
-    printf("\033[2J\033[1;1H");
+    usleep(18000);
+    printf("\033[1;1H");
     for(int y = 0; y < HEIGHT; y++) {
         for(int x = 0; x < WIDTH; x++) {
-            switch(VRAM[y * WIDTH + x]) {
-                case 0:
-                    printf(ANSI_BGCOLOR_BLACK "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 1:
-                    printf(ANSI_BGCOLOR_RED "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 2:
-                    printf(ANSI_BGCOLOR_GREEN "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 3:
-                    printf(ANSI_BGCOLOR_YELLOW "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 4:
-                    printf(ANSI_BGCOLOR_BLUE "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 5:
-                    printf(ANSI_BGCOLOR_MAGENTA "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 6:
-                    printf(ANSI_BGCOLOR_CYAN "  " ANSI_BGCOLOR_RESET);
-                    break;
-                case 7:
-                    printf(ANSI_BGCOLOR_WHITE "  " ANSI_BGCOLOR_RESET);
-                    break;
-            }
+            printf(ANSI_BGCOLOR_DUMMY ANSI_COLOR_RESET, VRAM[y * WIDTH + x]);
         }
         printf("\n");
     }
@@ -171,15 +145,6 @@ void drawScreen(char *VRAM) {
 
 int setPixel(char *VRAM, unsigned int desc) {
     assert(VRAM);
-    /*
-     * Pixel format:
-     * 0b11111111 11110000 00000000 00000000 - x coord
-     * 0b00000000 00001111 11111111 00000000 - y coord
-     * 0b00000000 00000000 00000000 11111111 - color
-     */
-    /*unsigned int x = desc >> (unsigned int)20;
-    unsigned int y = (desc & (unsigned int)1048320) >> (unsigned int)8;
-    unsigned char color = desc & (unsigned int)255;*/
     unsigned int x = desc / 10000;
     unsigned int y = desc / 10 % 1000;
     if((x >= WIDTH) || (y >= HEIGHT)) {
@@ -216,14 +181,14 @@ int execute(char *bin, int len) {
         overloaders \
 
 #define CMD_OVRLD(opcode, cond, argtype, execcode) \
-    else if(*bin == opcode) { \
+    if(*bin == opcode) { \
         execcode \
     } \
+    else
 
-        if (0 == 1) {}
 #include "../commands.h"
 
-        else {
+        {
             printf(ANSI_COLOR_RED "Unknown instruction. Terminating...\n" ANSI_COLOR_RESET);
             return 0;
         }
@@ -266,25 +231,12 @@ int loadFile(FILE **f, const char *loadpath, const char *mode) {
     return *f != nullptr;
 }
 
-unsigned long fileSize(FILE *f) {
+size_t fileSize(FILE *f) {
     assert(f);
 
     fseek(f, 0, SEEK_END);
-    unsigned long size = ftell(f);
+    size_t size = ftell(f);
     fseek(f, 0, SEEK_SET);
 
     return size;
-}
-
-int countLines(const char *txt, const char delimiter) {
-    assert(txt);
-    const char *pointer = NULL;
-    int lines = 0;
-    while ((pointer = strchr(txt, delimiter)) != nullptr) {
-        ++lines;
-        txt = pointer + 1;
-    }
-    ++lines;
-
-    return lines;
 }

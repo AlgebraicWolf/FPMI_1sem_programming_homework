@@ -6,7 +6,7 @@ push bx
 out
 end
 
-fib:
+fact:
 push ax
 push 0
 je ret_1

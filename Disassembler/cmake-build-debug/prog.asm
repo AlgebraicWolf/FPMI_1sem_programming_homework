@@ -1,22 +1,22 @@
 push 0
 pop ax
-meow4:
+meow0:
 push 0
 pop bx
 call meow0
 push cx
 push 900
-jbe meow1
-ja meow2
-meow5:
+jbe meow0
+ja meow0
+meow0:
 inc bx
 push 32
 push bx
-jne meow3
+jne meow0
 inc ax
 push ax
 push 32
-jne meow4
+jne meow0
 draw
 end
 meow0:
@@ -37,8 +37,8 @@ mul
 add
 pop cx
 ret
-jmp meow5
-meow2:
+jmp meow0
+meow0:
 push bx
 push 1000
 mul
@@ -91,4 +91,4 @@ push 2
 add
 pop dx
 pix dx
-jmp meow5
+jmp meow0

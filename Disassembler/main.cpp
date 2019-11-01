@@ -18,25 +18,36 @@ struct label_t {
     int pos;
 };
 
+enum argumentTypes {
+    NONE,
+    NUMBER,
+    REGISTER,
+    RAM_IMMED,
+    RAM_REG,
+    RAM_REG_IMMED,
+    LABEL
+};
+
 int parseParams(int argc, char *argv[], char **filename);
 
 int loadFile(FILE **f, const char *loadpath, const char *mode);
 
-unsigned long fileSize(FILE *f);
+size_t fileSize(FILE *f);
 
 const char *defaultFilename = "prog.bin";
 
-int disassemble(FILE *output, char *bin, int len, label_t *labels);
+const unsigned int defaultFilenameLength = 9;
 
-void i_to_a(int num, char *buffer, int radix = 10);
+int disassemble(FILE *output, char *bin, size_t len, label_t *labels);
 
-label_t *parseLabels(char *bin, int len);
+label_t *parseLabels(char *bin, size_t len);
 
 char *concatenate(const char *str1, const char *str2);
 
 char *makeName(char *original, char *ext);
 
 const unsigned int MAX_INT_LENGTH = 11;
+
 const unsigned int MAX_NAME_LENGTH = 33;
 
 int main(int argc, char *argv[]) {
@@ -53,7 +64,7 @@ int main(int argc, char *argv[]) {
         printf(ANSI_COLOR_RED "Error while loading the %s file. Terminating...\n" ANSI_COLOR_RESET, filename);
     }
 
-    int size = fileSize(bin);
+    size_t size = fileSize(bin);
     char *machineCode = (char *) calloc(size + 1, sizeof(char));
     fread(machineCode, sizeof(char), size, bin);
 
@@ -66,6 +77,9 @@ int main(int argc, char *argv[]) {
 }
 
 char *makeName(char *original, char *ext) {
+    assert(original);
+    assert(ext);
+
     char *dotPosition = strrchr(original, '.');
     char *newName = nullptr;
     if (dotPosition) {
@@ -76,12 +90,14 @@ char *makeName(char *original, char *ext) {
     else {
         newName = concatenate(original, ext);
     }
+
     return newName;
 }
 
 char *concatenate(const char *str1, const char *str2) {
     assert(str1);
     assert(str2);
+
     const char *end1 = strchr(str1, '\0');
     const char *end2 = strchr(str2, '\0');
     if ((end1 == nullptr) || (end2 == nullptr)) return nullptr;
@@ -89,82 +105,78 @@ char *concatenate(const char *str1, const char *str2) {
     auto concatenated = (char *) calloc(len, sizeof(char));
     strcpy(concatenated, str1);
     strcat(concatenated, str2);
+
     return concatenated;
 }
 
 label_t *findLabel(label_t *labels, int pos) {
-    while(labels->label != nullptr) {
+    assert(labels);
+
+    while(labels->label) {
         if (labels->pos == pos)
             break;
         labels++;
     }
+
     return labels;
 }
 
-label_t *parseLabels(char *bin, int len) {
+label_t *defineLabelParserOverload(int argNum, int len,  argumentTypes argtype, int *cursor, int *labelNum, char *bin, label_t *labels) {
+    *cursor += sizeof(char);
+    int pos = 0;
+    label_t *curLabel = nullptr;
+        if (argNum) {
+            if((len - *cursor) <= sizeof(int) - 1) {
+                printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET);
+                return nullptr;
+            }
+            switch(argtype) {
+                case LABEL:
+                pos = *((int *)(bin + *cursor));
+                curLabel = findLabel(labels, pos);
+                if(!curLabel->label) {
+                    if(pos > len) {
+                        printf(ANSI_COLOR_RED "Found label linking outside the program. Terminating...\n" ANSI_COLOR_RESET);
+                        return nullptr;
+                    }
+                    curLabel->pos = pos;
+                    curLabel->label = (char *) calloc(MAX_INT_LENGTH + 4, sizeof(char));
+                    sprintf(curLabel->label, "meow%d", *labelNum++);
+                }
+                *cursor += sizeof(int);
+                break;
+                case RAM_REG_IMMED:
+                    *cursor += 2 * sizeof(int);
+                    break;
+                case NONE:
+                break;
+                default:
+                    *cursor += sizeof(int);
+                break;
+            }
+        }
+}
+
+label_t *parseLabels(char *bin, size_t len) {
     char number[MAX_INT_LENGTH] = "";
     int argNum = 0;
     char cmdName[MAX_NAME_LENGTH];
     auto labels = (label_t *) calloc(len + 1, sizeof(label_t));
     int labelNum = 0;
-    enum argumentTypes {
-        NONE,
-        NUMBER,
-        REGISTER,
-        RAM_IMMED,
-        RAM_REG,
-        RAM_REG_IMMED,
-        LABEL
-    };
     int cursor = 0;
     while (cursor < len) {
 
 #define DEF_CMD(name, args, overloaders) \
         argNum = args; \
         strcpy(cmdName, #name); \
-        if (false) {} \
-        overloaders
+        overloaders {};
 
 
 #define CMD_OVRLD(opcode, cond, argtype, execcode) \
-    else if(bin[cursor] == opcode) { \
-        cursor += sizeof(char); \
-        if (argNum > 0) { \
-            if((len - cursor) <= 3) { \
-                printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET); \
-                return nullptr; \
-            } \
-            if (argtype == LABEL) {\
-                int pos = *((int *)(bin + cursor)); \
-                label_t *curLabel = findLabel(labels, pos); \
-                if(curLabel->label == nullptr) { \
-                    if(pos > len) { \
-                        printf(ANSI_COLOR_RED "Found label linking outside the program. Terminating...\n" ANSI_COLOR_RESET); \
-                        return nullptr; \
-                    } \
-                    curLabel->pos = pos; \
-                    i_to_a(labelNum++, number, 10); \
-                    curLabel->label = concatenate("meow", number); \
-                } \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == NUMBER) { \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == REGISTER) { \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_IMMED) { \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_REG) { \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_REG_IMMED) { \
-                cursor += 2 * sizeof(int); \
-            } \
-        } \
+    if(bin[cursor] == opcode) { \
+        defineLabelParserOverload(argNum, len, argtype, &cursor, &labelNum, bin, labels); \
     } \
+    else
 
 #include "../commands.h"
 
@@ -176,112 +188,101 @@ label_t *parseLabels(char *bin, int len) {
 
 
 const char *parseRegister(int reg) {
-    if (reg == 0) {
-        return "ax";
-    }
-    else if (reg == 1) {
-        return "bx";
-    }
-    else if (reg == 2) {
-        return "cx";
-    }
-    else if (reg == 3) {
-        return "dx";
+    const char *regs[4] = {"ax", "bx", "cx", "dx"};
+    if ((reg < 4) && (reg >= 0)) {
+        return regs[reg];
     }
     else {
         return nullptr;
     }
 }
 
-int disassemble(FILE *output, char *bin, int len, label_t *labels) {
-    enum argumentTypes {
-        NONE,
-        NUMBER,
-        REGISTER,
-        RAM_IMMED,
-        RAM_REG,
-        RAM_REG_IMMED,
-        LABEL
-    };
+int defineCommandOverload(char opcode, int argNum, int len, argumentTypes argtype, int *cursor, char *bin, char *cmdName, label_t *labels, FILE *output) {
+    fprintf(output, "%s", cmdName);
+        *cursor += sizeof(char);
+        const char *reg = nullptr;
+        const char *regarg = nullptr;
+        label_t *curLabel = nullptr;
+        if (argNum > 0) {
+            if((len - *cursor) <= 3) {
+                printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET);
+                return -1;
+            }
+            switch(argtype) {
+                case LABEL:
+                curLabel = findLabel(labels, *((int *)(bin + *cursor)));
+                if(curLabel->label == nullptr) {
+                    printf(ANSI_COLOR_RED"Label not found! Terminating...\n" ANSI_COLOR_RESET);
+                    return -1;
+                }
+                fprintf(output, " %s", curLabel->label);
+                *cursor += sizeof(int);
+            break;
+                case NUMBER:
+                fprintf(output, " %d", *((int *)(bin + *cursor)));
+                *cursor += sizeof(int);
+            break;
+                case REGISTER:
+                reg = parseRegister(*((int *)(bin + *cursor)));
+                if (reg == nullptr) {
+                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + *cursor)));
+                }
+                fprintf(output, " %s", reg);
+                *cursor += sizeof(int);
+            break;
+                case RAM_IMMED:
+                fprintf(output, " [%d]", *((int *)(bin + *cursor)));
+                *cursor += sizeof(int);
+            break;
+                case RAM_REG:
+                reg = parseRegister(*((int *)(bin + *cursor)));
+                if (reg == nullptr) {
+                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + *cursor)));
+                }
+                fprintf(output, " [%s]", reg);
+                *cursor += sizeof(int);
+            break;
+                case RAM_REG_IMMED:
+                if((len - *cursor) <= 7) {
+                    printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET);
+                    return -1;
+                }
+                regarg = parseRegister(*((int *)(bin + *cursor)));
+                if (regarg == nullptr) {
+                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + *cursor)));
+                }
+                int num = *((int *)(bin + *cursor + sizeof(int)));
+                if (num >= 0) {
+                    fprintf(output, " [%s+%d]", regarg, num);
+                }
+                else { 
+                    fprintf(output, " [%s-%d]", regarg, -num);
+                }
+                *cursor += 2 * sizeof(int);
+            }
+        }
+        fprintf(output, "\n");
+}
+
+int disassemble(FILE *output, char *bin, size_t len, label_t *labels) {
     int cursor = 0;
     label_t *curLabel = {};
     char cmdName[MAX_NAME_LENGTH] = "";
     int argNum = 0;
     while (cursor < len) {
         curLabel = findLabel(labels, cursor);
-        if(curLabel->label != nullptr) {
+        if(curLabel->label) {
             fprintf(output, "%s:\n", curLabel->label);
         }
+
 #define DEF_CMD(name, args, overloaders) \
         argNum = args; \
         strcpy(cmdName, #name); \
         overloaders
 
 #define CMD_OVRLD(opcode, cond, argtype, execcode) \
-    if(bin[cursor] == opcode) { \
-        fprintf(output, "%s", cmdName); \
-        cursor += sizeof(char); \
-        if (argNum > 0) { \
-            if((len - cursor) <= 3) { \
-                printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET); \
-                return -1; \
-            } \
-            if (argtype == LABEL) { \
-                label_t *curLabel = findLabel(labels, *((int *)(bin + cursor))); \
-                if(curLabel->label == nullptr) { \
-                    printf(ANSI_COLOR_RED"Label not found! Terminating...\n" ANSI_COLOR_RESET); \
-                    return -1; \
-                } \
-                fprintf(output, " %s", curLabel->label); \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == NUMBER) { \
-                fprintf(output, " %d", *((int *)(bin + cursor))); \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == REGISTER) { \
-                const char *reg = parseRegister(*((int *)(bin + cursor))); \
-                if (reg == nullptr) { \
-                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + cursor))); \
-                } \
-                fprintf(output, " %s", reg); \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_IMMED) { \
-                fprintf(output, " [%d]", *((int *)(bin + cursor))); \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_REG) { \
-                const char *reg = parseRegister(*((int *)(bin + cursor))); \
-                if (reg == nullptr) { \
-                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + cursor))); \
-                } \
-                fprintf(output, " [%s]", reg); \
-                cursor += sizeof(int); \
-            } \
-            else if (argtype == RAM_REG_IMMED) { \
-                if((len - cursor) <= 7) { \
-                    printf(ANSI_COLOR_RED "Unexpected EOF. Terminating...\n" ANSI_COLOR_RESET); \
-                    return -1; \
-                } \
-                const char *regarg = parseRegister(*((int *)(bin + cursor))); \
-                if (regarg == nullptr) { \
-                    printf(ANSI_COLOR_RED "Unknown register number %d. Terminating...\n" ANSI_COLOR_RESET, *((int *)(bin + cursor))); \
-                } \
-                int num = *((int *)(bin + cursor + sizeof(int))); \
-                if (num >= 0) {\
-                    fprintf(output, " [%s+%d]", regarg, num);\
-                } \
-                else { \
-                    fprintf(output, " [%s-%d]", regarg, -num); \
-                } \
-                cursor += 2 * sizeof(int); \
-            } \
-        } \
-        fprintf(output, "\n"); \
-    }
+    if(bin[cursor] == opcode) defineCommandOverload(opcode, argNum, len, argtype, &cursor, bin, cmdName, labels, output);
 
-        if (0 == 1) continue;
 #include "../commands.h"
 #undef DEF_CMD
 #undef CMD_OVRLD
@@ -292,7 +293,7 @@ int disassemble(FILE *output, char *bin, int len, label_t *labels) {
 int parseParams(int argc, char *argv[], char **filename) {
     if (argc == 1) {
         printf(ANSI_COLOR_YELLOW "File have not been specified. Using default %s\n" ANSI_COLOR_RESET, defaultFilename);
-        *filename = (char *) calloc(strlen(defaultFilename) + 1, sizeof(char));
+        *filename = (char *) calloc(defaultFilenameLength, sizeof(char));
         strcpy(*filename, defaultFilename);
         return 1;
     } else if (argc == 2) {
@@ -316,51 +317,12 @@ int loadFile(FILE **f, const char *loadpath, const char *mode) {
     return *f != nullptr;
 }
 
-unsigned long fileSize(FILE *f) {
+size_t fileSize(FILE *f) {
     assert(f);
 
     fseek(f, 0, SEEK_END);
-    unsigned long size = ftell(f);
+    size_t size = ftell(f);
     fseek(f, 0, SEEK_SET);
 
     return size;
-}
-
-
-void i_to_a(int num, char *buffer, int radix) {
-    assert(buffer);
-    assert((radix >= 2) && (radix <= 36));
-    if (num == 0) {
-        *buffer++ = '0';
-        *buffer = '\0';
-        return;
-    }
-    int sign = 1;
-    if (num < 0) {
-        sign = -1;
-        num = -num;
-    }
-    int numCopy = num, size = 0, digit;
-    while (numCopy > 0) {
-        numCopy /= radix;
-        size++;
-    }
-    if (sign == -1) {
-        *buffer = '-';
-        ++size;
-    }
-    buffer += size;
-    *buffer = '\0';
-    --buffer;
-
-    while (num > 0) {
-        digit = num % radix;
-        num /= radix;
-        if ((digit >= 0) && (digit <= 9)) {
-            *buffer = digit + '0';
-        } else {
-            *buffer = digit - 10 + 'A';
-        }
-        --buffer;
-    }
 }

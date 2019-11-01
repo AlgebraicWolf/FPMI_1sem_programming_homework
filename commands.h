@@ -7,78 +7,75 @@ DEF_CMD(DIV, 6, 0, {})
 DEF_CMD(END, 7, 0, {})
 DEF_CMD(NOP, 0, 0, {})*/
 
+#define GET_INT_ARG arg = *((int *)(bin + 1)); bin += sizeof(int);
+
 DEF_CMD(push, 1,
         CMD_OVRLD(1, isdigit(*sarg)  || (*sarg == '-'), NUMBER, {
-            arg = *((int *)(bin + 1)) * precision;
+            GET_INT_ARG
+            arg *= precision;
             push(&stk, arg);
-            bin += sizeof(int);
         })
         CMD_OVRLD(11, isalpha(*sarg), REGISTER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             push(&stk, registers[arg]);
-            bin += sizeof(int);
         })
         CMD_OVRLD(41, (*sarg == '[') && isdigit(*(sarg + 1)), RAM_IMMED, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             push(&stk, getIntFromRAM(RAM, arg));
-            bin += sizeof(int);
         })
         CMD_OVRLD(43, (*sarg == '[') && isalpha(*(sarg + 1)) && ((strchr(sarg, '-') != nullptr) || (strchr(sarg, '+') != nullptr)), RAM_REG_IMMED, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
-            arg = registers[arg] / precision + *((int *)(bin + 1 + sizeof(int)));
+            GET_INT_ARG
+            arg = registers[arg] / precision + arg;
             push(&stk, getIntFromRAM(RAM, arg));
-            bin += 2 * sizeof(int);
         })
         CMD_OVRLD(42, (*sarg == '[') && isalpha(*(sarg + 1)), RAM_REG, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             push(&stk, getIntFromRAM(RAM, registers[arg] / precision));
         }))
 
 DEF_CMD(pop, 1,
         CMD_OVRLD(2, isalpha(*sarg), REGISTER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             registers[arg] = pop(&stk);
-            bin += sizeof(int);
         })
         CMD_OVRLD(52, (*sarg == '[') && isdigit(*(sarg + 1)), RAM_IMMED, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             setIntToRAM(RAM, arg, pop(&stk));
-            bin += sizeof(int);
         })
         CMD_OVRLD(54, (*sarg == '[') && isalpha(*(sarg + 1)) && ((strchr(sarg, '-') != nullptr) || (strchr(sarg, '+') != nullptr)), RAM_REG_IMMED, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
-            arg = registers[arg] / precision + *((int *)(bin + 1 + sizeof(int)));
+            GET_INT_ARG
+            arg = registers[arg] / precision + arg;
             setIntToRAM(RAM, arg, pop(&stk));
-            bin += 2 * sizeof(int);
         })
         CMD_OVRLD(53, (*sarg == '[') && isalpha(*(sarg + 1)), RAM_REG, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             setIntToRAM(RAM, registers[arg] / precision, pop(&stk));
-            bin += sizeof(int);
         }))
 
 DEF_CMD(add, 0,
@@ -103,7 +100,7 @@ DEF_CMD(div, 0,
 
             if (b == 0) {
                 printf(ANSI_COLOR_RED "Zero division error. Terminating...\n" ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             push(&stk, (int)((precision * a) / b));
         }))
@@ -116,7 +113,7 @@ DEF_CMD(end, 0,
 
 DEF_CMD(in, 0,
         CMD_OVRLD(8, true, NONE, {
-            push(&stk, get_int(&stk) * precision);
+            push(&stk, get_int() * precision);
 }))
 
 DEF_CMD(out, 0,
@@ -132,7 +129,7 @@ DEF_CMD(call, 1,
             arg = *((int *)(bin + 1));
             if ((arg >= len) || (arg < 0)) {
                 printf(ANSI_COLOR_RED "Calling function outside the program. Terminating..." ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             push(&stk, bin - binStart + 1);
             bin = binStart + arg - 1;
@@ -141,7 +138,7 @@ DEF_CMD(call, 1,
             arg = *((int *)(bin + 1));
             if ((arg >= len) || (arg < 0)) {
                 printf(ANSI_COLOR_RED "Calling function outside the program. Terminating..." ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             push(&stk, bin - binStart + 1);
             bin = binStart + arg - 1;
@@ -152,7 +149,7 @@ DEF_CMD(ret, 0,
             arg = pop(&stk);
             if((arg >= len) || (arg < 0)) {
                 printf(ANSI_COLOR_RED "Returning outside the program. Terminating..." ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             bin = binStart + arg + sizeof(int) - 1;
         }))
@@ -164,29 +161,26 @@ DEF_CMD(sqrt, 0,
 
 DEF_CMD(inc, 1,
         CMD_OVRLD(15, true, REGISTER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             registers[arg] += precision;
-            bin += sizeof(int);
         }))
 
 DEF_CMD(pix, 1,
         CMD_OVRLD(16, isdigit(*sarg), NUMBER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             setPixel(VRAM, arg);
-            bin += sizeof(int);
         })
         CMD_OVRLD(17, isalpha(*sarg), REGISTER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG
             if(arg >= 4) {
                 printf(ANSI_COLOR_RED "Invalid register number %d. Terminating..." ANSI_COLOR_RESET, arg);
-                exit(-1);
+                return 0;
             }
             setPixel(VRAM, registers[arg] / precision);
-            bin += sizeof(int);
         }))
 
 DEF_CMD(draw, 0,
@@ -196,9 +190,8 @@ DEF_CMD(draw, 0,
 
 DEF_CMD(delay, 1,
         CMD_OVRLD(19, true, NUMBER, {
-            arg = *((int *)(bin + 1));
+            GET_INT_ARG;
             usleep(arg * 1000);
-            bin += sizeof(int);
         }))
 
 DEF_CMD(jmp, 1,
@@ -206,7 +199,7 @@ DEF_CMD(jmp, 1,
             arg = *((int *)(bin + 1));
             if ((arg >= len) || (arg < 0)) {
                 printf(ANSI_COLOR_RED "Jumping outside the program. Terminating..." ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             bin = binStart + arg - 1;
         })
@@ -214,7 +207,7 @@ DEF_CMD(jmp, 1,
             arg = *((int *)(bin + 1));
             if ((arg >= len) || (arg < 0)) {
                 printf(ANSI_COLOR_RED "Jumping outside the program. Terminating..." ANSI_COLOR_RESET);
-                exit(-1);
+                return 0;
             }
             bin = binStart + arg - 1;
         }))
@@ -226,7 +219,7 @@ DEF_CMD(name, 1, \
                 arg = *((int *)(bin + 1)); \
                 if ((arg >= len) || (arg < 0)) { \
                     printf(ANSI_COLOR_RED "Jumping outside the program. Terminating..." ANSI_COLOR_RESET); \
-                    exit(-1); \
+                    return 0; \
                 } \
                 bin = binStart + arg - 1; \
             } \
@@ -237,7 +230,7 @@ DEF_CMD(name, 1, \
                 arg = *((int *)(bin + 1)); \
                 if ((arg >= len) || (arg < 0)) { \
                     printf(ANSI_COLOR_RED "Jumping outside the program. Terminating..." ANSI_COLOR_RESET); \
-                    exit(-1); \
+                    return 0; \
                 } \
                 bin = binStart + arg - 1; \
             } \
