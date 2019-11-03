@@ -111,3 +111,22 @@ void insertAfter(list_t *list, node_t *elem, void *value) {
 
     list->size++;
 }
+
+void insertBefore(list_t *list, node_t *elem, void *value) {
+    node_t *tmp = elem->prev;
+    node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
+
+    newNode->prev = tmp;
+    newNode->next = elem;
+    newNode->value = value;
+
+    elem->prev = newNode;
+    if(tmp) {
+        tmp->next = newNode;
+    }
+    else {
+        list->head = newNode;
+    }
+
+    list->size++;
+}
