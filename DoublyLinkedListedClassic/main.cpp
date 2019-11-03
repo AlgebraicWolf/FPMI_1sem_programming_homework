@@ -65,3 +65,23 @@ void addToHead(list_t *list, void *value) {
 
     list->size++;
 }
+
+void addToTail(list_t *list, void *value) {
+    assert(list);
+    node_t *prev = list->tail;
+    node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
+    newNode->value = value;
+    newNode->prev = prev;
+
+    if (prev) {
+        prev->next = newNode;
+    }
+
+    list->tail = newNode;
+
+    if(!list->head) {
+        list->head = newNode;
+    }
+
+    list->size++;
+}
