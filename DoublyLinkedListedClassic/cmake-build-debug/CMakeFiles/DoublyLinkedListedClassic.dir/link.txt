@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/DoublyLinkedListedClassic.dir/main.cpp.o  -o DoublyLinkedListedClassic 
