@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 struct node_t {
     node_t *next;
@@ -25,4 +26,22 @@ list_t *createList() {
     newList->tail = nullptr;
 
     return newList;
+}
+
+list_t deleteList(list_t **list) {
+    assert(list);
+    assert(*list);
+    node_t *curNode = nullptr;
+    node_t *next = nullptr;
+
+    curNode = (*list)->head;
+
+    while(curNode != (*list)->tail) {
+        next = curNode->next;
+        free(curNode);
+        curNode = next;
+    }
+
+    free(*list);
+    *list = nullptr;
 }
