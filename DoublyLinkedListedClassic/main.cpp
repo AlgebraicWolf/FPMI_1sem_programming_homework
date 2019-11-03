@@ -14,9 +14,16 @@ struct list_t {
     size_t size;
 };
 
+list_t *createList();
+
+void deleteList(list_t **list);
+
+void addToHead(list_t *list, void *value);
+
+void addToTail(list_t *list, void *value);
+
 int main() {
 
-    return 0;
 }
 
 list_t *createList() {
@@ -81,6 +88,25 @@ void addToTail(list_t *list, void *value) {
 
     if(!list->head) {
         list->head = newNode;
+    }
+
+    list->size++;
+}
+
+void insertAfter(list_t *list, node_t *elem, void *value) {
+    node_t *tmp = elem->next;
+    node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
+
+    newNode->prev = elem;
+    newNode->next = tmp;
+    newNode->value = value;
+
+    elem->next = newNode;
+    if(tmp) {
+        tmp->prev = newNode;
+    }
+    else {
+        list->tail = newNode;
     }
 
     list->size++;
