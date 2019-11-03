@@ -28,7 +28,7 @@ list_t *createList() {
     return newList;
 }
 
-list_t deleteList(list_t **list) {
+void deleteList(list_t **list) {
     assert(list);
     assert(*list);
     node_t *curNode = nullptr;
@@ -44,4 +44,24 @@ list_t deleteList(list_t **list) {
 
     free(*list);
     *list = nullptr;
+}
+
+void addToHead(list_t *list, void *value) {
+    assert(list);
+    node_t *prev = list->head;
+    node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
+    newNode->value = value;
+    newNode->next = prev;
+
+    if (prev) {
+        prev->prev = newNode;
+    }
+
+    list->head = newNode;
+
+    if(!list->tail) {
+        list->tail = newNode;
+    }
+
+    list->size++;
 }
