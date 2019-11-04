@@ -26,7 +26,13 @@ void insertAfter(list_t *list, node_t *elem, void *value);
 
 void insertBefore(list_t *list, node_t *elem, void *value);
 
-void dumpList(list_t *list, const char *dumpFilename);
+void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
+
+char *nodeDump(node_t *node) {
+    char *str = (char *) calloc(12, sizeof(char));
+    sprintf(str, "%d", *(int *)(node->value));
+    return str;
+}
 
 int main() {
     list_t *lst = createList();
@@ -42,7 +48,7 @@ int main() {
     insertBefore(lst, lst->tail->prev, &d);
     insertBefore(lst, lst->tail->prev->prev, &c);
 
-    dumpList(lst, "dump.dot");
+    dumpList(lst, "dump.dot", nodeDump);
     deleteList(&lst);
     return 0;
 }
@@ -152,7 +158,7 @@ void insertBefore(list_t *list, node_t *elem, void *value) {
     list->size++;
 }
 
-void dumpList(list_t *list, const char *dumpFilename) {
+void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *)) {
     assert(list);
     assert(dumpFilename);
 
@@ -160,9 +166,17 @@ void dumpList(list_t *list, const char *dumpFilename) {
     fprintf(dumpFile, "digraph {\n");
 
     node_t *node = list->head;
-    fprintf(dumpFile, "node%p[label=\"%p\",shape=box];\n", node, node);
+    fprintf(dumpFile, "node%p[label=\"{{%p}", node, node);
+    if(nodeDump) {
+        fprintf(dumpFile, "|{%s}", (*nodeDump)(node));
+    }
+    fprintf(dumpFile, "}\",shape=record];\n", node, node);
     while(node != list->tail) {
-        fprintf(dumpFile, "node%p[label=\"%p\",shape=box];\n", node->next, node->next);
+        fprintf(dumpFile, "node%p[label=\"{{%p}", node->next, node->next);
+        if(nodeDump) {
+            fprintf(dumpFile, "|{%s}", (*nodeDump)(node->next));
+        }
+        fprintf(dumpFile, "}\",shape=record];\n", node->next, node->next);
         fprintf(dumpFile, "node%p -> node%p;\n", node, node->next);
         fprintf(dumpFile, "node%p -> node%p;\n", node->next, node);
         node = node->next;
