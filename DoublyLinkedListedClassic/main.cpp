@@ -22,8 +22,29 @@ void addToHead(list_t *list, void *value);
 
 void addToTail(list_t *list, void *value);
 
-int main() {
+void insertAfter(list_t *list, node_t *elem, void *value);
 
+void insertBefore(list_t *list, node_t *elem, void *value);
+
+void dumpList(list_t *list, const char *dumpFilename);
+
+int main() {
+    list_t *lst = createList();
+    int a = 10;
+    int b = 20;
+    int c = 30;
+    int d = 40;
+    int e = 50;
+    addToHead(lst, &a);
+    addToTail(lst, &e);
+    insertAfter(lst, lst->head, &b);
+    insertAfter(lst, lst->head->next, &b);
+    insertBefore(lst, lst->tail->prev, &d);
+    insertBefore(lst, lst->tail->prev->prev, &c);
+
+    dumpList(lst, "dump.dot");
+    deleteList(&lst);
+    return 0;
 }
 
 list_t *createList() {
@@ -129,4 +150,25 @@ void insertBefore(list_t *list, node_t *elem, void *value) {
     }
 
     list->size++;
+}
+
+void dumpList(list_t *list, const char *dumpFilename) {
+    assert(list);
+    assert(dumpFilename);
+
+    FILE *dumpFile = fopen(dumpFilename, "w");
+    fprintf(dumpFile, "digraph {\n");
+
+    node_t *node = list->head;
+    fprintf(dumpFile, "node%p[label=\"%p\",shape=box];\n", node, node);
+    while(node != list->tail) {
+        fprintf(dumpFile, "node%p[label=\"%p\",shape=box];\n", node->next, node->next);
+        fprintf(dumpFile, "node%p -> node%p;\n", node, node->next);
+        fprintf(dumpFile, "node%p -> node%p;\n", node->next, node);
+        node = node->next;
+    }
+    fprintf(dumpFile, "Head -> node%p;\n", list->head);
+    fprintf(dumpFile, "Tail -> node%p;\n", list->tail);
+    fprintf(dumpFile, "}");
+    fclose(dumpFile);
 }
