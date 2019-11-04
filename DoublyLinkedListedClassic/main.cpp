@@ -28,10 +28,10 @@ void insertBefore(list_t *list, node_t *elem, void *value);
 
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
 
-char *nodeDump(node_t *node) {
-    char *str = (char *) calloc(12, sizeof(char));
-    sprintf(str, "%d", *(int *)(node->value));
-    return str;
+char *nodeDump(node_t *node) { // example
+    static char str[65] = "";
+    sprintf(str, "{VALUE|%d}|{NEXT|%p}|{PREVIOUS|%p}", *(int *)(node->value), node->next, node->prev);
+    return (char *)str;
 }
 
 int main() {
@@ -80,7 +80,7 @@ void deleteList(list_t **list) {
     *list = nullptr;
 }
 
-void addToHead(list_t *list, void *value) {
+void addToHead(list_t *list, void *value) { // TODO rename prev
     assert(list);
     node_t *prev = list->head;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
@@ -100,7 +100,7 @@ void addToHead(list_t *list, void *value) {
     list->size++;
 }
 
-void addToTail(list_t *list, void *value) {
+void addToTail(list_t *list, void *value) { // TODO rename prev
     assert(list);
     node_t *prev = list->tail;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
@@ -166,21 +166,25 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *
     fprintf(dumpFile, "digraph {\n");
 
     node_t *node = list->head;
+    
     fprintf(dumpFile, "node%p[label=\"{{%p}", node, node);
     if(nodeDump) {
         fprintf(dumpFile, "|{%s}", (*nodeDump)(node));
     }
     fprintf(dumpFile, "}\",shape=record];\n", node, node);
+
     while(node != list->tail) {
         fprintf(dumpFile, "node%p[label=\"{{%p}", node->next, node->next);
         if(nodeDump) {
             fprintf(dumpFile, "|{%s}", (*nodeDump)(node->next));
         }
         fprintf(dumpFile, "}\",shape=record];\n", node->next, node->next);
+
         fprintf(dumpFile, "node%p -> node%p;\n", node, node->next);
         fprintf(dumpFile, "node%p -> node%p;\n", node->next, node);
         node = node->next;
     }
+
     fprintf(dumpFile, "Head -> node%p;\n", list->head);
     fprintf(dumpFile, "Tail -> node%p;\n", list->tail);
     fprintf(dumpFile, "}");
