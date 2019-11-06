@@ -2,6 +2,12 @@
 #include <cstdlib>
 #include <cassert>
 
+enum listValidity{
+    OK = 0,
+    LIST_NOT_FOUND = 1,
+    CORRUPTED = 2
+};
+
 struct node_t {
     node_t *next;
     node_t *prev;
@@ -18,6 +24,16 @@ list_t *createList();
 
 node_t *getElementByPosition(list_t *list, size_t position);
 
+node_t *getFirstElement(list_t *list);
+
+node_t *getLastElement(list_t *list);
+
+node_t *getNextElement(node_t *node);
+
+node_t *getPreviousElement(node_t *node);
+
+listValidity validateList(list_t *list);
+
 void deleteList(list_t **list);
 
 void addToHead(list_t *list, void *value);
@@ -31,6 +47,8 @@ void insertBefore(list_t *list, node_t *elem, void *value);
 void deleteNode(list_t *list, node_t *elem);
 
 void clearList(list_t *list);
+
+node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *));
 
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
 
@@ -114,6 +132,34 @@ void addToHead(list_t *list, void *value) {
     list->size++;
 }
 
+node_t *findNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+
+}
+
+node_t *getFirstElement(list_t *list) {
+    assert(list);
+
+    return list->head;
+}
+
+node_t *getLastElement(list_t *list) {
+    assert(list);
+
+    return list->tail;
+}
+
+node_t *getNextElement(node_t *node) {
+    assert(node);
+
+    return node->next;
+}
+
+node_t *getPreviousElement(node_t *node) {
+    assert(node);
+
+    return node->prev;
+}
+
 void addToTail(list_t *list, void *value) {
     assert(list);
 
@@ -194,6 +240,26 @@ node_t *getElementByPosition(list_t *list, size_t position) {
     }
 
     return curNode;
+}
+
+listValidity validateList(list_t *list) {
+    if (!list)
+        return LIST_NOT_FOUND;
+
+    size_t size = list->size;
+    node_t *node = list->head;
+
+    for(size_t i = 0; i < size; i++) {
+        if(!node)
+            return CORRUPTED;
+
+        node = node->next;
+    }
+
+    if(list->tail != node)
+        return CORRUPTED;
+
+    return OK;
 }
 
 void deleteNode(list_t *list, node_t *elem) {
