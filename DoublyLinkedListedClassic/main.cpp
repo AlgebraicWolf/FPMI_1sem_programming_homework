@@ -26,9 +26,11 @@ void insertAfter(list_t *list, node_t *elem, void *value);
 
 void insertBefore(list_t *list, node_t *elem, void *value);
 
+void deleteNode(list_t *list, node_t *elem);
+
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
 
-char *nodeDump(node_t *node) { // example
+char *nodeDump(node_t *node) { // Example function
     static char str[65] = "";
     sprintf(str, "{VALUE|%d}|{NEXT|%p}|{PREVIOUS|%p}", *(int *)(node->value), node->next, node->prev);
     return (char *)str;
@@ -65,6 +67,7 @@ list_t *createList() {
 void deleteList(list_t **list) {
     assert(list);
     assert(*list);
+
     node_t *curNode = nullptr;
     node_t *next = nullptr;
 
@@ -80,15 +83,16 @@ void deleteList(list_t **list) {
     *list = nullptr;
 }
 
-void addToHead(list_t *list, void *value) { // TODO rename prev
+void addToHead(list_t *list, void *value) {
     assert(list);
-    node_t *prev = list->head;
+
+    node_t *temp = list->head;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
     newNode->value = value;
-    newNode->next = prev;
+    newNode->next = temp;
 
-    if (prev) {
-        prev->prev = newNode;
+    if (temp) {
+        temp->prev = newNode;
     }
 
     list->head = newNode;
@@ -100,15 +104,16 @@ void addToHead(list_t *list, void *value) { // TODO rename prev
     list->size++;
 }
 
-void addToTail(list_t *list, void *value) { // TODO rename prev
+void addToTail(list_t *list, void *value) {
     assert(list);
-    node_t *prev = list->tail;
+
+    node_t *temp = list->tail;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
     newNode->value = value;
-    newNode->prev = prev;
+    newNode->prev = temp;
 
-    if (prev) {
-        prev->next = newNode;
+    if (temp) {
+        temp->next = newNode;
     }
 
     list->tail = newNode;
@@ -121,6 +126,9 @@ void addToTail(list_t *list, void *value) { // TODO rename prev
 }
 
 void insertAfter(list_t *list, node_t *elem, void *value) {
+    assert(list);
+    assert(elem);
+
     node_t *tmp = elem->next;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
 
@@ -140,6 +148,9 @@ void insertAfter(list_t *list, node_t *elem, void *value) {
 }
 
 void insertBefore(list_t *list, node_t *elem, void *value) {
+    assert(list);
+    assert(elem);
+
     node_t *tmp = elem->prev;
     node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
 
@@ -158,6 +169,25 @@ void insertBefore(list_t *list, node_t *elem, void *value) {
     list->size++;
 }
 
+void deleteNode(list_t *list, node_t *elem) {
+    assert(elem);
+    assert(list);
+    assert(list->size > 0);
+
+    if (elem->prev)
+        elem->prev->next = elem->next;
+    else
+        list->head = elem->next;
+
+    if(elem->next)
+        elem->next->prev = elem->prev;
+    else
+        list->tail = list->head;
+
+    (list->size)--;
+    free(elem);
+}
+
 void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *)) {
     assert(list);
     assert(dumpFilename);
@@ -166,7 +196,7 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *
     fprintf(dumpFile, "digraph {\n");
 
     node_t *node = list->head;
-    
+
     fprintf(dumpFile, "node%p[label=\"{{%p}", node, node);
     if(nodeDump) {
         fprintf(dumpFile, "|{%s}", (*nodeDump)(node));
