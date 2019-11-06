@@ -32,6 +32,10 @@ node_t *getNextElement(node_t *node);
 
 node_t *getPreviousElement(node_t *node);
 
+node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *));
+
+node_t *findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *));
+
 listValidity validateList(list_t *list);
 
 void deleteList(list_t **list);
@@ -47,8 +51,6 @@ void insertBefore(list_t *list, node_t *elem, void *value);
 void deleteNode(list_t *list, node_t *elem);
 
 void clearList(list_t *list);
-
-node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *));
 
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
 
@@ -132,8 +134,40 @@ void addToHead(list_t *list, void *value) {
     list->size++;
 }
 
-node_t *findNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+    assert(list);
 
+    node_t *node = list->head;
+
+    for(size_t i = 0; i < list->size; i++) {
+        if(!node)
+            return node;
+
+        if(cmp(node->value, value))
+            return node;
+
+        node = node->next;
+    }
+
+    return nullptr;
+}
+
+node_t *findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+    assert(list);
+
+    node_t *node = list->tail;
+
+    for(size_t i = list->size - 1; i >= 0; i--) {
+        if(!node)
+            return node;
+
+        if(cmp(node->value, value))
+            return node;
+
+        node = node->prev;
+    }
+
+    return nullptr;
 }
 
 node_t *getFirstElement(list_t *list) {
