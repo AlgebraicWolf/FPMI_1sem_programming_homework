@@ -16,6 +16,8 @@ struct list_t {
 
 list_t *createList();
 
+node_t *getElementByPosition(list_t *list, size_t position);
+
 void deleteList(list_t **list);
 
 void addToHead(list_t *list, void *value);
@@ -27,6 +29,8 @@ void insertAfter(list_t *list, node_t *elem, void *value);
 void insertBefore(list_t *list, node_t *elem, void *value);
 
 void deleteNode(list_t *list, node_t *elem);
+
+void clearList(list_t *list);
 
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(node_t *) = nullptr);
 
@@ -64,20 +68,26 @@ list_t *createList() {
     return newList;
 }
 
-void deleteList(list_t **list) {
+void clearList(list_t *list) {
     assert(list);
-    assert(*list);
 
-    node_t *curNode = nullptr;
+    node_t *curNode = list->head;
     node_t *next = nullptr;
 
-    curNode = (*list)->head;
-
-    while(curNode != (*list)->tail) {
+    while(curNode != list->tail) {
         next = curNode->next;
         free(curNode);
         curNode = next;
     }
+
+    list->size = 0;
+}
+
+void deleteList(list_t **list) {
+    assert(list);
+    assert(*list);
+
+    clearList(*list);
 
     free(*list);
     *list = nullptr;
@@ -182,7 +192,7 @@ node_t *getElementByPosition(list_t *list, size_t position) {
             return nullptr;
         curNode = curNode->next;
     }
-    
+
     return curNode;
 }
 
