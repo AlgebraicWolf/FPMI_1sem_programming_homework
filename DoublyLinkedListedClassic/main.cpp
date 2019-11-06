@@ -169,6 +169,23 @@ void insertBefore(list_t *list, node_t *elem, void *value) {
     list->size++;
 }
 
+node_t *getElementByPosition(list_t *list, size_t position) {
+    assert(list);
+
+    if(position >= list->size)
+        return nullptr;
+
+    node_t *curNode = list->head;
+
+    for(int i = 0; i < position; i++) {
+        if (!curNode)
+            return nullptr;
+        curNode = curNode->next;
+    }
+    
+    return curNode;
+}
+
 void deleteNode(list_t *list, node_t *elem) {
     assert(elem);
     assert(list);
