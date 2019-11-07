@@ -206,6 +206,23 @@ long long getPreviousElement(list_t *list, long long node) {
     return list->prev[node];
 }
 
+long long getElementByPosition(list_t *list, size_t position) {
+    assert(list);
+
+    if(position >= list->size)
+        return -1;
+
+    long long curNode = list->head;
+
+    for(size_t i = 0; i < position; i++) {
+        if (curNode == -1)
+            return curNode;
+        curNode = list->next[curNode];
+    }
+
+    return curNode;
+}
+
 int main() {
 
 }
