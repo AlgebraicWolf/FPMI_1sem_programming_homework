@@ -180,6 +180,12 @@ int insertBefore(list_t *list, long long elem, void *value) {
     return 1;
 }
 
+long long getFirstElement(list_t *list) {
+    assert(list);
+
+    return list->head;
+}
+
 int main() {
 
 }
