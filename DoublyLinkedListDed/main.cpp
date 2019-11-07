@@ -31,6 +31,16 @@ list_t *createList(size_t maxsize) {
     return list;
 }
 
+void deleteList(list_t **list) {
+    assert(list);
+    assert(*list);
+
+    clearList(*list);
+
+    free(*list);
+    *list = nullptr;
+}
+
 int main() {
 
 }
