@@ -18,6 +18,7 @@ struct list_t {
 list_t *createList(size_t maxsize) {
     list_t *list = (list_t *) calloc(1, sizeof(list_t));
     list->size = 0;
+    list->value = (void **) calloc(maxsize, sizeof(void *));
     list->maxsize = maxsize;
     list->next = (long long *) calloc(maxsize, sizeof(long long));
     list->prev = (long long *) calloc(maxsize, sizeof(long long));
@@ -29,6 +30,15 @@ list_t *createList(size_t maxsize) {
         stackPush(list->free, i);
 
     return list;
+}
+
+void clearList(list_t *list) {
+    assert(list);
+
+    long long curNode = list->head;
+    long long next = -1;
+
+    while(curNode != )
 }
 
 void deleteList(list_t **list) {
