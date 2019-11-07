@@ -192,6 +192,13 @@ long long getLastElement(list_t *list) {
     return list->tail;
 }
 
+long long getNextElement(list_t *list, long long node) {
+    assert(list);
+    assert(node >= 0);
+
+    return list->next[node];
+}
+
 int main() {
 
 }
