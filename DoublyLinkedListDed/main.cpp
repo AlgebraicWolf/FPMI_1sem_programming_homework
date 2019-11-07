@@ -241,6 +241,24 @@ long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) 
     return -1;
 }
 
+long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+    assert(list);
+
+    long long node = list->tail;
+
+    for(size_t i = list->size - 1; i >= 0; i--) {
+        if(node == -1)
+            return -1;
+
+        if(cmp(list->value[node. value]))
+            return node;
+
+        node = list->prev[node];
+    }
+
+    return -1;
+}
+
 int main() {
 
 }
