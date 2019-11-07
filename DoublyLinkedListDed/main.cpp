@@ -120,7 +120,35 @@ int addToTail(list_t *list, void *value) {
     return 1;
 }
 
+int insertAfter(list_t *list, long long elem, void *value) {
+    assert(list);
+    assert(elem >= 0);
 
+    if(list->size == list->maxsize)
+        return 0;
+
+    long long tmp = list->next[elem];
+    long long newNode = 0;
+
+    stackPop(list->free, &newNode);
+
+    list->prev[newNode] = elem;
+    list->next[newNode] = tmp;
+    list->value[newNode] = value;
+
+    list->next[elem] = newNode;
+
+    if(tmp != -1) {
+        list->prev[tmp] = newNode;
+    }
+    else {
+        list->tail = newNode;
+    }
+
+    list->size++;
+
+    return 1;
+}
 
 int main() {
 
