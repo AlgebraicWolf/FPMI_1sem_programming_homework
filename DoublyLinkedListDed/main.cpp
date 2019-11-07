@@ -92,6 +92,36 @@ int addToHead(list_t *list, void *value) {
     return 1;
 }
 
+int addToTail(list_t *list, void *value) {
+    assert(list);
+
+    if(list->size == list->maxsize)
+        return 0;
+
+    long long temp = list->head;
+    long long newNode = 0;
+
+    stackPop(list->free, &newNode);
+
+    list->value[newNode] = value;
+
+    if(temp != -1) {
+        list->next[temp] = newNode;
+    }
+
+    list->tail = newNode;
+
+    if(list->head == -1) {
+        list-> head = newNode;
+    }
+
+    list->size++;
+
+    return 1;
+}
+
+
+
 int main() {
 
 }
