@@ -199,6 +199,13 @@ long long getNextElement(list_t *list, long long node) {
     return list->next[node];
 }
 
+long long getPreviousElement(list_t *list, long long node) {
+    assert(list);
+    assert(node >= 0);
+
+    return list->prev[node];
+}
+
 int main() {
 
 }
