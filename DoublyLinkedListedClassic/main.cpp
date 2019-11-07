@@ -11,7 +11,7 @@ enum listValidity{
 struct node_t {
     node_t *next;
     node_t *prev;
-    void *value; // reconsider
+    void *value;
 };
 
 struct list_t {

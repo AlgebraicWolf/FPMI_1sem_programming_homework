@@ -1,1 +1,1 @@
-/usr/bin/g++  -g   CMakeFiles/DoublyLinkedListDed.dir/main.cpp.o  -o DoublyLinkedListDed 
+/usr/bin/g++  -g   CMakeFiles/DoublyLinkedListDed.dir/main.cpp.o  -o DoublyLinkedListDed libStackLibrary.a libMurMurHash3.a 

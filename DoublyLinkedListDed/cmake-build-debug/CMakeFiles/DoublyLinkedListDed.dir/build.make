@@ -79,6 +79,8 @@ DoublyLinkedListDed_EXTERNAL_OBJECTS =
 
 DoublyLinkedListDed: CMakeFiles/DoublyLinkedListDed.dir/main.cpp.o
 DoublyLinkedListDed: CMakeFiles/DoublyLinkedListDed.dir/build.make
+DoublyLinkedListDed: libStackLibrary.a
+DoublyLinkedListDed: libMurMurHash3.a
 DoublyLinkedListDed: CMakeFiles/DoublyLinkedListDed.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable DoublyLinkedListDed"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/DoublyLinkedListDed.dir/link.txt --verbose=$(VERBOSE)

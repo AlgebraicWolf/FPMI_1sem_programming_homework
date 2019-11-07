@@ -63,15 +63,50 @@ CMAKE_BINARY_DIR = /home/alexey/Programming/MIPT_1sem_programming_homework/Doubl
 # Directory level rules for the build root directory
 
 # The main recursive "clean" target.
+clean: CMakeFiles/MurMurHash3.dir/clean
 clean: CMakeFiles/DoublyLinkedListDed.dir/clean
+clean: CMakeFiles/StackLibrary.dir/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/MurMurHash3.dir
+
+# All Build rule for target.
+CMakeFiles/MurMurHash3.dir/all:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/depend
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target MurMurHash3"
+.PHONY : CMakeFiles/MurMurHash3.dir/all
+
+# Include target in all.
+all: CMakeFiles/MurMurHash3.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/MurMurHash3.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/MurMurHash3.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/MurMurHash3.dir/rule
+
+# Convenience name for target.
+MurMurHash3: CMakeFiles/MurMurHash3.dir/rule
+
+.PHONY : MurMurHash3
+
+# clean rule for target.
+CMakeFiles/MurMurHash3.dir/clean:
+	$(MAKE) -f CMakeFiles/MurMurHash3.dir/build.make CMakeFiles/MurMurHash3.dir/clean
+.PHONY : CMakeFiles/MurMurHash3.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/DoublyLinkedListDed.dir
 
 # All Build rule for target.
-CMakeFiles/DoublyLinkedListDed.dir/all:
+CMakeFiles/DoublyLinkedListDed.dir/all: CMakeFiles/MurMurHash3.dir/all
+CMakeFiles/DoublyLinkedListDed.dir/all: CMakeFiles/StackLibrary.dir/all
 	$(MAKE) -f CMakeFiles/DoublyLinkedListDed.dir/build.make CMakeFiles/DoublyLinkedListDed.dir/depend
 	$(MAKE) -f CMakeFiles/DoublyLinkedListDed.dir/build.make CMakeFiles/DoublyLinkedListDed.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target DoublyLinkedListDed"
@@ -84,7 +119,7 @@ all: CMakeFiles/DoublyLinkedListDed.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/DoublyLinkedListDed.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DoublyLinkedListDed.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/DoublyLinkedListDed.dir/rule
@@ -98,6 +133,38 @@ DoublyLinkedListDed: CMakeFiles/DoublyLinkedListDed.dir/rule
 CMakeFiles/DoublyLinkedListDed.dir/clean:
 	$(MAKE) -f CMakeFiles/DoublyLinkedListDed.dir/build.make CMakeFiles/DoublyLinkedListDed.dir/clean
 .PHONY : CMakeFiles/DoublyLinkedListDed.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/StackLibrary.dir
+
+# All Build rule for target.
+CMakeFiles/StackLibrary.dir/all:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/depend
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target StackLibrary"
+.PHONY : CMakeFiles/StackLibrary.dir/all
+
+# Include target in all.
+all: CMakeFiles/StackLibrary.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/StackLibrary.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/StackLibrary.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alexey/Programming/MIPT_1sem_programming_homework/DoublyLinkedListDed/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/StackLibrary.dir/rule
+
+# Convenience name for target.
+StackLibrary: CMakeFiles/StackLibrary.dir/rule
+
+.PHONY : StackLibrary
+
+# clean rule for target.
+CMakeFiles/StackLibrary.dir/clean:
+	$(MAKE) -f CMakeFiles/StackLibrary.dir/build.make CMakeFiles/StackLibrary.dir/clean
+.PHONY : CMakeFiles/StackLibrary.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
