@@ -186,6 +186,12 @@ long long getFirstElement(list_t *list) {
     return list->head;
 }
 
+long long getLastElement(list_t *list) {
+    assert(list);
+
+    return list->tail;
+}
+
 int main() {
 
 }
