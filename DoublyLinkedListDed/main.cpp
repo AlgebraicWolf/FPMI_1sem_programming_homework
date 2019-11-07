@@ -150,6 +150,36 @@ int insertAfter(list_t *list, long long elem, void *value) {
     return 1;
 }
 
+int insertBefore(list_t *list, long long elem, void *value) {
+    assert(list);
+    assert(elem >= 0);
+
+    if(list->size == list->maxsize)
+        return 0;
+
+    long long tmp = list->prev[elem];
+    long long newNode = 0;
+
+    stackPop(list->free, &newNode);
+
+    list->next[newNode] = elem;
+    list->prev[newNode] = tmp;
+    list->value[newNode] = value;
+
+    list->prev[elem] = newNode;
+
+    if(tmp != -1) {
+        list->next[tmp] = newNode;
+    }
+    else {
+        list->head = newNode;
+    }
+
+    list->size++;
+
+    return 1;
+}
+
 int main() {
 
 }
