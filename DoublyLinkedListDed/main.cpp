@@ -64,6 +64,34 @@ void deleteList(list_t **list) {
     *list = nullptr;
 }
 
+int addToHead(list_t *list, void *value) {
+    assert(list);
+
+    if(list->size == list->maxsize)
+        return 0;
+
+    long long temp = list->head;
+    long long newNode = 0;
+
+    stackPop(list->free, &newNode);
+
+    list->value[newNode] = value;
+
+    if(temp != -1)  {
+        list->prev[temp] = newNode;
+    }
+
+    list->head = newNode;
+
+    if(list->tail == -1) {
+        list->tail = newNode;
+    }
+
+    list->size++;
+
+    return 1;
+}
+
 int main() {
 
 }
