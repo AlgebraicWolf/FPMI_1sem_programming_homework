@@ -223,6 +223,24 @@ long long getElementByPosition(list_t *list, size_t position) {
     return curNode;
 }
 
+long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
+    assert(list);
+
+    long long node = list->head;
+
+    for(size_t i = 0; i < list->size; i++) {
+        if(node == -1)
+            return -1;
+
+        if(cmp(list->value[node. value]))
+            return node;
+
+        node = list->next[node];
+    }
+
+    return -1;
+}
+
 int main() {
 
 }
