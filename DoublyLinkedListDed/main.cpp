@@ -38,7 +38,20 @@ void clearList(list_t *list) {
     long long curNode = list->head;
     long long next = -1;
 
-    while(curNode != )
+    while(curNode != list->tail) {
+        next = list->next[curNode];
+
+        list->next[curNode] = -1;
+        list->prev[curNode] = -1;
+        list->value[curNode] = nullptr;
+        stackPush(list->free, curNode);
+
+        curNode = next;
+    }
+
+    list->head = -1;
+    list->tail = -1;
+    list->size = 0;
 }
 
 void deleteList(list_t **list) {
