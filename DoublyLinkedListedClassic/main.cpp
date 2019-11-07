@@ -309,7 +309,7 @@ void deleteNode(list_t *list, node_t *elem) {
     if(elem->next)
         elem->next->prev = elem->prev;
     else
-        list->tail = list->head;
+        list->tail = elem->prev;
 
     (list->size)--;
     free(elem);

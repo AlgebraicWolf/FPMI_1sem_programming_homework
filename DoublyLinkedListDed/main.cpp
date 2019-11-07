@@ -259,6 +259,25 @@ long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     return -1;
 }
 
+void deleteNode(list_t *list, long long node) {
+    assert(list);
+    assert(node >= 0);
+    assert(node < list->size);
+
+    if(list->prev[node] != -1)
+        list->next[list->prev[node]] = list->next[node];
+    else
+        list->head = list->next[node];
+
+    if(list->next[node] != -1)
+        list->prev[list->next[node]] = list->prev[node];
+    else
+        list->tail = list->prev[node];
+
+    list->size--;
+    stackPush(list->free, node);
+}
+
 int main() {
 
 }
