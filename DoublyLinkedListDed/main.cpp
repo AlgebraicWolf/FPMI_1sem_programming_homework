@@ -76,6 +76,11 @@ char *nodeDump(list_t *list, long long node) { // Example function
     return (char *)str;
 }
 
+/**
+ * Function that performs unit testing
+ * @return Lib validity
+ */
+
 bool doUnitTesting() {
     bool valid = true;
     list_t *testList = createList(10);
@@ -142,6 +147,12 @@ int main() {
         printf(ANSI_COLOR_RED "##############################\nUnit testing failed!\n##############################" ANSI_COLOR_RESET);
 }
 
+/**
+ * List "constructor" i. e. function that creates and initializes list_t
+ * @param maxsize Maximal size of list
+ * @return Pointer to list_t
+ */
+
 list_t *createList(size_t maxsize) {
     list_t *list = (list_t *) calloc(1, sizeof(list_t));
     list->size = 0;
@@ -162,6 +173,11 @@ list_t *createList(size_t maxsize) {
 
     return list;
 }
+
+/**
+ * Function that clears list
+ * @param list Pointer to list_t
+ */
 
 void clearList(list_t *list) {
     assert(list);
@@ -185,6 +201,11 @@ void clearList(list_t *list) {
     list->size = 0;
 }
 
+/**
+ * List "destructor" i. e. function that deletes list
+ * @param list Pointer to pointer to list
+ */
+
 void deleteList(list_t **list) {
     assert(list);
     assert(*list);
@@ -196,6 +217,13 @@ void deleteList(list_t **list) {
     free(*list);
     *list = nullptr;
 }
+
+/**
+ * Function that adds elements to list's head
+ * @param list Pointer to list_t
+ * @param value Void pointer to value
+ * @return 0 if error occures, 1 otherwise
+ */
 
 int addToHead(list_t *list, void *value) {
     assert(list);
@@ -225,6 +253,13 @@ int addToHead(list_t *list, void *value) {
     return 1;
 }
 
+/**
+ * Function that adds value to the tail of the list
+ * @param list Pointer to list_t
+ * @param value Void pointer to value
+ * @return 0 if error occures, 1 otherwise
+ */
+
 int addToTail(list_t *list, void *value) {
     assert(list);
 
@@ -252,6 +287,14 @@ int addToTail(list_t *list, void *value) {
 
     return 1;
 }
+
+/**
+ * Function that inserts element after the given one
+ * @param list Pointer to list_t
+ * @param elem Physical number of element
+ * @param value Void pointer to value
+ * @return 0 if error occures, 1 otherwise
+ */
 
 int insertAfter(list_t *list, long long elem, void *value) {
     assert(list);
@@ -283,6 +326,14 @@ int insertAfter(list_t *list, long long elem, void *value) {
     return 1;
 }
 
+/**
+ * Function that inserts element before the given one
+ * @param list Pointer to list_t
+ * @param elem Physical number of element
+ * @param value Void pointer to value
+ * @return 0 if error occures, 1 otherwise
+ */
+
 int insertBefore(list_t *list, long long elem, void *value) {
     assert(list);
     assert(elem >= 0);
@@ -313,17 +364,36 @@ int insertBefore(list_t *list, long long elem, void *value) {
     return 1;
 }
 
+/**
+ * Function that gets the first element of the list
+ * @param list Poiter to list_t
+ * @return Physical number of element
+ */
+
 long long getFirstElement(list_t *list) {
     assert(list);
 
     return list->head;
 }
 
+/**
+ * Function that gets the last element of the list
+ * @param list Poiter to list_t
+ * @return Physical number of element
+ */
+
 long long getLastElement(list_t *list) {
     assert(list);
 
     return list->tail;
 }
+
+/**
+ * Function that gets element after the given one
+ * @param list Poiter to list_t
+ * @param node Physical adress of element
+ * @return Physical number of element
+ */
 
 long long getNextElement(list_t *list, long long node) {
     assert(list);
@@ -332,12 +402,26 @@ long long getNextElement(list_t *list, long long node) {
     return list->next[node];
 }
 
+/**
+ * Function that gets element before the given one
+ * @param list Pointer to list_t
+ * @param node Physical address of element
+ * @return Physical number of element
+ */
+
 long long getPreviousElement(list_t *list, long long node) {
     assert(list);
     assert(node >= 0);
 
     return list->prev[node];
 }
+
+/**
+ * Function that returns physical address by logical adress
+ * @param list Pointer to list_t
+ * @param position Logical position
+ * @return Physical position
+ */
 
 long long getElementByPosition(list_t *list, size_t position) {
     assert(list);
@@ -355,6 +439,14 @@ long long getElementByPosition(list_t *list, size_t position) {
 
     return curNode;
 }
+
+/**
+ * Function that finds first occurance of the value
+ * @param list Pointer to list_t
+ * @param value Void to pointer value
+ * @param cmp Pointer to comparator
+ * @return Physical address of the element
+ */
 
 long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     assert(list);
@@ -374,6 +466,14 @@ long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) 
     return -1;
 }
 
+/**
+ * Function that finds last occurance of the value
+ * @param list Pointer to list_t
+ * @param value Void to pointer value
+ * @param cmp Pointer to comparator
+ * @return Physical address of the element
+ */
+
 long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     assert(list);
 
@@ -391,6 +491,12 @@ long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
 
     return -1;
 }
+
+/**
+ * Function that deletes node
+ * @param list Pointer to list_t
+ * @param node Physical adress of the node
+ */
 
 void deleteNode(list_t *list, long long node) {
     assert(list);
@@ -411,6 +517,12 @@ void deleteNode(list_t *list, long long node) {
     stackPush(&list->free, node);
 }
 
+/**
+ * Function that validates the list
+ * @param list Pointer to list_t
+ * @return List Validity value
+ */
+
 listValidity validateList(list_t *list) {
     if (!list)
         return LIST_NOT_FOUND;
@@ -430,6 +542,13 @@ listValidity validateList(list_t *list) {
 
     return OK;
 }
+
+/**
+ * Function that dumps list
+ * @param list Pointer to list
+ * @param dumpFilename Dump filename
+ * @param nodeDump Optional function that renders value
+ */
 
 void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(list_t *, long long)) {
     assert(list);

@@ -74,7 +74,10 @@ char *nodeDump(node_t *node) { // Example function
     sprintf(str, "{VALUE|%d}|{NEXT|%p}|{PREVIOUS|%p}", *(int *)(node->value), node->next, node->prev);
     return (char *)str;
 }
-
+/**
+ * Function that performs unit testing
+ * @return Validity of the library
+ */
 bool doUnitTesting() {
     bool valid = true;
     list_t *testList = createList();
@@ -132,6 +135,11 @@ int main() {
         printf(ANSI_COLOR_RED "##############################\nUnit testing failed!\n##############################" ANSI_COLOR_RESET);
 }
 
+/**
+ * List "constructor" i. e. function that creates and initializes list
+ * @return Pointer to list_t
+ */
+
 list_t *createList() {
     list_t *newList = (list_t *) calloc(1, sizeof(list_t));
     newList->size = 0;
@@ -140,6 +148,11 @@ list_t *createList() {
 
     return newList;
 }
+
+/**
+ * Function that clears list
+ * @param list Pointer to list_t
+ */
 
 void clearList(list_t *list) {
     assert(list);
@@ -156,6 +169,11 @@ void clearList(list_t *list) {
     list->size = 0;
 }
 
+/**
+ * List "destructor" i. e. function that removes list
+ * @param list Pointer to the pointer to list_t
+ */
+
 void deleteList(list_t **list) {
     assert(list);
     assert(*list);
@@ -165,6 +183,12 @@ void deleteList(list_t **list) {
     free(*list);
     *list = nullptr;
 }
+
+/**
+ * Function that adds element to the very beginning of the list
+ * @param list pointer to list_t
+ * @param value void pointer to data
+ */
 
 void addToHead(list_t *list, void *value) {
     assert(list);
@@ -187,6 +211,14 @@ void addToHead(list_t *list, void *value) {
     list->size++;
 }
 
+/**
+ * Function that finds first occurence node with desired value
+ * @param list Pointer to list_t
+ * @param value Void pointer to desired data
+ * @param cmp Comparator for data in list
+ * @return Pointer to node or nullptr when not found
+ */
+
 node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     assert(list);
 
@@ -204,6 +236,14 @@ node_t *findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
 
     return nullptr;
 }
+
+/**
+ * Function that finds last occurence node with desired value
+ * @param list Pointer to list_t
+ * @param value Void pointer to desired data
+ * @param cmp Comparator for data in list
+ * @return Pointer to node or nullptr when not found
+ */
 
 node_t *findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     assert(list);
@@ -223,11 +263,23 @@ node_t *findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
     return nullptr;
 }
 
+/**
+ * Function that returns pointer to the first element of the list
+ * @param list Pointer to list_t
+ * @return Pointer to node_t
+ */
+
 node_t *getFirstElement(list_t *list) {
     assert(list);
 
     return list->head;
 }
+
+/**
+ * Function that returns pointer to the last element of the list
+ * @param list Pointer to list_t
+ * @return Pointer to node_t
+ */
 
 node_t *getLastElement(list_t *list) {
     assert(list);
@@ -235,17 +287,35 @@ node_t *getLastElement(list_t *list) {
     return list->tail;
 }
 
+/**
+ * Returns pointer to the next element
+ * @param node Pointer to node_t
+ * @return Pointer to the next element
+ */
+
 node_t *getNextElement(node_t *node) {
     assert(node);
 
     return node->next;
 }
 
+/**
+ * Returns pointer to the previous element
+ * @param node Pointer to node_t
+ * @return Pointer to the previous element
+ */
+
 node_t *getPreviousElement(node_t *node) {
     assert(node);
 
     return node->prev;
 }
+
+/**
+ * Pushes element to tail
+ * @param list Pointer to list
+ * @param value Void pointer to value
+ */
 
 void addToTail(list_t *list, void *value) {
     assert(list);
@@ -267,6 +337,13 @@ void addToTail(list_t *list, void *value) {
 
     list->size++;
 }
+
+/**
+ * Function that adds element after the given
+ * @param list Pointer to list_t
+ * @param elem Pointer to node_t to insert element after
+ * @param value Void pointer to value
+ */
 
 void insertAfter(list_t *list, node_t *elem, void *value) {
     assert(list);
@@ -290,6 +367,13 @@ void insertAfter(list_t *list, node_t *elem, void *value) {
     list->size++;
 }
 
+/**
+ * Function that adds element before the given
+ * @param list Pointer to list_t
+ * @param elem Pointer to node_t
+ * @param value Void pointer to value
+ */
+
 void insertBefore(list_t *list, node_t *elem, void *value) {
     assert(list);
     assert(elem);
@@ -312,6 +396,13 @@ void insertBefore(list_t *list, node_t *elem, void *value) {
     list->size++;
 }
 
+/**
+ * Returns pointer to element by its position in list
+ * @param list Pointer to list_t
+ * @param position Position of element
+ * @return Pointer to node_t
+ */
+
 node_t *getElementByPosition(list_t *list, size_t position) {
     assert(list);
 
@@ -328,6 +419,12 @@ node_t *getElementByPosition(list_t *list, size_t position) {
 
     return curNode;
 }
+
+/**
+ * Function that validates list
+ * @param list pointer to list_t
+ * @return List validity status
+ */
 
 listValidity validateList(list_t *list) {
     if (!list)
@@ -349,6 +446,12 @@ listValidity validateList(list_t *list) {
     return OK;
 }
 
+/**
+ * Function that deletes node from the list
+ * @param list Pointer to list_t
+ * @param elem Pointer to node_t to delete
+ */
+
 void deleteNode(list_t *list, node_t *elem) {
     assert(list);
     assert(elem);
@@ -367,6 +470,13 @@ void deleteNode(list_t *list, node_t *elem) {
     (list->size)--;
     free(elem);
 }
+
+/**
+ * Function that dumps list
+ * @param list Pointer to list_t
+ * @param dumpFilename Pointer to char array with filename
+ * @param nodeDump Pointer to function that dumps data in list (optional)
+ */
 
 void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *)) {
     assert(list);
