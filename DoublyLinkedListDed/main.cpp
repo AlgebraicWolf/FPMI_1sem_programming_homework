@@ -98,10 +98,10 @@ bool doUnitTesting() {
     UTEST(testList->tail == 2, valid);
     UTEST(testList->head == 3, valid);
 
-    UTEST(getElementByPosition(testList, 0) == 1, valid);
-    UTEST(getElementByPosition(testList, 1) == 2, valid);
-    UTEST(getElementByPosition(testList, 2) == 9, valid);
-    UTEST(getElementByPosition(testList, 3) == 10, valid);
+    UTEST(getElementByPosition(testList, 0) == 3, valid);
+    UTEST(getElementByPosition(testList, 1) == 0, valid);
+    UTEST(getElementByPosition(testList, 2) == 1, valid);
+    UTEST(getElementByPosition(testList, 3) == 2, valid);
 
     for(int i = 2; i < 8; i++) {
         insertAfter(testList, getElementByPosition(testList, i - 1), &vals[i]);
@@ -114,12 +114,12 @@ bool doUnitTesting() {
     UTEST(!insertAfter(testList, 0, nullptr), valid);
     UTEST(!insertBefore(testList, 0, nullptr), valid);
 
-    deleteNode(testList, 0);
+    deleteNode(testList, 3);
     UTEST(testList->size == 9, valid);
     UTEST(testList->head == 0, valid);
 
-    deleteNode(testList, 9);
-    UTEST(testList->size == 9, valid);
+    deleteNode(testList, 2);
+    UTEST(testList->size == 8, valid);
     UTEST(testList->tail == 1, valid);
 
     UTEST(validateList(testList) == OK, valid);
@@ -131,13 +131,10 @@ bool doUnitTesting() {
 
 
 int main() {
-    list_t *list = createList(10);
-    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    addToHead(list, &arr[0]);
-    addToHead(list, &arr[1]);
-    insertAfter(list, 1, &arr[2]);
-    dumpList(list, "dump.dot", nullptr);
-    deleteList(&list);
+    if(doUnitTesting())
+        printf(ANSI_COLOR_GREEN "##############################\nUnit testing finished successfully!\n##############################" ANSI_COLOR_RESET);
+    else
+        printf(ANSI_COLOR_RED "##############################\nUnit testing failed!\n##############################" ANSI_COLOR_RESET);
 }
 
 list_t *createList(size_t maxsize) {
@@ -157,7 +154,7 @@ list_t *createList(size_t maxsize) {
         list->prev[i] = -1;
         stackPush(&list->free, i);
     }
-    
+
     return list;
 }
 
@@ -416,8 +413,8 @@ listValidity validateList(list_t *list) {
     size_t size = list->size;
     long long node = list->head;
 
-    for(size_t i = 0; i < size; i++) {
-        if(node != -1)
+    for(size_t i = 0; i < size - 1; i++) {
+        if(node == -1)
             return CORRUPTED;
 
         node = list->next[node];
