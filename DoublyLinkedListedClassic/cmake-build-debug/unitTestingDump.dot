@@ -1,0 +1,26 @@
+digraph {
+node0x55db38189ed0[label="{{0x55db38189ed0}|{{VALUE|2}|{NEXT|0x55db38189f50}|{PREVIOUS|(nil)}}}",shape=record];
+node0x55db38189f50[label="{{0x55db38189f50}|{{VALUE|3}|{NEXT|0x55db38189f70}|{PREVIOUS|0x55db38189ed0}}}",shape=record];
+node0x55db38189ed0 -> node0x55db38189f50;
+node0x55db38189f50 -> node0x55db38189ed0;
+node0x55db38189f70[label="{{0x55db38189f70}|{{VALUE|4}|{NEXT|0x55db38189f90}|{PREVIOUS|0x55db38189f50}}}",shape=record];
+node0x55db38189f50 -> node0x55db38189f70;
+node0x55db38189f70 -> node0x55db38189f50;
+node0x55db38189f90[label="{{0x55db38189f90}|{{VALUE|5}|{NEXT|0x55db38189fb0}|{PREVIOUS|0x55db38189f70}}}",shape=record];
+node0x55db38189f70 -> node0x55db38189f90;
+node0x55db38189f90 -> node0x55db38189f70;
+node0x55db38189fb0[label="{{0x55db38189fb0}|{{VALUE|6}|{NEXT|0x55db38189fd0}|{PREVIOUS|0x55db38189f90}}}",shape=record];
+node0x55db38189f90 -> node0x55db38189fb0;
+node0x55db38189fb0 -> node0x55db38189f90;
+node0x55db38189fd0[label="{{0x55db38189fd0}|{{VALUE|7}|{NEXT|0x55db38189ff0}|{PREVIOUS|0x55db38189fb0}}}",shape=record];
+node0x55db38189fb0 -> node0x55db38189fd0;
+node0x55db38189fd0 -> node0x55db38189fb0;
+node0x55db38189ff0[label="{{0x55db38189ff0}|{{VALUE|8}|{NEXT|0x55db38189ef0}|{PREVIOUS|0x55db38189fd0}}}",shape=record];
+node0x55db38189fd0 -> node0x55db38189ff0;
+node0x55db38189ff0 -> node0x55db38189fd0;
+node0x55db38189ef0[label="{{0x55db38189ef0}|{{VALUE|9}|{NEXT|(nil)}|{PREVIOUS|0x55db38189ff0}}}",shape=record];
+node0x55db38189ff0 -> node0x55db38189ef0;
+node0x55db38189ef0 -> node0x55db38189ff0;
+Head -> node0x55db38189ed0;
+node0x55db38189ef0 -> Tail;
+}

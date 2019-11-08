@@ -2,6 +2,21 @@
 #include <cstdlib>
 #include <cassert>
 
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
+#define UTEST(cond, flag) {\
+    if(!(cond)) {\
+        flag = false;\
+        printf(ANSI_COLOR_RED "Unit testing failed: %s\n" ANSI_COLOR_RESET, #cond); \
+    }\
+}
+
 enum listValidity{
     OK = 0,
     LIST_NOT_FOUND = 1,
@@ -60,23 +75,61 @@ char *nodeDump(node_t *node) { // Example function
     return (char *)str;
 }
 
-int main() {
-    list_t *lst = createList();
-    int a = 10;
-    int b = 20;
-    int c = 30;
-    int d = 40;
-    int e = 50;
-    addToHead(lst, &a);
-    addToTail(lst, &e);
-    insertAfter(lst, lst->head, &b);
-    insertAfter(lst, lst->head->next, &b);
-    insertBefore(lst, lst->tail->prev, &d);
-    insertBefore(lst, lst->tail->prev->prev, &c);
+bool doUnitTesting() {
+    bool valid = true;
+    list_t *testList = createList();
+    UTEST(testList->head == nullptr, valid);
+    UTEST(testList->tail == nullptr, valid);
+    int vals[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-    dumpList(lst, "dump.dot", nodeDump);
-    deleteList(&lst);
-    return 0;
+    addToHead(testList, &vals[1]);
+    UTEST(testList->head == testList->tail, valid);
+    UTEST(testList->size == 1, valid);
+
+    addToTail(testList, &vals[8]);
+    UTEST(testList->size == 2, valid);
+    UTEST(testList->head != testList->tail, valid);
+
+    insertAfter(testList, testList->tail, &vals[9]);
+    UTEST(testList->size == 3, valid);
+
+    insertBefore(testList, testList->head, &vals[0]);
+    UTEST(testList->size == 4, valid);
+
+    UTEST((int *)getElementByPosition(testList, 0)->value == &vals[0], valid);
+    UTEST(getElementByPosition(testList, 1)->value == &vals[1], valid);
+    UTEST(getElementByPosition(testList, 2)->value == &vals[8], valid);
+    UTEST(getElementByPosition(testList, 3)->value == &vals[9], valid);
+
+    for(int i = 2; i < 8; i++) {
+        insertAfter(testList, getElementByPosition(testList, i - 1), &vals[i]);
+        UTEST(getElementByPosition(testList, i)->value == &vals[i], valid);
+    }
+
+    UTEST(testList->size == 10, valid);
+
+    node_t *old = testList->head;
+
+    deleteNode(testList, testList->head);
+    UTEST(testList->head != old, valid);
+
+    old = testList->tail;
+
+    deleteNode(testList, testList->tail);
+    UTEST(testList->tail != old, valid);
+
+    UTEST(validateList(testList) == OK, valid);
+    dumpList(testList, "unitTestingDump.dot", nodeDump);
+    deleteList(&testList);
+    UTEST(!testList, valid);
+    return valid;
+}
+
+int main() {
+    if(doUnitTesting())
+        printf(ANSI_COLOR_GREEN "##############################\nUnit testing finished successfully!\n##############################" ANSI_COLOR_RESET);
+    else
+        printf(ANSI_COLOR_RED "##############################\nUnit testing failed!\n##############################" ANSI_COLOR_RESET);
 }
 
 list_t *createList() {
@@ -283,7 +336,7 @@ listValidity validateList(list_t *list) {
     size_t size = list->size;
     node_t *node = list->head;
 
-    for(size_t i = 0; i < size; i++) {
+    for(size_t i = 0; i < size - 1; i++) {
         if(!node)
             return CORRUPTED;
 
@@ -343,7 +396,7 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(node_t *
     }
 
     fprintf(dumpFile, "Head -> node%p;\n", list->head);
-    fprintf(dumpFile, "Tail -> node%p;\n", list->tail);
+    fprintf(dumpFile, "node%p -> Tail;\n", list->tail);
     fprintf(dumpFile, "}");
     fclose(dumpFile);
 }

@@ -68,8 +68,13 @@ void deleteNode(list_t *list, long long elem);
 
 void clearList(list_t *list);
 
-void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(long long ) = nullptr);
+void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(list_t *, long long ) = nullptr);
 
+char *nodeDump(list_t *list, long long node) { // Example function
+    static char str[65] = "";
+    sprintf(str, "{VALUE|%d}|{NEXT|%lld}|{PREVIOUS|%lld}", *(int *)(list->value[node]), list->next[node], list->prev[node]);
+    return (char *)str;
+}
 
 bool doUnitTesting() {
     bool valid = true;
@@ -123,7 +128,7 @@ bool doUnitTesting() {
     UTEST(testList->tail == 1, valid);
 
     UTEST(validateList(testList) == OK, valid);
-    dumpList(testList, "unitTestingDump.dot");
+    dumpList(testList, "unitTestingDump.dot", nodeDump);
     deleteList(&testList);
     UTEST(!testList, valid);
     return valid;
@@ -426,7 +431,7 @@ listValidity validateList(list_t *list) {
     return OK;
 }
 
-void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(long long)) {
+void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(list_t *, long long)) {
     assert(list);
     assert(dumpFilename);
 
@@ -437,14 +442,14 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(long lon
 
     fprintf(dumpFile, "node%lld[label=\"{{%lld}", node, node);
     if(nodeDump) {
-        fprintf(dumpFile, "|{%s}", (*nodeDump)(node));
+        fprintf(dumpFile, "|{%s}", (*nodeDump)(list, node));
     }
     fprintf(dumpFile, "}\",shape=record];\n");
 
     while(node != list->tail) {
         fprintf(dumpFile, "node%lld[label=\"{{%lld}", list->next[node], list->next[node]);
         if(nodeDump) {
-            fprintf(dumpFile, "|{%s}", (*nodeDump)(list->next[node]));
+            fprintf(dumpFile, "|{%s}", (*nodeDump)(list, list->next[node]));
         }
         fprintf(dumpFile, "}\",shape=record];\n");
 
@@ -454,7 +459,7 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(long lon
     }
 
     fprintf(dumpFile, "Head -> node%lld;\n", list->head);
-    fprintf(dumpFile, "Tail -> node%lld;\n", list->tail);
+    fprintf(dumpFile, "node%lld -> Tail;\n", list->tail);
     fprintf(dumpFile, "}");
     fclose(dumpFile);
 }
