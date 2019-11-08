@@ -152,11 +152,12 @@ list_t *createList(size_t maxsize) {
     list->free = {};
     stackConstruct(&list->free, "ListFreeStack", maxsize, -1);
 
-    for(long long i = maxsize-1; i >= 0; i--)
+    for(long long i = maxsize-1; i >= 0; i--) {
         list->next[i] = -1;
         list->prev[i] = -1;
         stackPush(&list->free, i);
-
+    }
+    
     return list;
 }
 
@@ -187,6 +188,8 @@ void deleteList(list_t **list) {
     assert(*list);
 
     clearList(*list);
+
+    stackDestruct(&(*list)->free);
 
     free(*list);
     *list = nullptr;
