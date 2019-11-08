@@ -18,8 +18,57 @@ struct list_t {
     long long tail;
     size_t size;
     size_t maxsize;
-    stack_t *free;
+    stack_t free;
 };
+
+list_t *createList(size_t maxsize);
+
+long long getElementByPosition(list_t *list, size_t position);
+
+long long getFirstElement(list_t *list);
+
+long long getLastElement(list_t *list);
+
+long long getNextElement(long long node);
+
+long long getPreviousElement(long long node);
+
+long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *));
+
+long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *));
+
+listValidity validateList(list_t *list);
+
+void deleteList(list_t **list);
+
+int addToHead(list_t *list, void *value);
+
+int addToTail(list_t *list, void *value);
+
+int insertAfter(list_t *list, long long elem, void *value);
+
+int insertBefore(list_t *list, long long elem, void *value);
+
+void deleteNode(list_t *list, long long elem);
+
+void clearList(list_t *list);
+
+void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(long long ) = nullptr);
+
+
+int doUnitTesting() {
+
+}
+
+int main() {
+    list_t *list = createList(10);
+    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    addToHead(list, &arr[0]);
+    addToHead(list, &arr[1]);
+    insertAfter(list, 1, &arr[2]);
+    dumpList(list, "dump.dot", nullptr);
+    deleteList(&list);
+}
 
 list_t *createList(size_t maxsize) {
     list_t *list = (list_t *) calloc(1, sizeof(list_t));
@@ -30,10 +79,11 @@ list_t *createList(size_t maxsize) {
     list->prev = (long long *) calloc(maxsize, sizeof(long long));
     list->head = -1;
     list->tail = -1;
-    stackConstruct(list->free, "ListFreeStack", maxsize, -1);
+    list->free = {};
+    stackConstruct(&list->free, "ListFreeStack", maxsize, -1);
 
     for(long long i = maxsize-1; i >= 0; i--)
-        stackPush(list->free, i);
+        stackPush(&list->free, i);
 
     return list;
 }
@@ -50,7 +100,7 @@ void clearList(list_t *list) {
         list->next[curNode] = -1;
         list->prev[curNode] = -1;
         list->value[curNode] = nullptr;
-        stackPush(list->free, curNode);
+        stackPush(&list->free, curNode);
 
         curNode = next;
     }
@@ -79,7 +129,7 @@ int addToHead(list_t *list, void *value) {
     long long temp = list->head;
     long long newNode = 0;
 
-    stackPop(list->free, &newNode);
+    stackPop(&list->free, &newNode);
 
     list->value[newNode] = value;
 
@@ -107,7 +157,7 @@ int addToTail(list_t *list, void *value) {
     long long temp = list->head;
     long long newNode = 0;
 
-    stackPop(list->free, &newNode);
+    stackPop(&list->free, &newNode);
 
     list->value[newNode] = value;
 
@@ -136,7 +186,7 @@ int insertAfter(list_t *list, long long elem, void *value) {
     long long tmp = list->next[elem];
     long long newNode = 0;
 
-    stackPop(list->free, &newNode);
+    stackPop(&list->free, &newNode);
 
     list->prev[newNode] = elem;
     list->next[newNode] = tmp;
@@ -166,7 +216,7 @@ int insertBefore(list_t *list, long long elem, void *value) {
     long long tmp = list->prev[elem];
     long long newNode = 0;
 
-    stackPop(list->free, &newNode);
+    stackPop(&list->free, &newNode);
 
     list->next[newNode] = elem;
     list->prev[newNode] = tmp;
@@ -238,7 +288,7 @@ long long findFirstNode(list_t *list, void *value, bool (*cmp)(void *, void *)) 
         if(node == -1)
             return -1;
 
-        if(cmp(list->value[node. value]))
+        if(cmp(list->value[node], value))
             return node;
 
         node = list->next[node];
@@ -256,7 +306,7 @@ long long findLastNode(list_t *list, void *value, bool (*cmp)(void *, void *)) {
         if(node == -1)
             return -1;
 
-        if(cmp(list->value[node. value]))
+        if(cmp(list->value[node], value))
             return node;
 
         node = list->prev[node];
@@ -281,7 +331,7 @@ void deleteNode(list_t *list, long long node) {
         list->tail = list->prev[node];
 
     list->size--;
-    stackPush(list->free, node);
+    stackPush(&list->free, node);
 }
 
 listValidity validateList(list_t *list) {
@@ -335,8 +385,4 @@ void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(long lon
     fprintf(dumpFile, "Tail -> node%lld;\n", list->tail);
     fprintf(dumpFile, "}");
     fclose(dumpFile);
-}
-
-int main() {
-
 }
