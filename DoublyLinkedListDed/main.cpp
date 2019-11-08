@@ -4,6 +4,21 @@
 
 #include "stack.h"
 
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
+#define UTEST(cond, flag) {\
+    if(!(cond)) {\
+        flag = false;\
+        printf(ANSI_COLOR_RED "Unit testing failed: %s\n" ANSI_COLOR_RESET, #cond); \
+    }\
+}
+
 enum listValidity{
     OK = 0,
     LIST_NOT_FOUND = 1,
@@ -56,9 +71,64 @@ void clearList(list_t *list);
 void dumpList(list_t *list, const char *dumpFilename,  char *(*nodeDump)(long long ) = nullptr);
 
 
-int doUnitTesting() {
+bool doUnitTesting() {
+    bool valid = true;
+    list_t *testList = createList(10);
+    UTEST(testList->head == -1, valid);
+    UTEST(testList->tail == -1, valid);
+    int vals[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
+    addToHead(testList, &vals[1]);
+    UTEST(testList->head == 0, valid);
+    UTEST(testList->tail == 0, valid);
+    UTEST(testList->size == 1, valid);
+
+    addToTail(testList, &vals[8]);
+    UTEST(testList->tail == 1, valid);
+    UTEST(testList->head == 0, valid);
+    UTEST(testList->size == 2, valid);
+
+    insertAfter(testList, 1, &vals[9]);
+    UTEST(testList->size == 3, valid);
+    UTEST(testList->tail == 2, valid);
+    UTEST(testList->head == 0, valid);
+
+    insertBefore(testList, 0, &vals[0]);
+    UTEST(testList->size == 4, valid);
+    UTEST(testList->tail == 2, valid);
+    UTEST(testList->head == 3, valid);
+
+    UTEST(getElementByPosition(testList, 0) == 1, valid);
+    UTEST(getElementByPosition(testList, 1) == 2, valid);
+    UTEST(getElementByPosition(testList, 2) == 9, valid);
+    UTEST(getElementByPosition(testList, 3) == 10, valid);
+
+    for(int i = 2; i < 8; i++) {
+        insertAfter(testList, getElementByPosition(testList, i - 1), &vals[i]);
+        UTEST(testList->value[getElementByPosition(testList, i)] == &vals[i], valid);
+    }
+
+    UTEST(testList->size == 10, valid);
+    UTEST(!addToHead(testList, nullptr), valid);
+    UTEST(!addToTail(testList, nullptr), valid);
+    UTEST(!insertAfter(testList, 0, nullptr), valid);
+    UTEST(!insertBefore(testList, 0, nullptr), valid);
+
+    deleteNode(testList, 0);
+    UTEST(testList->size == 9, valid);
+    UTEST(testList->head == 0, valid);
+
+    deleteNode(testList, 9);
+    UTEST(testList->size == 9, valid);
+    UTEST(testList->tail == 1, valid);
+
+    UTEST(validateList(testList) == OK, valid);
+    dumpList(testList, "unitTestingDump.dot");
+    deleteList(&testList);
+    UTEST(!testList, valid);
+    return valid;
 }
+
 
 int main() {
     list_t *list = createList(10);
@@ -83,6 +153,8 @@ list_t *createList(size_t maxsize) {
     stackConstruct(&list->free, "ListFreeStack", maxsize, -1);
 
     for(long long i = maxsize-1; i >= 0; i--)
+        list->next[i] = -1;
+        list->prev[i] = -1;
         stackPush(&list->free, i);
 
     return list;
