@@ -297,8 +297,8 @@ listValidity validateList(list_t *list) {
 }
 
 void deleteNode(list_t *list, node_t *elem) {
-    assert(elem);
     assert(list);
+    assert(elem);
     assert(list->size > 0);
 
     if (elem->prev)

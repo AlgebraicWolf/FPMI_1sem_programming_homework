@@ -4,6 +4,12 @@
 
 #include "stack.h"
 
+enum listValidity{
+    OK = 0,
+    LIST_NOT_FOUND = 1,
+    CORRUPTED = 2
+};
+
 struct list_t {
     void **value;
     long long *next;
@@ -276,6 +282,59 @@ void deleteNode(list_t *list, long long node) {
 
     list->size--;
     stackPush(list->free, node);
+}
+
+listValidity validateList(list_t *list) {
+    if (!list)
+        return LIST_NOT_FOUND;
+
+    size_t size = list->size;
+    long long node = list->head;
+
+    for(size_t i = 0; i < size; i++) {
+        if(node != -1)
+            return CORRUPTED;
+
+        node = list->next[node];
+    }
+
+    if(list->tail != node)
+        return CORRUPTED;
+
+    return OK;
+}
+
+void dumpList(list_t *list, const char *dumpFilename, char *(*nodeDump)(long long)) {
+    assert(list);
+    assert(dumpFilename);
+
+    FILE *dumpFile = fopen(dumpFilename, "w");
+    fprintf(dumpFile, "digraph {\n");
+
+    long long node = list->head;
+
+    fprintf(dumpFile, "node%lld[label=\"{{%lld}", node, node);
+    if(nodeDump) {
+        fprintf(dumpFile, "|{%s}", (*nodeDump)(node));
+    }
+    fprintf(dumpFile, "}\",shape=record];\n");
+
+    while(node != list->tail) {
+        fprintf(dumpFile, "node%lld[label=\"{{%lld}", list->next[node], list->next[node]);
+        if(nodeDump) {
+            fprintf(dumpFile, "|{%s}", (*nodeDump)(list->next[node]));
+        }
+        fprintf(dumpFile, "}\",shape=record];\n");
+
+        fprintf(dumpFile, "node%lld -> node%lld;\n", node, list->next[node]);
+        fprintf(dumpFile, "node%lld -> node%lld;\n", list->next[node], node);
+        node = list->next[node];
+    }
+
+    fprintf(dumpFile, "Head -> node%lld;\n", list->head);
+    fprintf(dumpFile, "Tail -> node%lld;\n", list->tail);
+    fprintf(dumpFile, "}");
+    fclose(dumpFile);
 }
 
 int main() {
